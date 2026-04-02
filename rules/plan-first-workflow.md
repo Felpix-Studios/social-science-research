@@ -1,4 +1,5 @@
 ---
+description: Enter plan mode before non-trivial tasks. Get user approval, then execute. Save plans to quality_reports/plans/.
 paths: ["**/*"]
 ---
 

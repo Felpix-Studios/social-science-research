@@ -1,4 +1,5 @@
 ---
+description: "0\u2013100 scoring rubric with deduction tables. Thresholds: 80 = commit, 90 = PR, 95 = excellence."
 paths:
   - "**/*.tex"
   - "**/*.qmd"

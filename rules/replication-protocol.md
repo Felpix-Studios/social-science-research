@@ -1,4 +1,5 @@
 ---
+description: Replication-first workflow — match original results exactly before extending. Tolerance thresholds for point estimates, SEs, and p-values.
 paths:
   - "scripts/**/*.R"
   - "scripts/**/*.py"

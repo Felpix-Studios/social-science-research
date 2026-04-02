@@ -1,4 +1,5 @@
 ---
+description: R coding standards — reproducibility, function design, visual identity colors, RDS pattern, and line length policy.
 paths:
   - "**/*.R"
   - "Figures/**/*.R"
@@ -33,10 +34,13 @@ paths:
 
 ## 4. Visual Identity
 
+Read institutional colors from `references/domain-profile.md` (Institutional Colors section). Use those hex values for `primary_color` and `secondary_color` in all R scripts. If domain-profile is missing or has no colors, fall back to these defaults:
+
 ```r
-# --- Institutional palette (change these to match your institution's brand colors) ---
-primary_color   <- "#012169"   # Duke blue — replace if not at Duke
-secondary_color <- "#f2a900"   # Duke gold — replace if not at Duke
+# --- Read primary_color and secondary_color from references/domain-profile.md ---
+# --- Fallback defaults if domain-profile is unavailable ---
+primary_color   <- "#012169"
+secondary_color <- "#f2a900"
 accent_gray     <- "#525252"
 positive_green  <- "#15803d"
 negative_red    <- "#b91c1c"

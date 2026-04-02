@@ -67,3 +67,13 @@ Political Science — Duke University
 
 - John Aldrich — Duke University — https://scholars.duke.edu/person/aldrich
 - Karen Remmer — Duke University — https://scholars.duke.edu/person/remmer
+
+---
+
+## Institutional Colors
+
+<!-- Used by r-code-conventions.md for ggplot2 figure themes.
+     Set via /research-setup or edit directly. Hex codes only. -->
+
+- **Primary:** #012169
+- **Secondary:** #f2a900

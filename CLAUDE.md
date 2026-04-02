@@ -15,7 +15,7 @@ social-science-research/
 ├── agents/                      # 7 subagent definitions
 ├── hooks/                       # 4 hooks (hooks.json + 4 scripts)
 ├── references/                  # domain-profile.md (template, copied into user project)
-├── rules/                       # 9 always-loaded rule files
+├── rules/                       # 8 always-loaded rule files
 ├── skills/                      # 12 user-invocable skills
 └── templates/                   # Starter files (copied into user project, no-clobber)
 ```
@@ -33,10 +33,10 @@ Each skill lives at `skills/<name>/SKILL.md` and is invoked via `/<name>`.
 ### `/research-setup`
 Interactive wizard to configure a new project. Asks grouped questions about field, institution, journals, datasets, key researchers, and R colors.
 
-- **Reads:** `CLAUDE.md`, `references/domain-profile.md`, `rules/r-code-conventions.md`
+- **Reads:** `CLAUDE.md`, `references/domain-profile.md`
 - **Writes:**
   - `references/domain-profile.md` — field, journals, datasets, researchers
-  - `rules/r-code-conventions.md` — replaces existing hex color values with institutional colors
+  - `references/domain-profile.md` — institutional colors (Institutional Colors section)
   - `CLAUDE.md` — project name and institution
 - **Depends on:** Nothing. Designed to run first on a blank project.
 
@@ -136,7 +136,7 @@ Verifies every quantitative claim in the paper is traceable to an output file. C
 ### `/validate-bib`
 Scans all source files for citation keys and cross-references against the `.bib` file. Reports missing entries and unused references.
 
-- **Reads:** `manuscripts/**/*.tex`, `manuscripts/**/*.tex`, `Quarto/**/*.qmd`, `Bibliography_base.bib` (or any `.bib` at project root)
+- **Reads:** `manuscripts/**/*.tex`, `Quarto/**/*.qmd`, `Bibliography_base.bib` (or any `.bib` at project root)
 - **Writes:** Nothing (report printed inline)
 - **Depends on:** A `.bib` file at project root. No agents used.
 
@@ -145,7 +145,7 @@ Scans all source files for citation keys and cross-references against the `.bib`
 ### `/deep-audit`
 Launches 4 parallel specialist agents to audit the entire repository for inconsistencies, bugs, and cross-document errors. Loops until clean (max 5 rounds).
 
-- **Reads:** All files in `guide/`, `hooks/`, `skills/*/SKILL.md`, `rules/*.md`, `README.md`, `docs/`
+- **Reads:** All files in `hooks/`, `skills/*/SKILL.md`, `rules/*.md`, `agents/*.md`, `README.md`, `CLAUDE.md`
 - **Writes:** Fixes applied directly to any file with confirmed errors
 - **Agents used:** 4 parallel specialist agents (via Task)
 - **Depends on:** Nothing required. Intended for plugin/infrastructure auditing, not typical user research projects.
@@ -367,7 +367,7 @@ Restores context after compaction by printing a summary of where Claude left off
 
 ```
 /research-setup ──writes──► references/domain-profile.md
-                             rules/r-code-conventions.md
+                             references/domain-profile.md (colors)
                              CLAUDE.md
 
 references/domain-profile.md ──read by──► /lit-review → librarian agents

@@ -1,4 +1,5 @@
 ---
+description: After writing analysis code, run the script and verify outputs exist, are non-empty, and pass plausibility checks.
 paths:
   - "scripts/**/*.R"
   - "scripts/**/*.py"

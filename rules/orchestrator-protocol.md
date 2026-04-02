@@ -1,4 +1,5 @@
 ---
+description: After plan approval, run autonomously. Code track fixes and retries; prose track proposes changes and waits for approval.
 paths: ["**/*"]
 ---
 

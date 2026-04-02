@@ -1,4 +1,5 @@
 ---
+description: Three-phase proofreading — agent proposes, user approves, then agent applies. Never auto-edits prose.
 paths:
   - "**/*.tex"
   - "**/*.qmd"
