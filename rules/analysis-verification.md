@@ -49,7 +49,7 @@ jupyter nbconvert --to notebook --execute path/to/notebook.ipynb \
 Grep the manuscript for all citation keys, verify each is in the bibliography:
 
 ```bash
-grep -oP '\\\\cite\{[^}]+\}|@\K\w+' paper/*.tex paper/*.qmd 2>/dev/null | sort -u
+grep -oP '\\\\cite\{[^}]+\}|@\K\w+' manuscripts/*.tex manuscripts/*.qmd 2>/dev/null | sort -u
 ```
 
 - [ ] Every cited key has a matching entry in `Bibliography_base.bib` (or the project's `.bib` file)

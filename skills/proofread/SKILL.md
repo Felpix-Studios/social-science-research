@@ -2,7 +2,7 @@
 name: proofread
 description: Run the proofreading protocol on academic writing — papers or manuscripts. Checks grammar, typos, layout issues, consistency, and academic writing quality. Produces a report without editing files. Make sure to use this skill whenever the user wants surface-level writing errors found — not substantive academic critique. Triggers include: "proofread", "check for typos", "grammar check", "look for errors in my draft", "proofread all", "polish this", "check my writing", "are there any mistakes", "proofread before I send this", or when the user wants a clean-up pass rather than feedback on arguments or methods.
 argument-hint: "[filename, 'all', or path to manuscript]"
-allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "Task", "AskUserQuestion"]
 ---
 
 # Proofread Academic Writing
@@ -13,8 +13,13 @@ Run the mandatory proofreading protocol on papers or manuscripts. Produces a rep
 
 1. **Identify files to review:**
    - If `$ARGUMENTS` is a specific filename: review that file only
-   - If `$ARGUMENTS` is `all`: review all files in `paper/`, `manuscripts/`, and `Quarto/` (if it exists)
-   - If `$ARGUMENTS` is a file in `paper/` or `manuscripts/`: treat as manuscript (not slides)
+   - If `$ARGUMENTS` is `all`: review all files in `manuscripts/` and `Quarto/` (if it exists)
+   - If `$ARGUMENTS` is a file in `manuscripts/`: treat as manuscript (not slides)
+   - If `$ARGUMENTS` is empty or ambiguous and multiple files exist, use AskUserQuestion:
+     - header: "Files"
+     - question: "Which files should I proofread?"
+     - multiSelect: true
+     - options: list up to 4 found files (label: filename, description: directory and file type). User can select multiple or choose "Other" to specify a path.
 
 2. **For each file, launch the proofreader agent** that checks for:
 

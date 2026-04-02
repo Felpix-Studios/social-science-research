@@ -37,7 +37,6 @@ Cross-reference all citations in source files against bibliography entries.
 
 ## Files to scan:
 ```
-paper/**/*.tex
 manuscripts/**/*.tex
 Quarto/**/*.qmd
 ```

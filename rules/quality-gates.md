@@ -5,7 +5,6 @@ paths:
   - "**/*.R"
   - "**/*.py"
   - "**/*.ipynb"
-  - "paper/**"
   - "manuscripts/**"
 ---
 

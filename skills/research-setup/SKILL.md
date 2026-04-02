@@ -2,12 +2,14 @@
 name: research-setup
 description: Interactive setup wizard that configures a new project for the social-science-research plugin. Asks the user questions about their field, institution, journals, datasets, key researchers, and R color palette, then writes the answers into references/domain-profile.md, rules/r-code-conventions.md, and CLAUDE.md. Make sure to use this skill first whenever a user is starting fresh or wants to configure the plugin. Triggers include: "set up my project", "configure the plugin", "run setup", "initialize this project", "I just installed the plugin", "set my field", "set my institution", "configure my domain profile", or any request to personalize the plugin for a specific research context.
 argument-hint: "(no arguments needed)"
-allowed-tools: ["Read", "Write", "Edit", "Glob"]
+allowed-tools: ["Read", "Write", "Edit", "Glob", "AskUserQuestion"]
 ---
 
 # Research Setup Wizard
 
-You are running an interactive setup wizard. Your job is to ask the user a series of questions, collect their answers, and then write those answers into the project config files. Work through the sections below in order, asking each group of questions together so the user can answer them in one message. Do not ask one question at a time — group related questions.
+You are running an interactive setup wizard. Your job is to walk the user through a series of questions using interactive selection menus (AskUserQuestion) wherever possible, collect their answers, and then write those answers into the project config files.
+
+**Key rule:** Use AskUserQuestion for EVERY question where you can offer meaningful preset options. Only fall back to free-text conversation for truly open-ended questions (name, project title, custom entries). The user should be selecting from menus, not typing paragraphs.
 
 After all answers are collected, write all files in one pass. Confirm what was written at the end.
 
@@ -24,77 +26,162 @@ If any file already has real content (not just placeholder brackets), tell the u
 
 ---
 
-## Step 1: Identity & Project
+## Step 1: Field & Identity
 
-Ask:
+Use AskUserQuestion to ask up to 4 questions at once:
 
-> **Let's set up your research project. I'll ask a few questions in groups — answer however much you know, and skip anything that doesn't apply yet.**
->
-> **About you and your project:**
-> 1. What is your **name** (for paper authorship)?
-> 2. What is your **institution** (university or organization)?
-> 3. What is your **field or subfield**? *(e.g., Labor Economics, Public Health, Political Science, Sociology)*
-> 4. What is the **working title** of your current project? *(or leave blank to fill in later)*
+**Question 1 — Field** (single select):
+- header: "Field"
+- question: "What is your field or subfield?"
+- options (pick the 4 most common; user can always select "Other"):
+  - label: "Economics", description: "Labor, public, development, health, applied micro, etc."
+  - label: "Political Science", description: "American politics, comparative, IR, political economy"
+  - label: "Sociology", description: "Stratification, organizations, demography, culture"
+  - label: "Public Health", description: "Epidemiology, health policy, biostatistics"
 
----
+**Question 2 — Institution** (single select):
+- header: "Institution"
+- question: "What is your institution?"
+- options (pick 4 well-known research universities; user selects "Other" to type their own):
+  - label: "Duke University", description: "Durham, NC"
+  - label: "Harvard University", description: "Cambridge, MA"
+  - label: "Stanford University", description: "Stanford, CA"
+  - label: "UC Berkeley", description: "Berkeley, CA"
 
-## Step 2: Journals
+**Question 3 — Analysis language** (single select):
+- header: "Language"
+- question: "What is your primary analysis language?"
+- options:
+  - label: "R (Recommended)", description: "Full support: coding conventions, figure themes, R reviewer agent"
+  - label: "Python", description: "Supported: analysis scripts, figures, diagnostics"
+  - label: "Both", description: "R for figures and tables, Python for data processing"
 
-Ask:
-
-> **Journals — your Librarian agents search these for literature reviews.**
->
-> 5. List your **top 5 primary journals** (most prestigious / most relevant to your work). Include the journal URL if you know it.
-> 6. List **3 secondary journals** (subfield or adjacent journals you also follow).
->
-> *Example primary: American Economic Review — https://www.aeaweb.org/journals/aer*
-
----
-
-## Step 3: Datasets
-
-Ask:
-
-> **Common Datasets — your Explorer agents check these first when hunting for data.**
->
-> 7. List any **datasets commonly used in your field or project** (name, provider, public/restricted, URL if known). Add as many or as few as you like.
->
-> *Example: CPS — Bureau of Labor Statistics — Public — https://www.bls.gov/cps/*
->
-> *(Skip if you don't have datasets in mind yet — you can always add them to `references/domain-profile.md` later.)*
+Wait for answers before proceeding. Store the field and institution — you'll use them to customize the next questions.
 
 ---
 
-## Step 4: Key Researchers
+## Step 2: Name & Project Title
 
-Ask:
+Use AskUserQuestion:
 
-> **Key Researchers — Librarian agents use these for author-targeted searches.**
->
-> 8. List any **prominent researchers** whose recent work is most relevant to your field. Include their institution and Google Scholar or SSRN profile URL if you have it.
->
-> *Example: Raj Chetty — Harvard — https://scholar.harvard.edu/chetty*
->
-> *(Optional — skip if you'd rather add these later.)*
+**Question 1 — Name** (single select with "Other" as the expected path):
+- header: "Author"
+- question: "What is your name (for paper authorship)?"
+- options:
+  - label: "Skip for now", description: "You can add your name to CLAUDE.md later"
+  - label: "Enter name", description: "Type your full name as it appears on publications"
 
----
+**Question 2 — Project title** (single select):
+- header: "Project"
+- question: "Do you have a working title for your current project?"
+- options:
+  - label: "Skip for now", description: "You can add a project title to CLAUDE.md later"
+  - label: "Enter title", description: "Type your working project title"
 
-## Step 5: R Color Palette
-
-Ask:
-
-> **R Visualization Colors — used by your r-reviewer agent and r-code-conventions rule.**
->
-> 9. What is your **institution's primary color** (hex code)? *(e.g., #012169 for Duke blue)*
-> 10. What is your **institution's secondary color** (hex code)? *(e.g., #f2a900 for Duke gold)*
->
-> *(If you don't know your institution's hex codes, search "[institution name] brand colors" or brand.yourschool.edu. You can also skip and fill in later.)*
+If the user selects "Enter name" or "Enter title", they will type it via the "Other" option. If they select "Skip", move on.
 
 ---
 
-## Step 6: Write Config Files
+## Step 3: Journals
 
-Once you have the user's answers, write or update the following files:
+Based on the field selected in Step 1, offer field-specific journal presets using AskUserQuestion with multiSelect: true.
+
+**Question 1 — Primary journals** (multi-select):
+- header: "Top journals"
+- question: "Select your top journals (pick all that apply, or select Other to add your own):"
+- Offer the top 4 journals for the user's field. Examples by field:
+  - **Economics:** "American Economic Review", "Quarterly Journal of Economics", "Econometrica", "Journal of Political Economy"
+  - **Political Science:** "American Political Science Review", "American Journal of Political Science", "Journal of Politics", "Comparative Political Studies"
+  - **Sociology:** "American Sociological Review", "American Journal of Sociology", "Social Forces", "Demography"
+  - **Public Health:** "New England Journal of Medicine", "The Lancet", "JAMA", "American Journal of Epidemiology"
+  - For other fields: offer 4 best-guess top journals
+
+**Question 2 — Secondary journals** (multi-select):
+- header: "Secondary"
+- question: "Select secondary or subfield journals (pick all that apply):"
+- Offer 4 secondary journals appropriate to the user's field. Examples:
+  - **Economics:** "Journal of Labor Economics", "Journal of Public Economics", "Journal of Development Economics", "Review of Economics and Statistics"
+  - **Political Science:** "Political Research Quarterly", "Political Behavior", "Legislative Studies Quarterly", "World Politics"
+  - **Sociology:** "Social Science Research", "Sociological Methods & Research", "Annual Review of Sociology", "Journal of Marriage and Family"
+  - **Public Health:** "Epidemiology", "Health Affairs", "BMJ", "Preventive Medicine"
+
+Wait for answers. The user can multi-select presets AND add custom journals via "Other."
+
+---
+
+## Step 4: Datasets
+
+Based on the user's field, offer dataset presets using AskUserQuestion with multiSelect: true.
+
+**Question 1 — Common datasets** (multi-select):
+- header: "Datasets"
+- question: "Which datasets do you commonly use or plan to use? (Select all that apply)"
+- Offer the top 4 datasets for the user's field. Examples by field:
+  - **Economics:** "Current Population Survey (CPS)", "American Community Survey (ACS)", "Panel Study of Income Dynamics (PSID)", "National Longitudinal Survey of Youth (NLSY)"
+  - **Political Science:** "American National Election Studies (ANES)", "Cooperative Election Study (CES)", "Varieties of Democracy (V-Dem)", "Correlates of War (COW)"
+  - **Sociology:** "General Social Survey (GSS)", "Panel Study of Income Dynamics (PSID)", "National Longitudinal Survey of Youth (NLSY)", "American Community Survey (ACS)"
+  - **Public Health:** "National Health Interview Survey (NHIS)", "Medical Expenditure Panel Survey (MEPS)", "Behavioral Risk Factor Surveillance System (BRFSS)", "National Health and Nutrition Examination Survey (NHANES)"
+
+**Question 2 — Additional data sources** (multi-select):
+- header: "More data"
+- question: "Any additional data sources? (Select all that apply, or Other to add custom)"
+- Offer 4 cross-disciplinary datasets:
+  - label: "World Bank Open Data", description: "International development indicators"
+  - label: "IPUMS", description: "Harmonized census and survey microdata"
+  - label: "Bureau of Labor Statistics", description: "Employment, wages, prices"
+  - label: "Census Bureau", description: "ACS, decennial census, economic census"
+
+---
+
+## Step 5: Key Researchers
+
+Use AskUserQuestion:
+
+**Question 1 — Researchers** (single select):
+- header: "Researchers"
+- question: "Do you want to add key researchers for targeted literature searches?"
+- options:
+  - label: "Skip for now", description: "You can add researchers to references/domain-profile.md later"
+  - label: "Add researchers", description: "I'll list some prominent names in your field"
+
+If the user selects "Add researchers", then ask them conversationally to list names, institutions, and Google Scholar URLs. Do NOT try to guess researcher names — the user knows who matters for their work.
+
+---
+
+## Step 6: R Color Palette
+
+Use AskUserQuestion to offer institutional color presets based on the institution selected in Step 1.
+
+**Question 1 — Color palette** (single select with previews):
+- header: "Colors"
+- question: "Which color palette should R figures use?"
+- If the institution is known, offer its colors as the first (recommended) option. Include previews showing the hex codes.
+- options (customize based on institution; here are examples):
+  - label: "[Institution] Colors (Recommended)", description: "Official brand colors", preview: "Primary: #012169 (Duke Blue)\nSecondary: #F2A900 (Duke Gold)"
+  - label: "Custom colors", description: "Enter your own hex codes"
+  - label: "Skip for now", description: "Keep default colors, customize later in rules/r-code-conventions.md"
+
+**Common institutional colors to offer** (use these if the institution matches):
+- Duke: primary #012169, secondary #F2A900
+- Harvard: primary #A51C30, secondary #1E1E1E
+- Stanford: primary #8C1515, secondary #007C92
+- UC Berkeley: primary #003262, secondary #FDB515
+- MIT: primary #750014, secondary #8A8B8C
+- Columbia: primary #B9D9EB, secondary #1D4F91
+- Yale: primary #00356B, secondary #ADB0B8
+- Princeton: primary #E77500, secondary #000000
+- UChicago: primary #800000, secondary #767676
+- Penn: primary #011F5B, secondary #990000
+
+If the user's institution is not in this list and they don't select "Custom colors" or "Skip", ask them conversationally for their hex codes, or suggest they search "[institution] brand colors."
+
+If the user selects "Custom colors", ask conversationally for primary and secondary hex codes.
+
+---
+
+## Step 7: Write Config Files
+
+Once you have all answers, write or update the following files:
 
 ### `references/domain-profile.md`
 
@@ -188,16 +275,16 @@ Update the project header. Replace the template placeholders:
 
 ---
 
-## Step 7: Confirm
+## Step 8: Confirm
 
 After writing all files, report back:
 
 ```
 Setup complete. Here's what was configured:
 
-✓ references/domain-profile.md — field, [N] primary journals, [N] secondary journals[, N datasets][, N researchers]
-✓ rules/r-code-conventions.md — institutional colors ([primary], [secondary])
-✓ CLAUDE.md — project name and institution
+- references/domain-profile.md — field, [N] primary journals, [N] secondary journals[, N datasets][, N researchers]
+- rules/r-code-conventions.md — institutional colors ([primary], [secondary])
+- CLAUDE.md — project name and institution
 
 You can update any of these manually at any time:
 - Add more datasets → references/domain-profile.md

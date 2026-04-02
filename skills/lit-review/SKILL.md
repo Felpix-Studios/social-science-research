@@ -2,7 +2,7 @@
 name: lit-review
 description: Structured literature review using a parallel fleet of Librarian agents. Searches top journals, working paper repositories (NBER, SSRN, IZA), and traces citation chains from key papers. Make sure to use this skill whenever the user wants to survey existing research on a topic — not to find datasets or write a paper. Triggers include: "review the literature", "find related papers", "what's been done on X", "search for papers on", "do a lit review", "find papers about", "what papers should I cite", "who has written about this", "survey the literature", "find prior work on", or any request to locate and summarize academic publications on a topic.
 argument-hint: "[topic, research question, or anchor paper title]"
-allowed-tools: ["Read", "Grep", "Glob", "Write", "WebSearch", "WebFetch", "Task"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "WebSearch", "WebFetch", "Task", "AskUserQuestion"]
 ---
 
 # Literature Review
@@ -16,12 +16,19 @@ Conduct a systematic literature review using a parallel fleet of Librarian agent
 ## Step 1: Orient and Gather Context
 
 1. Read `quality_reports/project_spec_*.md` or `quality_reports/research_*.md` if they exist — extract the research question and identification strategy.
-2. Check `master_supporting_docs/supporting_papers/` — list any PDFs already on hand.
+2. Check `references/papers/` — list any PDFs already on hand.
 3. Read the project `.bib` file (`Bibliography_base.bib` or any `.bib` at project root) — extract paper titles and authors already known.
 4. Read `references/domain-profile.md` if it exists — get the field's journal list and key researchers.
 5. Identify **anchor papers**: the 1–3 most central known papers (from existing bib or supporting docs). These seed the citation chain search.
 
-If `references/domain-profile.md` does not exist, ask: *"What field is this in? I'll use that to identify the right journals."*
+If `references/domain-profile.md` does not exist, use AskUserQuestion to determine the field:
+- header: "Field"
+- question: "What field is this research in? This determines which journals and repositories the librarian agents search."
+- options:
+  - label: "Economics", description: "AER, QJE, Econometrica, JPE, ReStud + NBER/IZA"
+  - label: "Political Science", description: "APSR, AJPS, JOP, CPS, World Politics"
+  - label: "Sociology", description: "ASR, AJS, Social Forces, Demography"
+  - label: "Public Health", description: "NEJM, Lancet, JAMA, AJE"
 
 ---
 

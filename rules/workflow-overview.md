@@ -14,7 +14,7 @@ paths: ["**/*"]
 | 2a. Lit Review | Parallel journal + repo + citation search | `/lit-review` → `/validate-bib` | `quality_reports/lit_review_*.md` |
 | 2b. Data | Find + assess datasets for the RQ | `/data-finder` | `quality_reports/data_exploration_*.md` |
 | 3. Analysis | Run R or Python analysis | `/data-analysis` → `/review-r` | `output/tables/`, `output/figures/` |
-| 4. Write | Draft and review the paper | `/write-paper` → `/review-paper` | `paper/[name]-draft.tex` |
+| 4. Write | Draft and review the paper | `/write-paper` → `/review-paper` | `manuscripts/[name]-draft.tex` |
 | 5. Quality Gate | Verify analysis ↔ paper match | `/quality-gate` → `/proofread` | `quality_reports/quality_gate_*.md` |
 
 ---
@@ -97,11 +97,13 @@ your-project/
 ├── output/
 │   ├── tables/                  # Generated .tex and .html tables
 │   └── figures/                 # Generated .pdf and .png figures
-├── paper/                       # Manuscript drafts
+├── manuscripts/                 # Paper drafts (.tex, .qmd)
 ├── quality_reports/             # Plans, session logs, review reports
 │   ├── plans/
 │   ├── session_logs/
 │   ├── specs/
 │   └── merges/
-└── master_supporting_docs/      # Papers and supporting materials
+└── references/
+    ├── domain-profile.md        # Field, journals, datasets, key researchers
+    └── papers/                  # Reference papers and PDFs
 ```

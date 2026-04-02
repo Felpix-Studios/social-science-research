@@ -2,7 +2,7 @@
 name: quality-gate
 description: Verify that every quantitative claim in the paper is traceable to an analysis output file, and that no important output was omitted. Make sure to use this skill whenever the user wants to check that the paper and analysis are consistent before submission. Triggers include: "run the quality gate", "check the paper matches the analysis", "verify consistency", "does the paper match my results", "check my numbers", "are my tables right", "quality check before submission", "verify my claims", "make sure everything is consistent", "double-check the paper against my output files", or any pre-submission integrity check between paper text and computed results.
 argument-hint: "[paper file path, or leave blank to auto-detect]"
-allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "Task", "AskUserQuestion"]
 ---
 
 # Quality Gate: Paper ↔ Analysis Consistency
@@ -16,11 +16,14 @@ Cross-check every numerical claim in the paper against analysis output files. Re
 ## Step 1: Locate the Paper Draft
 
 If `$ARGUMENTS` is provided, use that path. Otherwise glob for:
-- `paper/**/*.tex`
-- `paper/**/*.qmd`
+- `manuscripts/**/*.tex`
+- `manuscripts/**/*.qmd`
 - `manuscripts/**/*.tex`
 
-If multiple drafts found, list them and ask the user to confirm which to check.
+If multiple drafts found, use AskUserQuestion to let the user pick:
+- header: "Paper"
+- question: "Multiple drafts found. Which manuscript should I check?"
+- options: list up to 4 found files (label: filename, description: path and file size). If more than 4, group by directory.
 
 ---
 

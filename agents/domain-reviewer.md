@@ -73,7 +73,7 @@ For every claim attributed to a specific paper:
 
 **Cross-reference with:**
 - The project bibliography file
-- Papers in `master_supporting_docs/supporting_papers/` (if available)
+- Papers in `references/papers/` (if available)
 - The knowledge base in `rules/` (if it has a notation/citation registry)
 
 ---

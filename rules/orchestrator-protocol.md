@@ -15,7 +15,7 @@ The track is determined by what you're working on:
 | Track | Applies When Working In | Approach |
 |-------|------------------------|----------|
 | **Code Track** | `scripts/`, `notebooks/`, `output/`, `.R`, `.py`, `.ipynb` | Autonomous — implement, verify, fix, commit |
-| **Prose Track** | `paper/`, `manuscripts/`, `.tex` drafts, `.qmd` manuscripts | Propose-first — never edit without user approval |
+| **Prose Track** | `manuscripts/`, `.tex` drafts, `.qmd` manuscripts | Propose-first — never edit without user approval |
 
 ---
 

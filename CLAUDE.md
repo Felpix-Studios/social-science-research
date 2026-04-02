@@ -54,7 +54,7 @@ Structured interview to formalize a research idea. Produces a project spec with 
 ### `/lit-review`
 Dispatches 3–5 parallel Librarian agents to search journals, NBER/SSRN/IZA, and citation chains. Consolidates results into a thematic report with BibTeX.
 
-- **Reads:** `quality_reports/project_spec_*.md`, `master_supporting_docs/supporting_papers/`, `Bibliography_base.bib` (or any `.bib` at project root), `references/domain-profile.md`
+- **Reads:** `quality_reports/project_spec_*.md`, `references/papers/`, `Bibliography_base.bib` (or any `.bib` at project root), `references/domain-profile.md`
 - **Writes:** `quality_reports/lit_review_[topic].md`
 - **Agents used:** `librarian` (3–5 instances in parallel via Task)
 - **Depends on:** `references/domain-profile.md` for journal list and key researchers. Falls back to asking the user if missing.
@@ -77,7 +77,7 @@ Dispatches parallel Explorer agents to find datasets for a research question, th
 Drafts a full academic manuscript from analysis outputs, project spec, and lit review. Inserts `\input{}` and `\includegraphics{}` references to actual output files.
 
 - **Reads:** `CLAUDE.md`, `quality_reports/specs/`, `quality_reports/lit_review_*.md`, `quality_reports/research_ideation_*.md`, `output/tables/**/*.tex`, `output/tables/**/*.html`, `output/figures/**/*.pdf`, `output/figures/**/*.png`, `output/**/*.rds`, `output/**/*.pkl`, `output/**/*.parquet`
-- **Writes:** `paper/[project-name]-draft.tex` (or `.qmd`)
+- **Writes:** `manuscripts/[project-name]-draft.tex` (or `.qmd`)
 - **Depends on:** Completed analysis outputs in `output/`. Richer output with project spec and lit review present.
 
 ---
@@ -96,7 +96,7 @@ End-to-end data analysis workflow in R or Python. Writes analysis scripts and sa
 ### `/proofread`
 Runs the proofreading protocol on slides or manuscripts. Produces a structured report without editing source files.
 
-- **Reads:** Target file (`.tex`, `.qmd`, or `.md`) from `paper/`, `manuscripts/`, or `Quarto/`
+- **Reads:** Target file (`.tex`, `.qmd`, or `.md`) from `manuscripts/` or `Quarto/`
 - **Writes:** `quality_reports/[filename]_report.md` (slides), `quality_reports/[filename]_qmd_report.md` (Quarto), or `quality_reports/[filename]_proofread.md` (manuscripts)
 - **Agents used:** `proofreader` (one per file when `all` is passed, in parallel)
 - **Depends on:** `rules/proofreading-protocol.md` (loaded automatically by path matcher)
@@ -116,17 +116,17 @@ Reviews R scripts against project coding conventions. Produces a quality report 
 ### `/review-paper`
 Comprehensive manuscript review covering argument structure, econometric specification, citation completeness, and likely referee objections.
 
-- **Reads:** Target paper (`.tex`, `.pdf`, or `.qmd`) — from argument or searched in `master_supporting_docs/supporting_papers/`, `rules/`, `Bibliography_base.bib`
+- **Reads:** Target paper (`.tex`, `.pdf`, or `.qmd`) — from argument or searched in `references/papers/`, `rules/`, `Bibliography_base.bib`
 - **Writes:** `quality_reports/paper_review_[name].md`
 - **Agents used:** `domain-reviewer`
-- **Depends on:** `master_supporting_docs/supporting_papers/` and `rules/` for cross-referencing. Paper file required.
+- **Depends on:** `references/papers/` and `rules/` for cross-referencing. Paper file required.
 
 ---
 
 ### `/quality-gate`
 Verifies every quantitative claim in the paper is traceable to an output file. Checks for missing citations, stale numbers, and unreferenced outputs.
 
-- **Reads:** Paper draft (`paper/**/*.tex` or `paper/**/*.qmd`), `output/tables/**`, `output/figures/**`, `output/**/*.rds`, `Bibliography_base.bib`
+- **Reads:** Paper draft (`manuscripts/**/*.tex` or `manuscripts/**/*.qmd`), `output/tables/**`, `output/figures/**`, `output/**/*.rds`, `Bibliography_base.bib`
 - **Writes:** `quality_reports/quality_gate_[YYYY-MM-DD]_[paper-name].md`
 - **Agents used:** `verifier`
 - **Depends on:** Analysis outputs must exist in `output/`. Bibliography file must exist. Paper draft required.
@@ -136,7 +136,7 @@ Verifies every quantitative claim in the paper is traceable to an output file. C
 ### `/validate-bib`
 Scans all source files for citation keys and cross-references against the `.bib` file. Reports missing entries and unused references.
 
-- **Reads:** `paper/**/*.tex`, `manuscripts/**/*.tex`, `Quarto/**/*.qmd`, `Bibliography_base.bib` (or any `.bib` at project root)
+- **Reads:** `manuscripts/**/*.tex`, `manuscripts/**/*.tex`, `Quarto/**/*.qmd`, `Bibliography_base.bib` (or any `.bib` at project root)
 - **Writes:** Nothing (report printed inline)
 - **Depends on:** A `.bib` file at project root. No agents used.
 
@@ -203,10 +203,10 @@ Reviews a single document for grammar, typos, layout, consistency, and academic 
 Reviews a paper or analysis for substantive correctness through 5 configurable lenses (assumptions, derivations, citations, code-theory alignment, logical consistency).
 
 - **Launched by:** `/review-paper`
-- **Reads:** Target document, `master_supporting_docs/supporting_papers/`, `rules/`
+- **Reads:** Target document, `references/papers/`, `rules/`
 - **Returns:** Structured review report. Does not write files directly.
 - **Customize:** Lines 9–26 of `agents/domain-reviewer.md` contain instructions for adapting the 5 lenses to a specific field.
-- **Depends on:** `rules/` and `master_supporting_docs/` for cross-referencing; both are optional but improve review quality.
+- **Depends on:** `rules/` and `references/papers/` for cross-referencing; both are optional but improve review quality.
 
 ---
 
@@ -247,7 +247,7 @@ Defines R coding standards: reproducibility, function design, visual identity co
 ---
 
 ### `quality-gates.md`
-**Paths:** `**/*.tex`, `**/*.qmd`, `**/*.R`, `**/*.py`, `**/*.ipynb`, `paper/**`, `manuscripts/**`
+**Paths:** `**/*.tex`, `**/*.qmd`, `**/*.R`, `**/*.py`, `**/*.ipynb`, `manuscripts/**`, `manuscripts/**`
 Defines the 0–100 scoring rubric: deduction tables for critical/major/minor issues, thresholds (80 = commit, 90 = PR, 95 = excellence), and numerical tolerance bands.
 
 - **Configurable:** Score thresholds and deduction values can be adjusted for different standards.
@@ -308,14 +308,6 @@ Defines the orchestrator loop: after plan approval, Claude runs autonomously —
 
 - **Depends on:** `quality-gates.md` thresholds (80/90/95).
 - **Modifies nothing.** Behavioral protocol only.
-
----
-
-### `pdf-processing.md`
-**Paths:** `master_supporting_docs/**`
-Specifies how to split large PDFs for processing (Ghostscript, 5-page chunks). Loaded when working with files in `master_supporting_docs/`.
-
-- **Modifies nothing.** Procedural instructions for handling PDFs.
 
 ---
 
@@ -396,7 +388,7 @@ rules/r-code-conventions.md ──read by──► /review-r → r-reviewer agen
                               └──read by──► /write-paper
                                             /quality-gate → verifier agent
 
-/write-paper ──writes──► paper/[name]-draft.tex
+/write-paper ──writes──► manuscripts/[name]-draft.tex
                               └──read by──► /quality-gate
                                             /proofread
                                             /review-paper

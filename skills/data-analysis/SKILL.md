@@ -2,7 +2,7 @@
 name: data-analysis
 description: End-to-end data analysis workflow in R or Python — from exploration through regression to publication-ready tables and figures. Make sure to use this skill whenever the user wants to run any empirical analysis, write analysis code, or produce output from data. Triggers include: "analyze this data", "run a regression", "write R code for this", "write Python code for this", "I have a dataset", "help me with this regression", "run a DiD", "run an RDD", "event study", "IV regression", "fit a model", "produce a table", "make a figure", "explore my data", or any request involving a dataset path or empirical estimation.
 argument-hint: "[dataset path or description of analysis goal]"
-allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task", "AskUserQuestion"]
 ---
 
 # Data Analysis Workflow
@@ -18,7 +18,13 @@ Run an end-to-end data analysis in R or Python: load, explore, analyze, and prod
 Determine language from `$ARGUMENTS` or ask the user:
 - User mentions `tidyverse`, `fixest`, `lm`, `.R` context → **R track**
 - User mentions `pandas`, `statsmodels`, `sklearn`, `.py` or `.ipynb` context → **Python track**
-- Dataset is `.csv`/`.parquet` with no language cue → ask: "Should I write this in R or Python?"
+- Dataset is `.csv`/`.parquet` with no language cue → use AskUserQuestion with a single-select menu:
+  - header: "Language"
+  - question: "Which language should I use for this analysis?"
+  - options:
+    - label: "R (Recommended)", description: "tidyverse, fixest, ggplot2 — full plugin support with coding conventions and R reviewer"
+    - label: "Python", description: "pandas, statsmodels — supported for analysis scripts and figures"
+    - label: "Both", description: "R for figures and tables, Python for data processing"
 
 ---
 

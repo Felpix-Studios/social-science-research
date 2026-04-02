@@ -48,7 +48,7 @@ jupyter nbconvert --to notebook --execute path/to/notebook.ipynb \
 
 ### For output completeness
 1. List all files in `output/tables/` and `output/figures/`
-2. If a paper draft exists in `paper/` or `manuscripts/`, check that each output file is referenced in the manuscript
+2. If a paper draft exists in `manuscripts/`, check that each output file is referenced in the manuscript
 3. Flag unreferenced outputs — these may be omitted results
 
 ## Report Format

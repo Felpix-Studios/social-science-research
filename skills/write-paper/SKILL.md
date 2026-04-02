@@ -74,9 +74,9 @@ Write in this order (minimizes backtracking):
 
 ## Step 5: Save the Draft
 
-Save to `paper/[project-name]-draft.tex` (or `.qmd` if the user prefers Quarto).
+Save to `manuscripts/[project-name]-draft.tex` (or `.qmd` if the user prefers Quarto).
 
-Create `paper/` directory if it does not exist.
+Create `manuscripts/` directory if it does not exist.
 
 Use `\input{}` for tables and `\includegraphics{}` for figures — reference the actual files in `output/`, do not embed content directly.
 
@@ -86,7 +86,7 @@ Use `\input{}` for tables and `\includegraphics{}` for figures — reference the
 
 After saving the draft, delegate to the `domain-reviewer` agent:
 
-> "Review the draft at paper/[filename] for argument structure, identification assumptions, and citation fidelity."
+> "Review the draft at manuscripts/[filename] for argument structure, identification assumptions, and citation fidelity."
 
 ---
 

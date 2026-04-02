@@ -7,7 +7,7 @@ PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT}"
 PROJECT_ROOT="$(pwd)"
 
 # Create quality_reports subdirectory structure
-for dir in quality_reports/plans quality_reports/session_logs quality_reports/specs quality_reports/merges; do
+for dir in quality_reports/plans quality_reports/session_logs quality_reports/specs quality_reports/merges references/papers manuscripts; do
   mkdir -p "$PROJECT_ROOT/$dir"
 done
 

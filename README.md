@@ -2,7 +2,7 @@
 
 A Claude Code plugin based on [Pedro Sant'Anna's Claude Code workflow](https://github.com/pedrohcgs/claude-code-my-workflow) designed for producing social science research.
 
-Provides 12 slash commands, 7 specialized agents, 9 auto-loading rules, and 4 hooks that guide you through project setup, literature review, data discovery, statistical analysis, paper drafting, and quality verification.
+Provides 12 slash commands, 7 specialized agents, 8 auto-loading rules, and 4 hooks that guide you through project setup, literature review, data discovery, statistical analysis, paper drafting, and quality verification.
 
 ---
 
@@ -42,7 +42,6 @@ Setup → Idea → Lit Review + Data → Analysis → Write → Quality Gate
 - **Claude Code** with plugin support
 - **R** (>= 4.0) and/or **Python** (>= 3.9) — for `/data-analysis`
 - **LaTeX distribution** — for paper compilation (optional; only needed for `/write-paper` with `.tex` output)
-- **Ghostscript** — for processing large PDFs in `master_supporting_docs/` (optional)
 - **Python 3** — for the compaction hooks (`pre-compact.py`, `post-compact-restore.py`)
 
 ---
@@ -55,7 +54,7 @@ Setup → Idea → Lit Review + Data → Analysis → Write → Quality Gate
    /plugin marketplace add Felpix-Studios/social-science-research
    ```
 
-2. **Install the plugin:**
+2. **Install the plugin** (choose **Project** scope when prompted):
 
    ```
    /plugin install social-science-research@felpix-research
@@ -63,11 +62,15 @@ Setup → Idea → Lit Review + Data → Analysis → Write → Quality Gate
 
    Or run `/plugin` to open the interactive plugin manager, browse to **felpix-research**, and install from there.
 
-3. **Open any project directory** and start a Claude Code session. On first launch, the `setup-project-dirs.sh` hook automatically:
+   > **Why project scope?** The plugin creates `quality_reports/`, `templates/`, and `references/` directories on every session start. Installing at user (global) scope would scaffold those folders in every project you open — including non-research repos. Project scope keeps everything contained to the repo you're working in.
+
+3. **Restart Claude Code** to activate the plugin.
+
+4. **Start a new session** in your research project directory. On first launch, the `setup-project-dirs.sh` hook automatically:
    - Creates `quality_reports/plans/`, `quality_reports/session_logs/`, `quality_reports/specs/`, and `quality_reports/merges/`
    - Copies starter templates into `templates/` and `references/` (never overwrites your edits)
 
-4. **Run `/research-setup`** to configure your field, institution, journals, datasets, and institutional colors. This writes your domain profile and customizes R figure themes to match your institution's visual identity.
+5. **Run `/research-setup`** to configure your field, institution, journals, datasets, and institutional colors. This writes your domain profile and customizes R figure themes to match your institution's visual identity.
 
 After setup, your project has a `references/domain-profile.md` with your field's journals, datasets, and key researchers — which the literature and data-finding skills will use automatically.
 
@@ -93,11 +96,11 @@ After setup, your project has a `references/domain-profile.md` with your field's
 | Step | What You Do | Skill(s) | Output |
 |------|-------------|----------|--------|
 | 0. Setup | Configure field, journals, datasets, R colors | `/research-setup` | `references/domain-profile.md`, `CLAUDE.md` |
-| 1. Idea | Interview → ideation → unified project spec | `/new-project` | `quality_reports/specs/project_spec_*.md` |
+| 1. Idea | Interview → ideation → unified project spec | `/new-project` | `quality_reports/project_spec_*.md` |
 | 2a. Literature | Parallel journal + working paper + citation search | `/lit-review` then `/validate-bib` | `quality_reports/lit_review_*.md` |
 | 2b. Data | Find and assess datasets for the research question | `/data-finder` | `quality_reports/data_exploration_*.md` |
 | 3. Analysis | Run R or Python analysis, review code quality | `/data-analysis` then `/review-r` | `output/tables/`, `output/figures/`, `scripts/` |
-| 4. Write | Draft and review the manuscript | `/write-paper` then `/review-paper` | `paper/[name]-draft.tex` |
+| 4. Write | Draft and review the manuscript | `/write-paper` then `/review-paper` | `manuscripts/[name]-draft.tex` |
 | 5. Verify | Check analysis-paper consistency, proofread | `/quality-gate` then `/proofread` | `quality_reports/quality_gate_*.md` |
 
 See the [Skills Reference](#skills-reference) below for details on each command.
@@ -118,7 +121,7 @@ Interactive wizard to configure a new project. Asks grouped questions about your
 Structured three-phase interview to formalize a research idea into a project spec with research questions and identification strategies.
 
 - **Argument:** Topic or research question (e.g., `/new-project effect of minimum wage on employment`)
-- **Writes:** `quality_reports/specs/project_spec_[topic].md`
+- **Writes:** `quality_reports/project_spec_[topic].md`
 - **Depends on:** Nothing required. Richer output if `CLAUDE.md` has project identity.
 
 ### `/lit-review`
@@ -127,7 +130,7 @@ Dispatches 3–5 parallel librarian agents to search journals, NBER/SSRN/IZA, an
 
 - **Argument:** Topic or research question
 - **Agents:** `librarian` (3–5 instances in parallel)
-- **Reads:** `quality_reports/specs/project_spec_*.md`, `references/domain-profile.md`, existing `.bib` file
+- **Reads:** `quality_reports/project_spec_*.md`, `references/domain-profile.md`, existing `.bib` file
 - **Writes:** `quality_reports/lit_review_[topic].md`
 - **Depends on:** `references/domain-profile.md` for journal list and key researchers.
 - **External:** WebSearch, WebFetch, Semantic Scholar API
@@ -136,7 +139,7 @@ Dispatches 3–5 parallel librarian agents to search journals, NBER/SSRN/IZA, an
 
 Scans all `.tex` and `.qmd` source files for citation keys and cross-references against the `.bib` file. Reports missing entries, unused references, and potential typos.
 
-- **Reads:** `paper/**/*.tex`, `manuscripts/**/*.tex`, `Quarto/**/*.qmd`, `Bibliography_base.bib`
+- **Reads:** `manuscripts/**/*.tex`, `Quarto/**/*.qmd`, `Bibliography_base.bib`
 - **Writes:** Nothing (report printed inline)
 - **Depends on:** A `.bib` file at project root.
 
@@ -146,7 +149,7 @@ Dispatches parallel explorer agents to find datasets, then an explorer-critic to
 
 - **Argument:** Topic, or `from spec` to use the most recent project spec
 - **Agents:** `explorer` (2 instances in parallel), `explorer-critic`
-- **Reads:** `quality_reports/specs/project_spec_*.md`, `references/domain-profile.md`
+- **Reads:** `quality_reports/project_spec_*.md` or `quality_reports/specs/*.md`, `references/domain-profile.md`
 - **Writes:** `quality_reports/data_exploration_[topic].md`
 - **External:** WebSearch, WebFetch
 
@@ -175,7 +178,7 @@ Drafts a full academic manuscript from analysis outputs, project spec, and lit r
 
 - **Agents:** `domain-reviewer` (post-draft review)
 - **Reads:** `quality_reports/specs/`, `quality_reports/lit_review_*.md`, `output/tables/**`, `output/figures/**`
-- **Writes:** `paper/[project-name]-draft.tex` (or `.qmd`)
+- **Writes:** `manuscripts/[project-name]-draft.tex` (or `.qmd`)
 - **Depends on:** Completed analysis outputs in `output/`.
 
 ### `/review-paper`
@@ -184,7 +187,7 @@ Comprehensive manuscript review covering argument structure, identification stra
 
 - **Argument:** File path to paper
 - **Agents:** `domain-reviewer`
-- **Reads:** Target paper, `master_supporting_docs/supporting_papers/`, `rules/`, `Bibliography_base.bib`
+- **Reads:** Target paper, `references/papers/`, `rules/`, `Bibliography_base.bib`
 - **Writes:** `quality_reports/paper_review_[name].md`
 
 ### `/quality-gate`
@@ -192,7 +195,7 @@ Comprehensive manuscript review covering argument structure, identification stra
 Verifies every quantitative claim in the paper is traceable to an output file. Checks for missing citations, stale numbers, and unreferenced outputs.
 
 - **Agents:** `verifier`
-- **Reads:** Paper draft (`paper/**`), `output/tables/**`, `output/figures/**`, `Bibliography_base.bib`
+- **Reads:** Paper draft (`manuscripts/**`), `output/tables/**`, `output/figures/**`, `Bibliography_base.bib`
 - **Writes:** `quality_reports/quality_gate_[YYYY-MM-DD]_[paper-name].md`
 - **Depends on:** Analysis outputs must exist in `output/`.
 
@@ -272,7 +275,6 @@ Rules are markdown files that auto-load based on file path matchers. You never i
 | `proofreading-protocol.md` | `**/*.tex`, `**/*.qmd` | Three-phase review: propose → approve → apply (never auto-edits) |
 | `analysis-verification.md` | `scripts/**`, `output/**` | Requires running scripts and verifying outputs after writing analysis code |
 | `replication-protocol.md` | `scripts/**`, `notebooks/**` | Replication-first workflow with tolerance thresholds |
-| `pdf-processing.md` | `master_supporting_docs/**` | Safe PDF splitting (Ghostscript, 5-page chunks) for large documents |
 
 ### workflow-overview.md
 
@@ -309,10 +311,6 @@ Loaded when working with scripts or outputs. Requires actually running scripts a
 ### replication-protocol.md
 
 Loaded when working in `scripts/`, `notebooks/`, or `explorations/`. Four phases: inventory and baseline (record gold-standard numbers), translate and execute (match original spec exactly), verify match (tolerance thresholds: integers exact, point estimates < 0.01, SEs < 0.05), then extend. Includes Stata/R/Python translation pitfall tables.
-
-### pdf-processing.md
-
-Loaded when working in `master_supporting_docs/`. Specifies how to safely process large PDFs: check properties with `pdfinfo`, split with Ghostscript into 5-page chunks, process one chunk at a time, identify the most relevant sections for deep reading.
 
 ---
 
@@ -380,8 +378,6 @@ The recommended directory layout for a research project using this plugin:
 your-project/
 ├── CLAUDE.md                         # Project context (name, author, current state)
 ├── Bibliography_base.bib             # Centralized bibliography (protected from edits)
-├── references/
-│   └── domain-profile.md            # Your field, journals, datasets, key researchers
 ├── templates/                        # Starter templates (copied from plugin on first session)
 ├── data/                             # Raw data files
 ├── scripts/
@@ -393,14 +389,15 @@ your-project/
 │   ├── figures/                      # Generated .pdf and .png figures
 │   ├── analysis/                     # Analysis objects (.rds, .pkl)
 │   └── diagnostics/                  # Diagnostic outputs
-├── paper/                            # Manuscript drafts (.tex, .qmd)
+├── manuscripts/                      # Paper drafts (.tex, .qmd)
 ├── quality_reports/
 │   ├── plans/                        # Approved plans before implementation
 │   ├── session_logs/                 # Session documentation
 │   ├── specs/                        # Project specifications
 │   └── merges/                       # Merge quality reports
-├── master_supporting_docs/
-│   └── supporting_papers/            # Reference papers and PDFs
+├── references/
+│   ├── domain-profile.md             # Your field, journals, datasets, key researchers
+│   └── papers/                       # Reference papers and PDFs
 └── explorations/                     # Exploratory analysis branches
 ```
 
@@ -446,7 +443,7 @@ Edit lines 9–26 of `agents/domain-reviewer.md` to customize the 5 review lense
 references/domain-profile.md ──read by──► /lit-review → librarian agents
                                           /data-finder → explorer agents
 
-/new-project ──writes──► quality_reports/specs/project_spec_*.md
+/new-project ──writes──► quality_reports/project_spec_*.md
                               └──read by──► /lit-review
                                             /data-finder
                                             /write-paper
@@ -458,7 +455,7 @@ references/domain-profile.md ──read by──► /lit-review → librarian ag
                               └──read by──► /write-paper
                                             /quality-gate → verifier agent
 
-/write-paper ──writes──► paper/[name]-draft.tex
+/write-paper ──writes──► manuscripts/[name]-draft.tex
                               └──read by──► /quality-gate
                                             /proofread
                                             /review-paper
