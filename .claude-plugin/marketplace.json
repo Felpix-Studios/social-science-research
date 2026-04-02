@@ -1,7 +1,7 @@
 {
   "name": "felpix-research",
   "owner": {
-    "name": "Felpix Studios"
+    "name": "Felpix"
   },
   "metadata": {
     "description": "Social science research workflow tools for Claude Code"
