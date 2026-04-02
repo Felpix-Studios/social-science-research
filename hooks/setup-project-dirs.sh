@@ -14,7 +14,7 @@ done
 # Copy templates into project if they don't exist yet (-n = no-clobber, preserves user edits)
 if [ -d "$PLUGIN_ROOT/templates" ]; then
   mkdir -p "$PROJECT_ROOT/templates"
-  for template in "$PLUGIN_ROOT/templates/"*.md; do
+  for template in "$PLUGIN_ROOT/templates/"*; do
     [ -f "$template" ] && cp -n "$template" "$PROJECT_ROOT/templates/"
   done
 fi
@@ -22,7 +22,7 @@ fi
 # Copy references/ (domain-profile template) into project if not present yet
 if [ -d "$PLUGIN_ROOT/references" ]; then
   mkdir -p "$PROJECT_ROOT/references"
-  for ref in "$PLUGIN_ROOT/references/"*.md; do
+  for ref in "$PLUGIN_ROOT/references/"*; do
     [ -f "$ref" ] && cp -n "$ref" "$PROJECT_ROOT/references/"
   done
 fi

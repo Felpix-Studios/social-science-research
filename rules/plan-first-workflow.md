@@ -74,8 +74,8 @@ Format: Status (DRAFT/APPROVED/COMPLETED), approach, files to modify, verificati
 **Before Auto-Compression:**
 When approaching context limits, ensure:
 1. Session log is current — update the session log in `quality_reports/session_logs/` with new decisions as work progresses. Prefix each decision line with `Decision:` so compact hooks can extract them
-3. Active plan is saved to disk
-4. Open questions are documented in session log
+2. Active plan is saved to disk
+3. Open questions are documented in session log
 
 The pre-compact hook will remind you of this checklist.
 

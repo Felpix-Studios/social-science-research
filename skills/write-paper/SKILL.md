@@ -84,9 +84,12 @@ Use `\input{}` for tables and `\includegraphics{}` for figures — reference the
 
 ## Step 6: Run Domain Review
 
-After saving the draft, delegate to the `domain-reviewer` agent:
+After saving the draft, launch the `domain-reviewer` agent via Task:
 
-> "Review the draft at manuscripts/[filename] for argument structure, identification assumptions, and citation fidelity."
+Task prompt: "Review the draft at manuscripts/[filename] for argument structure, identification assumptions, and citation fidelity. Check that the identification strategy is clearly stated, assumptions are explicit, and all cited tables/figures exist in output/."
+Task agent: domain-reviewer
+
+Wait for the review to complete, then present the findings to the user.
 
 ---
 

@@ -18,7 +18,7 @@ Cross-check every numerical claim in the paper against analysis output files. Re
 If `$ARGUMENTS` is provided, use that path. Otherwise glob for:
 - `manuscripts/**/*.tex`
 - `manuscripts/**/*.qmd`
-- `manuscripts/**/*.tex`
+- `manuscripts/**/*.md`
 
 If multiple drafts found, use AskUserQuestion to let the user pick:
 - header: "Paper"
