@@ -1,6 +1,6 @@
 # Social Science Research
 
-A Claude Code plugin for the complete academic research workflow — from idea to submission.
+A Claude Code plugin based on Pedro Sant'Anna's Claude Code workflow designed for producing social science research.
 
 Provides 12 slash commands, 7 specialized agents, 9 auto-loading rules, and 4 hooks that guide you through project setup, literature review, data discovery, statistical analysis, paper drafting, and quality verification.
 
