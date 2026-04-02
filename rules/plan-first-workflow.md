@@ -16,7 +16,10 @@ paths: ["**/*"]
 5. **Save to disk** — write to `quality_reports/plans/YYYY-MM-DD_short-description.md`
 6. **Present to user** — wait for approval
 7. **Exit plan mode** — only after approval
-8. **Save initial session log** — capture goal and key context while fresh
+8. **Save initial session log** — create `quality_reports/session_logs/YYYY-MM-DD_short-description.md` using `templates/session-log.md` as the format. Fill in:
+   - **Objective:** the goal from the approved plan
+   - **Changes Made:** leave empty (will be filled during implementation)
+   - **Design Decisions:** record any decisions made during planning, one per line prefixed with `Decision:` (e.g., `Decision: Using DiD instead of IV because parallel trends hold`)
 9. **Implement via orchestrator** — see `orchestrator-protocol.md`
 
 ## Step 3: Requirements Specification (For Complex/Ambiguous Tasks)
@@ -70,7 +73,7 @@ Format: Status (DRAFT/APPROVED/COMPLETED), approach, files to modify, verificati
 
 **Before Auto-Compression:**
 When approaching context limits, ensure:
-1. Session log is current (updated within 10 minutes)
+1. Session log is current — update the session log in `quality_reports/session_logs/` with new decisions as work progresses. Prefix each decision line with `Decision:` so compact hooks can extract them
 3. Active plan is saved to disk
 4. Open questions are documented in session log
 

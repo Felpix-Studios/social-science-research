@@ -7,7 +7,7 @@ PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT}"
 PROJECT_ROOT="$(pwd)"
 
 # Create quality_reports subdirectory structure
-for dir in quality_reports/plans quality_reports/session_logs quality_reports/specs quality_reports/merges references/papers manuscripts; do
+for dir in quality_reports/plans quality_reports/session_logs quality_reports/specs quality_reports/merges references/papers manuscripts output/tables output/figures output/diagnostics output/analysis scripts/R scripts/python; do
   mkdir -p "$PROJECT_ROOT/$dir"
 done
 
@@ -25,6 +25,16 @@ if [ -d "$PLUGIN_ROOT/references" ]; then
   for ref in "$PLUGIN_ROOT/references/"*.md; do
     [ -f "$ref" ] && cp -n "$ref" "$PROJECT_ROOT/references/"
   done
+fi
+
+# Create CLAUDE.md with project identity placeholders if none exists yet
+if [ ! -f "$PROJECT_ROOT/CLAUDE.md" ]; then
+  cat > "$PROJECT_ROOT/CLAUDE.md" << 'EOF'
+# [YOUR PROJECT NAME]
+
+**Author:** [YOUR NAME]
+**Institution:** [YOUR INSTITUTION]
+EOF
 fi
 
 exit 0

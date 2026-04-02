@@ -23,13 +23,44 @@ Produce a thorough, constructive review of an academic manuscript — the kind o
 
 2. **Read the full paper** end-to-end. For long PDFs, read in chunks (5 pages at a time).
 
-3. **Evaluate across 6 dimensions** (see below).
+3. **Dispatch `domain-reviewer` agent** via Task for deep substance review (see below).
 
-4. **Generate 3-5 "referee objections"** — the tough questions a top referee would ask.
+4. **Evaluate writing quality and presentation** (dimensions 5-6) — the skill handles these directly since the agent explicitly does not cover presentation.
 
-5. **Produce the review report.**
+5. **After the agent completes**, merge its findings with your writing/presentation evaluation. Generate 3-5 "referee objections" synthesized from both.
 
-6. **Save to** `quality_reports/paper_review_[sanitized_name].md`
+6. **Produce the unified review report.**
+
+7. **Save to** `quality_reports/paper_review_[sanitized_name].md`
+
+---
+
+## Step 3: Dispatch Domain-Reviewer Agent
+
+Dispatch the `domain-reviewer` agent via Task for the deep substance check. The agent applies 5 lenses that go deeper than broad dimensional evaluation — actual equation verification, derivation step checking, code-theory alignment, and backward logic tracing.
+
+```
+Task prompt: "You are the domain-reviewer agent. Review the manuscript at [path].
+Research question: [from spec if available].
+
+Apply all 5 review lenses:
+1. Assumption stress test
+2. Derivation verification
+3. Citation fidelity
+4. Code-theory alignment
+5. Backward logic check
+
+Also check cross-document consistency.
+Follow the domain-reviewer agent instructions and return your full substance review report."
+```
+
+After the agent completes, collect its findings. These feed into the "Major Concerns" and "Referee Objections" sections of the final report.
+
+---
+
+## Steps 4-5: Skill Evaluates Writing & Presentation, Then Merges
+
+The skill evaluates dimensions 5-6 directly (the agent does not cover these), then merges everything into the unified report format below.
 
 ---
 

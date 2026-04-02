@@ -31,11 +31,12 @@ Store field and institution for customizing later steps.
 
 ## Step 2: Name & Project Title
 
-AskUserQuestion — 2 questions at once:
+Ask conversationally (not via AskUserQuestion):
 
-1. **Author** (single select, header: "Author"): "What is your name (for paper authorship)?" — Options: "Skip for now" / "Enter name". User types name via Other.
+1. "What is your name (for paper authorship)? You can skip this for now."
+2. "Do you have a working title for your current project? Fine to skip if you're still exploring."
 
-2. **Project** (single select, header: "Project"): "Do you have a working title for your current project?" — Options: "Skip for now" / "Enter title". User types title via Other.
+Wait for the user's response before moving to Step 3.
 
 ---
 
@@ -87,6 +88,7 @@ Read the existing file and update each section with the user's answers. Preserve
 
 Update the project header placeholders:
 - `[YOUR PROJECT NAME]` → user's project title (or leave placeholder if skipped)
+- `[YOUR NAME]` → user's name (or leave placeholder if skipped)
 - `[YOUR INSTITUTION]` → user's institution
 
 ---

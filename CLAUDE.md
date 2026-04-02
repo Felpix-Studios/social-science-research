@@ -281,6 +281,8 @@ Instructs Claude to enter plan mode before any non-trivial task, get approval, t
 - **Writes (indirectly):** `quality_reports/plans/YYYY-MM-DD_[description].md` — Claude creates plan files per this rule
 - **Spec storage:** `quality_reports/specs/YYYY-MM-DD_[description].md`
 - **Template reference:** `templates/requirements-spec.md`
+- **Session log storage:** `quality_reports/session_logs/YYYY-MM-DD_[description].md`
+- **Session log template:** `templates/session-log.md`
 
 ---
 
@@ -321,10 +323,11 @@ Hooks run shell/Python scripts automatically on Claude Code events.
 **Trigger:** `SessionStart` (every session, no matcher)
 Creates the project directory scaffold and copies template files into the user's project.
 
-- **Creates (idempotent):** `quality_reports/plans/`, `quality_reports/session_logs/`, `quality_reports/specs/`, `quality_reports/merges/`
+- **Creates (idempotent):** `quality_reports/plans/`, `quality_reports/session_logs/`, `quality_reports/specs/`, `quality_reports/merges/`, `references/papers/`, `manuscripts/`, `output/tables/`, `output/figures/`, `output/diagnostics/`, `output/analysis/`, `scripts/R/`, `scripts/python/`
 - **Copies (no-clobber):** All files from `${CLAUDE_PLUGIN_ROOT}/templates/` → `./templates/`
 - **Copies (no-clobber):** All files from `${CLAUDE_PLUGIN_ROOT}/references/` → `./references/`
-- **No-clobber means:** User edits to `references/domain-profile.md` or template files are never overwritten.
+- **Creates (if absent):** `./CLAUDE.md` with project identity placeholders (only if no CLAUDE.md exists)
+- **No-clobber means:** User edits to `references/domain-profile.md`, template files, or `CLAUDE.md` are never overwritten.
 - **Depends on:** `CLAUDE_PLUGIN_ROOT` and `CLAUDE_PROJECT_DIR` env vars set by Claude Code.
 
 ---

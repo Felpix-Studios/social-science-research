@@ -13,9 +13,7 @@
 
 ## Design Decisions
 
-| Decision | Alternatives Considered | Rationale |
-|----------|------------------------|-----------|
-| [Choice made] | [Other options] | [Why this one] |
+Decision: [Choice made] — [Why this one] (alternatives: [other options])
 
 ## Incremental Work Log
 

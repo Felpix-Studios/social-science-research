@@ -54,40 +54,38 @@ Build an inventory with file paths and sizes.
 
 ---
 
-## Step 4: Verify Each Claim
+## Step 4: Dispatch Verifier Agent
 
-For each numerical claim extracted in Step 2:
+Dispatch the `verifier` agent via Task to perform the heavy verification work. Pass it:
+- The full list of numerical claims extracted in Step 2 (with locations)
+- The output file inventory from Step 3
+- The paper draft path
+- The bibliography file path
 
-1. **Table references:** Find the referenced table file. Read it and confirm the specific number appears.
-2. **Figure references:** Verify the referenced figure file exists at the expected path.
-3. **Inline numbers:** Search output files (`.tex` tables, `.csv`, `.html`) for the exact value or a value within tolerance.
-4. **Sample size claims:** Check table notes or summary stats files for the stated N.
+```
+Task prompt: "You are the verifier agent. Paper draft: [path].
+Bibliography: [bib path].
 
-Label each claim:
-- **MATCHED** — found in an output file
-- **UNVERIFIED** — could not locate in any output file (needs manual check)
-- **MISSING FILE** — referenced file does not exist
+CLAIMS TO VERIFY:
+[paste the full claims list from Step 2]
 
----
+OUTPUT FILE INVENTORY:
+[paste the inventory from Step 3]
 
-## Step 5: Reverse Check — Unreferenced Outputs
+Verify each claim against the output files. Then do a reverse check —
+find output files NOT referenced in the paper. Then check all citation
+keys against the bibliography. Follow the verifier agent instructions
+and return your full verification report."
+```
 
-Scan `output/tables/` and `output/figures/` for files NOT referenced in the paper:
-
-- A table or figure in `output/` that is never cited in the manuscript may represent omitted results
-- Flag each unreferenced file: the user should either reference it in the paper or explain why it was excluded
-
----
-
-## Step 6: Check Citations
-
-Grep the manuscript for all citation keys (`\cite{key}`, `\citet{key}`, `\citep{key}`, `@key`).
-Grep the bibliography file (`Bibliography_base.bib` or any `.bib` in the project root) for each key.
-Flag any key used in the paper but missing from the bibliography as CRITICAL.
+After the verifier completes, collect its results:
+- Claim verification table (MATCHED / UNVERIFIED / MISSING FILE per claim)
+- Unreferenced output files list
+- Missing citation keys
 
 ---
 
-## Step 7: Save Report
+## Step 5: Save Report
 
 Save to `quality_reports/quality_gate_[YYYY-MM-DD]_[paper-name].md`:
 

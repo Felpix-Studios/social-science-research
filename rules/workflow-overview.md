@@ -54,9 +54,9 @@ paths: ["**/*"]
 | `explorer` | Finds candidate datasets across source categories | Dispatched in parallel pairs by `/data-finder` |
 | `explorer-critic` | Applies 5-point methodology critique to candidate datasets | Dispatched by `/data-finder` after explorers complete |
 | `proofreader` | Grammar, typos, layout issues, citation format | After drafting paper sections |
-| `domain-reviewer` | Substantive correctness — math, assumptions, derivations, citations | After drafting paper or analysis; before submitting |
+| `domain-reviewer` | Substantive correctness — math, assumptions, derivations, citations | Dispatched by `/write-paper` and `/review-paper` for substance review |
 | `r-reviewer` | R code quality, reproducibility, figure standards | After writing or modifying R scripts |
-| `verifier` | Scripts run cleanly, outputs exist, bibliography consistent | Before presenting results or committing |
+| `verifier` | Scripts run cleanly, outputs exist, bibliography consistent | Dispatched by `/quality-gate` for claim verification |
 
 ---
 
