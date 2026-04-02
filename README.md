@@ -49,19 +49,25 @@ Setup → Idea → Lit Review + Data → Analysis → Write → Quality Gate
 
 ## Installation
 
-1. **Add the plugin** to your Claude Code environment:
+1. **Add the marketplace** in Claude Code:
 
-   ```bash
-   claude plugin add /path/to/social-science-research
+   ```
+   /plugin marketplace add Felpix-Studios/social-science-research
    ```
 
-   Or add it through your Claude Code settings/IDE extension plugin manager.
+2. **Install the plugin:**
 
-2. **Open any project directory** and start a Claude Code session. On first launch, the `setup-project-dirs.sh` hook automatically:
+   ```
+   /plugin install social-science-research@felpix-research
+   ```
+
+   Or run `/plugin` to open the interactive plugin manager, browse to **felpix-research**, and install from there.
+
+3. **Open any project directory** and start a Claude Code session. On first launch, the `setup-project-dirs.sh` hook automatically:
    - Creates `quality_reports/plans/`, `quality_reports/session_logs/`, `quality_reports/specs/`, and `quality_reports/merges/`
    - Copies starter templates into `templates/` and `references/` (never overwrites your edits)
 
-3. **Run `/research-setup`** to configure your field, institution, journals, datasets, and institutional colors. This writes your domain profile and customizes R figure themes to match your institution's visual identity.
+4. **Run `/research-setup`** to configure your field, institution, journals, datasets, and institutional colors. This writes your domain profile and customizes R figure themes to match your institution's visual identity.
 
 After setup, your project has a `references/domain-profile.md` with your field's journals, datasets, and key researchers — which the literature and data-finding skills will use automatically.
 
