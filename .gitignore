@@ -1,0 +1,6 @@
+.DS_Store
+**/.DS_Store
+
+# Dev artifacts — not part of the plugin distribution
+quality_reports/
+skills-eval-workspace/

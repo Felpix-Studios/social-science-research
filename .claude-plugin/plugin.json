@@ -1,0 +1,8 @@
+{
+  "name": "social-science-research",
+  "version": "1.0.0",
+  "description": "Tools and agents for social science research workflows",
+  "author":{
+    "name": "Felpix"
+  }
+}
