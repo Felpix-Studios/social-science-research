@@ -1,6 +1,6 @@
 # Social Science Research
 
-A Claude Code plugin based on Pedro Sant'Anna's Claude Code workflow designed for producing social science research.
+A Claude Code plugin based on [Pedro Sant'Anna's Claude Code workflow](https://github.com/pedrohcgs/claude-code-my-workflow) designed for producing social science research.
 
 Provides 12 slash commands, 7 specialized agents, 9 auto-loading rules, and 4 hooks that guide you through project setup, literature review, data discovery, statistical analysis, paper drafting, and quality verification.
 
@@ -100,33 +100,7 @@ After setup, your project has a `references/domain-profile.md` with your field's
 | 4. Write | Draft and review the manuscript | `/write-paper` then `/review-paper` | `paper/[name]-draft.tex` |
 | 5. Verify | Check analysis-paper consistency, proofread | `/quality-gate` then `/proofread` | `quality_reports/quality_gate_*.md` |
 
-### Step 0: Setup
-
-Run `/research-setup` once per project. It asks grouped questions about your field, institution, target journals, common datasets, key researchers, and institutional colors. Answers are saved to `references/domain-profile.md` (used by literature and data skills) and `rules/r-code-conventions.md` (institutional color palette for R figures).
-
-### Step 1: Idea
-
-Run `/new-project [topic]`. A three-phase structured interview: conversational questioning about your research idea, then Claude generates 3–5 research questions with identification strategies (DiD, RDD, IV, etc.), and finally produces a unified project specification with hypotheses, data requirements, and priority ranking.
-
-### Step 2a: Literature Review
-
-Run `/lit-review [topic]`. Dispatches 3–5 librarian agents in parallel — each searching a different angle (top-5 journals, secondary journals, NBER/SSRN/IZA working papers, backward citations, forward citations via Semantic Scholar). Results are consolidated into a thematic report with 20–40 papers and BibTeX entries. Follow up with `/validate-bib` to check all citations exist in your `.bib` file.
-
-### Step 2b: Data Discovery
-
-Run `/data-finder [topic]`. Dispatches two explorer agents in parallel (institutional/admin data vs. international/novel sources), then an explorer-critic stress-tests each candidate across five dimensions: measurement validity, sample selection, external validity, identification compatibility, and known issues. Produces a ranked list with feasibility grades (A–D).
-
-### Step 3: Analysis
-
-Run `/data-analysis [dataset]`. Autodetects R or Python, then runs through: setup, exploratory data analysis, main analysis, publication-ready output, and save. All scripts follow `rules/r-code-conventions.md` conventions. After writing code, run `/review-r` to get a quality review covering reproducibility, style, domain correctness, and figure standards.
-
-### Step 4: Write
-
-Run `/write-paper`. Drafts a manuscript using your analysis outputs, project spec, and lit review. Sections are drafted in order: data, empirical strategy, results, robustness, literature, introduction, abstract, conclusion. References actual output files via `\input{}` and `\includegraphics{}`. After drafting, run `/review-paper` for a top-journal-style review covering 6 dimensions.
-
-### Step 5: Quality Gate
-
-Run `/quality-gate`. Extracts every quantitative claim from your paper (coefficients, sample sizes, p-values, table/figure references) and cross-references against `output/`. Reports MATCHED, UNVERIFIED, or MISSING FILE for each claim. Follow up with `/proofread` for grammar, typos, layout, and consistency checks.
+See the [Skills Reference](#skills-reference) below for details on each command.
 
 ---
 
