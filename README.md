@@ -2,7 +2,7 @@
 
 > **Work in Progress.** This plugin is still under active development by a university student. For now, it is an experiment on the utility of Claude Code for social science research. If you have any feedback or suggestions, reach me on X at [@felpix_](https://x.com/felpix_).
 
-A Claude Code plugin based on [Pedro Sant'Anna's Claude Code workflow](https://github.com/pedrohcgs/claude-code-my-workflow) designed for producing social science research.
+A Claude Code and Codex plugin based on [Pedro Sant'Anna's Claude Code workflow](https://github.com/pedrohcgs/claude-code-my-workflow) designed for producing social science research.
 
 ## Quick Start
 
@@ -35,11 +35,49 @@ Configure your field, institution, journals, datasets, key researchers, and inst
 
 Enjoy using the plugin!
 
+## Codex Quick Start
+
+### 1. Install
+
+Use Codex with a personal marketplace and local plugin checkout.
+
+```bash
+mkdir -p ~/.codex/plugins
+git clone https://github.com/Felpix-Studios/social-science-research.git ~/.codex/plugins/social-science-research
+
+mkdir -p ~/.agents/plugins
+curl -L https://raw.githubusercontent.com/Felpix-Studios/social-science-research/main/marketplaces/personal-marketplace.json -o ~/.agents/plugins/marketplace.json
+```
+
+> **Why user marketplace?** Codex discovers personal marketplaces from `~/.agents/plugins/marketplace.json`, but the plugin is still installed into the specific project you open from `/plugins`. If you already have a `marketplace.json`, merge the `social-science-research` entry instead of overwriting the whole file.
+
+### 2. Restart Codex
+
+In your project directory, restart Codex, open `/plugins`, then install `social-science-research` from the `Felpix Research` marketplace.
+
+On first launch after installation, the plugin will automatically:
+
+- Create project directories: `quality_reports/`, `references/papers/`, `manuscripts/`, `output/`, `scripts/`
+- Copy `references/domain-profile.md` into your project (your field's journals, datasets, and key researchers)
+- Copy starter templates into `templates/` (session log, requirements spec, quality report formats)
+- Create `CLAUDE.md` with project identity placeholders (name, author, institution)
+
+### 3. Run `research-setup`
+
+In a new thread, ask Codex:
+
+```text
+Use @Social Science Research to set up this project and run research-setup.
+```
+
+Enjoy using the plugin!
+
 ## Prerequisites
 
 | Tool | Required For | Install |
 |------|-------------|---------|
 | Claude Code (with plugin support) | Everything | [claude.ai/download](https://claude.ai/download) |
+| Codex | Everything | [developers.openai.com/codex](https://developers.openai.com/codex) |
 | R (>= 4.0) | `/data-analysis` (R track), `/review-r` | [r-project.org](https://www.r-project.org/) |
 | Python (>= 3.9) | `/data-analysis` (Python track), compact hooks | [python.org](https://www.python.org/) |
 | LaTeX distribution | `/write-paper` with `.tex` output | [tug.org/texlive](https://tug.org/texlive/) |

@@ -3,8 +3,9 @@
 # Runs on every SessionStart — safe to re-run (mkdir -p and cp -n are idempotent).
 INPUT=$(cat)  # consume stdin (hook contract)
 
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT}"
-PROJECT_ROOT="$(pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(pwd)}}"
 
 # Create quality_reports subdirectory structure
 for dir in quality_reports/plans quality_reports/session_logs quality_reports/specs quality_reports/merges references/papers manuscripts output/tables output/figures output/diagnostics output/analysis scripts/R scripts/python; do

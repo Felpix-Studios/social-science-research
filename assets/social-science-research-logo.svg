@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Social Science Research logo">
+  <rect width="256" height="256" rx="40" fill="#1F5A4A"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12">
+    <path d="M54 174h148" stroke="#F5F1E8"/>
+    <path d="M66 162V100a10 10 0 0 1 10-10h24v72" stroke="#F5F1E8"/>
+    <path d="M116 162V74a10 10 0 0 1 10-10h24v98" stroke="#C9E4D7"/>
+    <path d="M166 162v-40a10 10 0 0 1 10-10h14v50" stroke="#8FD3B6"/>
+  </g>
+  <circle cx="188" cy="66" r="20" fill="#F2B880"/>
+</svg>

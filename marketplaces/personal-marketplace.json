@@ -1,0 +1,20 @@
+{
+  "name": "felpix-research",
+  "interface": {
+    "displayName": "Felpix Research"
+  },
+  "plugins": [
+    {
+      "name": "social-science-research",
+      "source": {
+        "source": "local",
+        "path": "./.codex/plugins/social-science-research"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

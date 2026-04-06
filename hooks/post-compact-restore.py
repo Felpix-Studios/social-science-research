@@ -26,15 +26,27 @@ YELLOW = "\033[0;33m"
 NC = "\033[0m"  # No color
 
 
+def get_project_dir() -> str:
+    """Resolve the active project directory across Claude and Codex runtimes."""
+    return (
+        os.environ.get("CLAUDE_PROJECT_DIR")
+        or os.environ.get("CODEX_PROJECT_DIR")
+        or os.getcwd()
+    )
+
+
 def get_session_dir() -> Path:
     """Get the session directory for storing state files."""
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR", "")
-    if not project_dir:
-        return Path.home() / ".claude" / "sessions" / "default"
+    project_dir = get_project_dir()
+    session_root = (
+        Path.home() / ".claude" / "sessions"
+        if os.environ.get("CLAUDE_PROJECT_DIR")
+        else Path.home() / ".codex" / "sessions"
+    )
 
     # Use a hash of the project dir for the session subdir
     project_hash = hashlib.md5(project_dir.encode()).hexdigest()[:8]
-    session_dir = Path.home() / ".claude" / "sessions" / project_hash
+    session_dir = session_root / project_hash
     session_dir.mkdir(parents=True, exist_ok=True)
     return session_dir
 
@@ -166,9 +178,7 @@ def main() -> int:
     if session_source not in ("compact", "resume"):
         return 0
 
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR", "")
-    if not project_dir:
-        return 0
+    project_dir = get_project_dir()
 
     # Gather context
     pre_compact_state = read_pre_compact_state()
