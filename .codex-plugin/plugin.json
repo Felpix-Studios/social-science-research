@@ -1,0 +1,52 @@
+{
+  "name": "social-science-research",
+  "version": "1.0.0",
+  "description": "Academic research workflow tools for social science projects, from setup and literature review through analysis, drafting, and quality control.",
+  "author": {
+    "name": "Felpix Studios",
+    "email": "[TODO: author email]",
+    "url": "https://github.com/Felpix-Studios"
+  },
+  "homepage": "https://github.com/Felpix-Studios/social-science-research",
+  "repository": "https://github.com/Felpix-Studios/social-science-research",
+  "license": "MIT",
+  "keywords": [
+    "social-science",
+    "research",
+    "academic-writing",
+    "literature-review",
+    "data-analysis",
+    "bibliography",
+    "manuscript",
+    "r",
+    "python"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks.json",
+  "mcpServers": "./.mcp.json",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "Social Science Research",
+    "shortDescription": "Run social science research workflows from idea to submission",
+    "longDescription": "Use Social Science Research to set up a project, formalize a research idea, review literature, find data, run R or Python analysis, draft a manuscript, and verify the final paper against analysis outputs.",
+    "developerName": "Felpix Studios",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Felpix-Studios/social-science-research",
+    "privacyPolicyURL": "https://github.com/Felpix-Studios/social-science-research/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/Felpix-Studios/social-science-research/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Set up a social science research project and domain profile",
+      "Review literature, find data, and plan an empirical study",
+      "Draft a paper and verify it against analysis outputs"
+    ],
+    "brandColor": "#1F5A4A",
+    "composerIcon": "./assets/social-science-research-icon.svg",
+    "logo": "./assets/social-science-research-logo.svg",
+    "screenshots": []
+  }
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Social Science Research icon">
+  <rect width="128" height="128" rx="24" fill="#1F5A4A"/>
+  <path d="M26 88h76" stroke="#F5F1E8" stroke-width="8" stroke-linecap="round"/>
+  <path d="M34 82V50a6 6 0 0 1 6-6h12v38" fill="none" stroke="#F5F1E8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M58 82V36a6 6 0 0 1 6-6h12v52" fill="none" stroke="#C9E4D7" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M82 82V60a6 6 0 0 1 6-6h6v28" fill="none" stroke="#8FD3B6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
