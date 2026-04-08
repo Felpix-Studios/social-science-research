@@ -16,7 +16,7 @@ social-science-research/
 ├── hooks/                       # 4 hooks (hooks.json + 4 scripts)
 ├── references/                  # domain-profile.md (template, copied into user project)
 ├── rules/                       # 8 always-loaded rule files
-├── skills/                      # 12 user-invocable skills
+├── skills/                      # 13 user-invocable skills
 └── templates/                   # Starter files (copied into user project, no-clobber)
 ```
 
@@ -123,6 +123,16 @@ Comprehensive manuscript review covering argument structure, econometric specifi
 
 ---
 
+### `/revise-paper`
+Applies revisions from a review report to a manuscript. Reads the review, presents a prioritized revision plan, and applies fixes section-by-section with user approval.
+
+- **Reads:** `quality_reports/paper_review_*.md` or `quality_reports/*_substance_review.md`, manuscript in `manuscripts/`
+- **Writes:** Edits to manuscript, `quality_reports/revision_summary_[paper-name].md`
+- **Agents used:** `proofreader` (post-revision check)
+- **Depends on:** A review report from `/review-paper` or `/proofread`. Manuscript must exist.
+
+---
+
 ### `/quality-gate`
 Verifies every quantitative claim in the paper is traceable to an output file. Checks for missing citations, stale numbers, and unreferenced outputs.
 
@@ -142,14 +152,12 @@ Scans all source files for citation keys and cross-references against the `.bib`
 
 ---
 
-### `/deep-audit`
-Launches 4 parallel specialist agents to audit the entire repository for inconsistencies, bugs, and cross-document errors. Loops until clean (max 5 rounds).
+### `/session-log`
+Create or update a session log to capture decisions, changes, and progress.
 
-- **Reads:** All files in `hooks/`, `skills/*/SKILL.md`, `rules/*.md`, `agents/*.md`, `README.md`, `CLAUDE.md`
-- **Writes:** Fixes applied directly to any file with confirmed errors
-- **Agents used:** 4 parallel specialist agents (via Task)
-- **Depends on:** Nothing required. Intended for plugin/infrastructure auditing, not typical user research projects.
-- **Note:** This skill was built for auditing the plugin itself during development.
+- **Reads:** `quality_reports/plans/*.md`, `quality_reports/session_logs/*.md`, `templates/session-log.md`, git log
+- **Writes:** `quality_reports/session_logs/YYYY-MM-DD_[description].md`
+- **Depends on:** Nothing required. More useful when a plan exists.
 
 ---
 
@@ -247,7 +255,7 @@ Defines R coding standards: reproducibility, function design, visual identity co
 ---
 
 ### `quality-gates.md`
-**Paths:** `**/*.tex`, `**/*.qmd`, `**/*.R`, `**/*.py`, `**/*.ipynb`, `manuscripts/**`, `manuscripts/**`
+**Paths:** `**/*.tex`, `**/*.qmd`, `**/*.R`, `**/*.py`, `**/*.ipynb`, `manuscripts/**`
 Defines the 0–100 scoring rubric: deduction tables for critical/major/minor issues, thresholds (80 = commit, 90 = PR, 95 = excellence), and numerical tolerance bands.
 
 - **Configurable:** Score thresholds and deduction values can be adjusted for different standards.
@@ -257,7 +265,7 @@ Defines the 0–100 scoring rubric: deduction tables for critical/major/minor is
 ---
 
 ### `proofreading-protocol.md`
-**Paths:** `**/*.tex`, `**/*.qmd`, `**/*.md`
+**Paths:** `manuscripts/**/*.tex`, `manuscripts/**/*.qmd`, `Quarto/**/*.qmd`
 Defines the proofreading checklist: grammar, typos, layout, consistency, academic quality. Specifies report output naming conventions.
 
 - **Read by:** `proofreader` agent (loaded automatically when target files are in context)

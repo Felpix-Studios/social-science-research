@@ -119,7 +119,7 @@ Check the document against the project knowledge base:
 
 ## Report Format
 
-Save report to `quality_reports/[FILENAME_WITHOUT_EXT]_substance_review.md`:
+Return your report to the calling skill — it handles saving. If run independently, save to `quality_reports/[FILENAME_WITHOUT_EXT]_substance_review.md`:
 
 ```markdown
 # Substance Review: [Filename]

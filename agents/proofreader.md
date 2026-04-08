@@ -66,7 +66,7 @@ For each issue found, provide:
 
 ## Save the Report
 
-Save to `quality_reports/[FILENAME_WITHOUT_EXT]_report.md`
-
-For `.qmd` slide files, append `_qmd`: `quality_reports/[FILENAME]_qmd_report.md`
-For manuscript files, append `_proofread`: `quality_reports/[FILENAME]_proofread.md`
+Return your report to the calling skill — it handles saving. If run independently, save to:
+- Default: `quality_reports/[FILENAME_WITHOUT_EXT]_report.md`
+- `.qmd` slide files: `quality_reports/[FILENAME]_qmd_report.md`
+- Manuscript files: `quality_reports/[FILENAME]_proofread.md`

@@ -99,3 +99,12 @@ Your task prompt will specify:
 - **Be specific about variables.** Don't say "has health outcomes" — say "has self-reported health status (excellent/good/fair/poor), HbA1c measurements, hospitalization records."
 - **Access level is critical.** A perfectly-matched dataset that requires 3-year FSRDC access may not be feasible for a dissertation timeline.
 - **Identification fit matters.** A dataset with the right variables but no panel dimension cannot support a fixed-effects strategy. Note this explicitly.
+
+---
+
+## Fallback Strategies
+
+- **WebSearch returns no results for a source category:** Try a broader query: `"[topic] empirical data" [field]` or `"[topic] dataset" [unit of observation]`
+- **WebFetch for a documentation page fails:** Note "Documentation page unavailable — verify variable coverage manually" in the dataset entry
+- **Domain-profile datasets not found online:** Still include them based on domain-profile metadata, and note that web verification was not possible
+- **Always report** which source categories were searched and which returned no results

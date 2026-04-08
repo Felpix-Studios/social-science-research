@@ -63,7 +63,12 @@ Determine language from `$ARGUMENTS` or ask the user:
 
 ### Phase 5: Save and Review
 1. `saveRDS()` for all key objects
-2. Run the `r-reviewer` agent: *"Review the script at scripts/R/[script_name].R"*
+2. Dispatch the `r-reviewer` agent via Task:
+   ```
+   Task prompt: "Review the R script at scripts/R/[script_name].R against
+   rules/r-code-conventions.md. Save your report to
+   quality_reports/[script_name]_r_review.md. Follow the r-reviewer agent instructions."
+   ```
 3. Address Critical and High issues before presenting results
 
 ### R Script Template

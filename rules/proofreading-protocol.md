@@ -1,8 +1,9 @@
 ---
 description: Three-phase proofreading — agent proposes, user approves, then agent applies. Never auto-edits prose.
 paths:
-  - "**/*.tex"
-  - "**/*.qmd"
+  - "manuscripts/**/*.tex"
+  - "manuscripts/**/*.qmd"
+  - "Quarto/**/*.qmd"
 ---
 
 # Writing Review Protocol (MANDATORY)

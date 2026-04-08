@@ -53,13 +53,13 @@ Enjoy using the plugin!
 | 2a. Literature | Parallel journal + working paper + citation search | `/lit-review` then `/validate-bib` | `quality_reports/lit_review_*.md` |
 | 2b. Data | Find and assess datasets for the research question | `/data-finder` | `quality_reports/data_exploration_*.md` |
 | 3. Analysis | Run R or Python analysis, review code quality | `/data-analysis` then `/review-r` | `output/tables/`, `output/figures/`, `scripts/` |
-| 4. Write | Draft and review the manuscript | `/write-paper` then `/review-paper` | `manuscripts/[name]-draft.tex` |
+| 4. Write | Draft, review, and revise the manuscript | `/write-paper` then `/review-paper` then `/revise-paper` | `manuscripts/[name]-draft.tex` |
 | 5. Verify | Check analysis-paper consistency, proofread | `/quality-gate` then `/proofread` | `quality_reports/quality_gate_*.md` |
 
 ## What's Included
 
 <details>
-<summary><strong>7 agents, 12 skills, 8 rules, 4 hooks</strong> (click to expand)</summary>
+<summary><strong>7 agents, 13 skills, 8 rules, 4 hooks</strong> (click to expand)</summary>
 
 ### Agents
 
@@ -86,9 +86,10 @@ Enjoy using the plugin!
 | `/review-r` | Launch R code reviewer on scripts |
 | `/write-paper` | Draft manuscript from analysis outputs |
 | `/review-paper` | Manuscript review: structure, econometrics, referee objections |
+| `/revise-paper` | Apply revisions from a review report to a manuscript |
 | `/quality-gate` | Verify every paper claim traces to an output file |
 | `/proofread` | Launch proofreader on a file |
-| `/deep-audit` | Repository-wide consistency audit |
+| `/session-log` | Create or update a session log to capture decisions and progress |
 
 ### Rules
 

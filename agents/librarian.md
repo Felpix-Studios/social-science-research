@@ -115,3 +115,12 @@ For working papers use `@techreport` with `institution` field.
 3. **Distinguish published from working papers.** Mark all working papers clearly.
 4. **Prioritize relevance over quantity.** 8 highly relevant papers beats 25 loosely related ones.
 5. **Note access barriers.** If a paper is paywalled and you cannot verify details, say so.
+
+---
+
+## Fallback Strategies
+
+- **Semantic Scholar API fails or returns no results:** Fall back to `WebSearch: "[paper title]" citations` or `"[paper title]" cited by [year range]"`
+- **WebSearch for a specific journal returns nothing:** Retry without the `site:` restriction — use `"[topic]" "[journal name]"` instead
+- **No results for a search angle:** Report "No results found for [angle]" in your output — do not silently skip
+- **Always report** which searches succeeded and which failed, so the calling skill knows what coverage was achieved

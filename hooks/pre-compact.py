@@ -94,13 +94,9 @@ def extract_recent_decisions(project_dir: str, limit: int = 3) -> list[str]:
     content = log_files[0].read_text()
     decisions = []
 
-    # Look for decision markers
+    # Look for decision markers (Decision: is the documented convention)
     patterns = [
         r"Decision:\s*(.+)",
-        r"Decided:\s*(.+)",
-        r"Chose:\s*(.+)",
-        r"→\s*(.+)",
-        r"•\s*(.+)"
     ]
 
     for line in content.split("\n")[-50:]:  # Last 50 lines

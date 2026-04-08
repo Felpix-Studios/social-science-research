@@ -1,5 +1,6 @@
 .DS_Store
 **/.DS_Store
+.claude
 
 # Dev artifacts — not part of the plugin distribution
 quality_reports/

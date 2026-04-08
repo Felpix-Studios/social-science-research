@@ -16,11 +16,9 @@ paths: ["**/*"]
 5. **Save to disk** — write to `quality_reports/plans/YYYY-MM-DD_short-description.md`
 6. **Present to user** — wait for approval
 7. **Exit plan mode** — only after approval
-8. **Save initial session log** — create `quality_reports/session_logs/YYYY-MM-DD_short-description.md` using `templates/session-log.md` as the format. Fill in:
-   - **Objective:** the goal from the approved plan
-   - **Changes Made:** leave empty (will be filled during implementation)
-   - **Design Decisions:** record any decisions made during planning, one per line prefixed with `Decision:` (e.g., `Decision: Using DiD instead of IV because parallel trends hold`)
-9. **Implement via orchestrator** — see `orchestrator-protocol.md`
+8. **Implement via orchestrator** — see `orchestrator-protocol.md`
+
+**Tip:** Use `/session-log create` to capture session state at any time.
 
 ## Step 3: Requirements Specification (For Complex/Ambiguous Tasks)
 
@@ -62,29 +60,3 @@ quality_reports/plans/YYYY-MM-DD_short-description.md
 
 Format: Status (DRAFT/APPROVED/COMPLETED), approach, files to modify, verification steps.
 
-## Context Management
-
-### General Principles
-- Prefer auto-compression over `/clear`
-- Save important context to disk before it's lost
-- `/clear` only when context is genuinely polluted
-
-### Context Survival Strategy
-
-**Before Auto-Compression:**
-When approaching context limits, ensure:
-1. Session log is current — update the session log in `quality_reports/session_logs/` with new decisions as work progresses. Prefix each decision line with `Decision:` so compact hooks can extract them
-2. Active plan is saved to disk
-3. Open questions are documented in session log
-
-The pre-compact hook will remind you of this checklist.
-
-**After Compression:**
-First message should be: "Resuming after compression. Last task: [read most recent plan + git log]. Status: [next step]."
-
-## Session Recovery
-
-After compression or new session:
-1. Read `CLAUDE.md` + most recent plan in `quality_reports/plans/`
-2. Check `git log --oneline -10` and `git diff`
-3. State what you understand the current task to be

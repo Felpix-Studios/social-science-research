@@ -22,12 +22,7 @@ The track is determined by what you're working on:
 
 ## Code Track (Analysis Scripts)
 
-Simple 3-step loop. No multi-agent reviews. Fix and move on.
-
-```
-IMPLEMENT → VERIFY → SCORE
-     ↑______________|  (if score < 80, fix and re-verify; max 2 retries)
-```
+Simple 3-step loop: implement → verify → score. If score < 80, fix and re-verify (max 2 retries).
 
 **Step 1 — IMPLEMENT:** Execute the plan steps.
 
@@ -39,12 +34,7 @@ IMPLEMENT → VERIFY → SCORE
 
 ## Prose Track (Paper & Manuscript Writing)
 
-Full review loop with propose-first. The agent NEVER applies edits without approval.
-
-```
-IMPLEMENT → VERIFY → REVIEW → FIX (proposed) → USER APPROVES → APPLY → RE-VERIFY → SCORE
-                        ↑___________________________|  (max 5 rounds)
-```
+Full review loop with propose-first. The agent NEVER applies edits without approval. Max 5 review-fix rounds.
 
 **Step 1 — IMPLEMENT:** Draft or revise the manuscript section.
 
@@ -70,13 +60,6 @@ IMPLEMENT → VERIFY → REVIEW → FIX (proposed) → USER APPROVES → APPLY �
 - **80/100** = commit (code track gate)
 - **90/100** = PR-ready (prose track target)
 - **95/100** = excellence (aspirational)
-
-### "Just Do It" Mode
-When the user says "just do it" or "handle it":
-- Skip the final approval pause before committing
-- Auto-commit if score >= 80 (code track) or user has pre-approved the prose approach
-- Still run the full verify → review → fix loop
-- Still present a summary when done
 
 ### Never
 - Never loop indefinitely

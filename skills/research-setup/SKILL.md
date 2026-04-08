@@ -17,24 +17,23 @@ Read `CLAUDE.md` and `references/domain-profile.md` silently. If either has real
 
 ---
 
-## Step 1: Field & Identity
+## Step 1: Field
 
-AskUserQuestion — 2 questions at once:
+AskUserQuestion — 1 question:
 
 1. **Field** (single select, header: "Field"): "What is your field or subfield?" — Options: "Political Science", "Economics", "Sociology", "Public Health". User selects Other for unlisted fields.
 
-2. **Institution** (single select, header: "Institution"): "What is your institution?" — Options: "Duke University", "Harvard University", "Stanford University", "UC Berkeley". User selects Other for unlisted fields.
-
-Store field and institution for customizing later steps.
+Store field for customizing later steps.
 
 ---
 
-## Step 2: Name & Project Title
+## Step 2: Identity & Project Title
 
 Ask conversationally (not via AskUserQuestion):
 
 1. "What is your name (for paper authorship)? You can skip this for now."
-2. "Do you have a working title for your current project? Fine to skip if you're still exploring."
+2. "What is your institution? (This helps customize figure color palettes and LaTeX title pages.)"
+3. "Do you have a working title for your current project? Fine to skip if you're still exploring."
 
 Wait for the user's response before moving to Step 3.
 
