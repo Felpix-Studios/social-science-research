@@ -39,24 +39,10 @@ paths: ["**/*"]
    - **MUST** (non-negotiable)
    - **SHOULD** (preferred)
    - **MAY** (optional)
-4. Declare clarity status for each major aspect:
-   - **CLEAR:** Fully specified
-   - **ASSUMED:** Reasonable assumption (user can override)
-   - **BLOCKED:** Cannot proceed until answered
-5. Get user approval on spec
-6. THEN proceed to Step 4 (draft the plan) with spec as input
+4. Get user approval on spec
+5. THEN proceed to Step 4 (draft the plan) with spec as input
 
 **Template:** `templates/requirements-spec.md`
 
 **Why this helps:** Catches ambiguity BEFORE planning. Reduces mid-plan pivots by 30-50%.
-
-## Plans on Disk
-
-Plans survive context compression. Save every plan to:
-
-```
-quality_reports/plans/YYYY-MM-DD_short-description.md
-```
-
-Format: Status (DRAFT/APPROVED/COMPLETED), approach, files to modify, verification steps.
 

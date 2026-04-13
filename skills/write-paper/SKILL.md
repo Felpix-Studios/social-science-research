@@ -17,6 +17,7 @@ Draft an academic manuscript from existing analysis outputs. Follows propose-fir
 
 Read project context:
 - `CLAUDE.md` — project name, author, institution
+- `references/domain-profile.md` — field (used to calibrate outline conventions in Step 3)
 - Most recent file in `quality_reports/specs/` — research question and identification strategy
 - Most recent file in `quality_reports/lit_review_*.md` — related literature (if it exists)
 - Most recent file in `quality_reports/research_ideation_*.md` — hypotheses (if it exists)
@@ -39,21 +40,24 @@ List what exists. Note any gaps (e.g., "no summary statistics table found").
 
 ## Step 3: Propose Outline (WAIT FOR APPROVAL)
 
-Draft a paper outline using standard social science structure:
+Draft a paper outline using this standard structure:
 
 ```
 1. Abstract
 2. Introduction
-3. Related Literature
-4. Data and Institutional Background
-5. Empirical Strategy
-6. Results
-7. Robustness and Extensions
-8. Conclusion
+3. Background
+4. Data & Methods
+5. Results
+6. Discussion
+7. Appendix
 References
 ```
 
-Present the outline with a one-sentence description of each section's content, linking specific output files to each section (e.g., "Table 2 → Section 6, Results"). **Do NOT start writing until the user approves the outline or requests changes.**
+**The structure is flexible.** Default to the hardcoded outline above unless (a) the user requests a different structure, or (b) the field in `references/domain-profile.md` has strong conventions that warrant deviation (e.g., merging Background into Introduction, splitting Data & Methods into separate Data and Empirical Strategy sections, or reordering sections). If you deviate from the default, state explicitly why and confirm with the user before writing.
+
+**Adapt the writing style** — not the structure, by default — to the field from `references/domain-profile.md`. A political science paper reads differently than an econometrics paper even with the same section headings: econ prose leads with identification and is terse about theory; poli sci prose leads with theoretical framing and treats measurement validity as a first-class concern; sociology leans on theoretical framework prose. Mirror the conventions of the field's top journals when drafting each section.
+
+Present the outline with a one-sentence description of each section's content, linking specific output files to each section (e.g., "Table 2 → Section 5, Results"). **Do NOT start writing until the user approves the outline or requests changes.**
 
 ---
 
@@ -61,14 +65,13 @@ Present the outline with a one-sentence description of each section's content, l
 
 Write in this order (minimizes backtracking):
 
-1. **Data section** — describe the dataset, summary statistics. Reference `output/tables/summary_stats.tex` if it exists.
-2. **Empirical Strategy** — describe the identification approach from the research spec.
-3. **Results** — one paragraph per main finding. Reference each table/figure with `\input{}` or `\includegraphics{}` — do NOT copy table content inline.
-4. **Robustness** — brief description of robustness checks, referencing additional output files.
-5. **Literature** — synthesize from the lit review document if one exists.
+1. **Data & Methods** — describe the dataset and summary statistics (reference `output/tables/summary_stats.tex` if it exists), then the identification or estimation approach from the research spec.
+2. **Results** — one paragraph per main finding. Reference each table/figure with `\input{}` or `\includegraphics{}` — do NOT copy table content inline.
+3. **Discussion** — interpret the findings, discuss robustness checks, acknowledge limitations, and state implications.
+4. **Appendix** — additional robustness tables, derivations, and supplementary figures. Reference output files only.
+5. **Background** — synthesize from the lit review document if one exists; position the contribution against prior work.
 6. **Introduction** — write after results are known. State the question, preview the findings, and map the paper.
 7. **Abstract** — write last: one sentence each for motivation, question, method, finding, and implication.
-8. **Conclusion** — summarize and state limitations and next steps.
 
 ---
 
@@ -82,14 +85,35 @@ Use `\input{}` for tables and `\includegraphics{}` for figures — reference the
 
 ---
 
-## Step 6: Run Domain Review
+## Step 6: Structural Smoke Test
 
-After saving the draft, launch the `domain-reviewer` agent via Task:
+Before handing off to review skills, run a quick structural check on the draft to catch drafting-artifact errors that full substance review doesn't focus on. This is **not** a substance review — `/review-paper` handles that. This catches broken references and left-behind placeholders that would embarrass the author if the draft went out as-is.
 
-Task prompt: "Review the draft at manuscripts/[filename] for argument structure, identification assumptions, and citation fidelity. Check that the identification strategy is clearly stated, assumptions are explicit, and all cited tables/figures exist in output/."
-Task agent: domain-reviewer
+Do this inline (no agent dispatch). Read the saved draft and check:
 
-Wait for the review to complete, then present the findings to the user.
+1. **Table references resolve.** For every `\input{...}` command in the draft, confirm the referenced file exists in `output/`. Grep the draft for `\input\{`; for each hit, Glob the referenced path. List any misses.
+
+2. **Figure references resolve.** For every `\includegraphics{...}` command, confirm the referenced file exists in `output/figures/`. Same approach: grep, then glob.
+
+3. **No placeholders left behind.** Grep the draft for `TODO`, `FIXME`, `XXX`, `[placeholder]`, `[TK]`, `???`, and square-bracketed all-caps tokens like `[PLACEHOLDER]`. List every hit with its line number.
+
+4. **Required sections present.** Confirm the draft contains an abstract, an introduction, and a conclusion (by section heading or equivalent markup). Flag any missing.
+
+5. **No fabricated numbers.** Grep the draft for numeric patterns in prose (e.g., `\d+\.\d+%`, `\$\d+`, `p\s*<\s*0\.\d+`). For each, note whether a corresponding output file was referenced nearby. This is a heuristic — flag likely orphans for the user to verify, not definitive.
+
+Present the results as a short checklist:
+
+```
+## Structural Smoke Test Results
+
+[OK]      Table references: 8/8 resolve
+[FAIL]    Figure references: 3/4 resolve — missing output/figures/heterogeneity.pdf
+[OK]      No placeholders found
+[OK]      Required sections present (abstract, introduction, conclusion)
+[WARN]    4 numeric claims in prose may lack nearby output references — see list below
+```
+
+Do **not** run a substance review here. If any structural issues are flagged, offer to fix them before handoff. Bibliography checking is deferred to `/validate-bib`; claim-to-output traceability is deferred to `/quality-gate`; substance review is deferred to `/review-paper`.
 
 ---
 
@@ -107,4 +131,4 @@ Inform the user:
 - **Propose outline first.** Never start writing without outline approval.
 - **Reference, don't embed.** Tables and figures go in `output/`; the paper references them by path.
 - **No fabrication.** Only write results that exist in output files. If a number isn't in `output/`, flag it rather than guessing.
-- **Report only.** The domain-reviewer agent proposes fixes; you apply them only after user approval.
+- **Smoke test, don't substance-review.** Step 6 catches drafting artifacts only — broken refs, placeholders, missing sections. Substance review is `/review-paper`'s job.

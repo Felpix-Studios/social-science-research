@@ -51,17 +51,3 @@ Full review loop with propose-first. The agent NEVER applies edits without appro
 **Step 6 — RE-VERIFY & SCORE:** Confirm approved edits applied cleanly. Score >= 90 for PR readiness. Present summary.
 
 **Max rounds:** 5 review-fix cycles. After max rounds, present with remaining issues listed.
-
----
-
-## Shared Rules
-
-### Quality Thresholds
-- **80/100** = commit (code track gate)
-- **90/100** = PR-ready (prose track target)
-- **95/100** = excellence (aspirational)
-
-### Never
-- Never loop indefinitely
-- Never apply prose edits without explicit user approval
-- Never skip verification after making fixes

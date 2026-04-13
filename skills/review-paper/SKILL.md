@@ -23,21 +23,32 @@ Produce a thorough, constructive review of an academic manuscript — the kind o
 
 2. **Read the full paper** end-to-end. For long PDFs, read in chunks (5 pages at a time).
 
-3. **Dispatch `domain-reviewer` agent** via Task for deep substance review (see below).
+3. **Read `references/domain-profile.md`** for field and top journals — use these to calibrate the referee perspective (see Principles).
 
-4. **Evaluate writing quality and presentation** (dimensions 5-6) — the skill handles these directly since the agent explicitly does not cover presentation.
+4. **Dispatch three reviewer agents in parallel** via Task (one message, three Task calls — see below):
+   - `domain-reviewer` — substantive correctness through 5 lenses
+   - `adversarial-reviewer` — hostile-referee attack on the paper
+   - `fresh-eyes-reviewer` — first-time reader perspective
 
-5. **After the agent completes**, merge its findings with your writing/presentation evaluation. Generate 3-5 "referee objections" synthesized from both.
+5. **Evaluate writing quality and presentation** (dimensions 5-6) — the skill handles these directly while the agents run.
 
-6. **Produce the unified review report.**
+6. **After all agents complete**, merge findings into the unified report:
+   - `fresh-eyes-reviewer` output → "Fresh Eyes Read" section
+   - `domain-reviewer` output → "Major Concerns" and "Minor Concerns" sections
+   - `adversarial-reviewer` output → primary source for "Referee Objections" and any FATAL-severity entries in "Major Concerns"
+   - Skill's own Dim 5-6 evaluation → "Writing Quality" and "Presentation" entries in concerns
 
-7. **Save to** `quality_reports/paper_review_[sanitized_name].md`
+7. **Produce the unified review report.**
+
+8. **Save to** `quality_reports/paper_review_[sanitized_name].md`
 
 ---
 
-## Step 3: Dispatch Domain-Reviewer Agent
+## Step 4: Dispatch Three Reviewer Agents in Parallel
 
-Dispatch the `domain-reviewer` agent via Task for the deep substance check. The agent applies 5 lenses that go deeper than broad dimensional evaluation — actual equation verification, derivation step checking, code-theory alignment, and backward logic tracing.
+Send **one message with three Task calls** so the agents run concurrently. Each agent has a distinct job and they should not see each other's output.
+
+### Task 1: `domain-reviewer`
 
 ```
 Task prompt: "You are the domain-reviewer agent. Review the manuscript at [path].
@@ -54,13 +65,54 @@ Also check cross-document consistency.
 Follow the domain-reviewer agent instructions and return your full substance review report."
 ```
 
-After the agent completes, collect its findings. These feed into the "Major Concerns" and "Referee Objections" sections of the final report.
+### Task 2: `adversarial-reviewer`
+
+```
+Task prompt: "You are the adversarial-reviewer agent. Your job is to attack the
+paper at [path] — find the strongest possible critique a hostile referee would make.
+Research question: [from spec if available].
+Target venue: [from domain-profile.md if set, else 'unspecified — use top field journal bar'].
+
+Apply all 5 attack lenses:
+1. Fatal flaw hunt
+2. Over-claim detection
+3. Alternative explanations (generate the 3 most plausible)
+4. Identification weakest link
+5. Rejection letter (two-paragraph desk-editor rejection)
+
+Follow the adversarial-reviewer agent instructions and return your full adversarial report."
+```
+
+### Task 3: `fresh-eyes-reviewer`
+
+```
+Task prompt: "You are the fresh-eyes-reviewer agent. Read the paper at [path]
+as a first-time reader with NO prior context. Do NOT read the project spec,
+lit review, ideation file, or analysis scripts — read only the manuscript.
+
+Execute all 5 passes:
+1. Title + abstract only
+2. Introduction only
+3. Main result table/figure standalone
+4. Full paper read
+5. What stays with you
+
+Follow the fresh-eyes-reviewer agent instructions and return your full fresh-eyes report."
+```
+
+Wait for all three to complete. Collect their outputs for the merge step.
 
 ---
 
-## Steps 4-5: Skill Evaluates Writing & Presentation, Then Merges
+## Steps 5-6: Evaluate Writing/Presentation, Then Merge
 
-The skill evaluates dimensions 5-6 directly (the agent does not cover these), then merges everything into the unified report format below.
+While the agents run, evaluate dimensions 5-6 directly (writing quality, presentation). Once all three agents return:
+
+- **Fresh Eyes Read section** — paste the fresh-eyes summary (Passes 1-5 condensed + top 3 clarity issues).
+- **Major Concerns** — combine `domain-reviewer` MAJOR/CRITICAL findings + `adversarial-reviewer` fatal flaws + your Dim 5-6 major findings.
+- **Minor Concerns** — `domain-reviewer` MINOR findings + your Dim 5-6 minor findings.
+- **Referee Objections** — primarily from `adversarial-reviewer`: fatal flaw, top over-claims, top alternative explanations, identification weakest link.
+- **Rejection Letter Preview** — paste the adversarial-reviewer's two-paragraph rejection verbatim under a "What a desk editor might say" subheading.
 
 ---
 
@@ -114,7 +166,7 @@ The skill evaluates dimensions 5-6 directly (the agent does not cover these), th
 # Manuscript Review: [Paper Title]
 
 **Date:** [YYYY-MM-DD]
-**Reviewer:** review-paper skill
+**Reviewer:** review-paper skill (agents: domain-reviewer, adversarial-reviewer, fresh-eyes-reviewer)
 **File:** [path to manuscript]
 
 ## Summary Assessment
@@ -122,6 +174,25 @@ The skill evaluates dimensions 5-6 directly (the agent does not cover these), th
 **Overall recommendation:** [Strong Accept / Accept / Revise & Resubmit / Reject]
 
 [2-3 paragraph summary: main contribution, strengths, and key concerns]
+
+## Fresh Eyes Read
+
+*How the paper lands on a first-time reader (from fresh-eyes-reviewer agent).*
+
+**After title + abstract — one-sentence takeaway:** ...
+**After intro — what reader expects:** ...
+**Main display standalone?** [Yes / Partially / No — what's missing]
+**What stays with the reader:** ...
+
+### Top 3 Clarity Issues
+1. [issue with location]
+2. ...
+3. ...
+
+### Top 3 Things That Landed
+1. ...
+2. ...
+3. ...
 
 ## Strengths
 
@@ -132,12 +203,13 @@ The skill evaluates dimensions 5-6 directly (the agent does not cover these), th
 ## Major Concerns
 
 ### MC1: [Title]
-- **Dimension:** [Identification / Econometrics / Argument / Literature / Writing / Presentation]
+- **Source:** [domain-reviewer / adversarial-reviewer / skill (writing or presentation)]
+- **Dimension:** [Identification / Econometrics / Argument / Literature / Writing / Presentation / Fatal Flaw]
 - **Issue:** [Specific description]
 - **Suggestion:** [How to address it]
 - **Location:** [Section/page/table if applicable]
 
-[Repeat for each major concern]
+[Repeat for each major concern. FATAL-severity items from adversarial-reviewer go first.]
 
 ## Minor Concerns
 
@@ -149,13 +221,19 @@ The skill evaluates dimensions 5-6 directly (the agent does not cover these), th
 
 ## Referee Objections
 
-These are the tough questions a top referee would likely raise:
+*Primarily sourced from the adversarial-reviewer's attack lenses — these are the tough questions a hostile referee would raise.*
 
 ### RO1: [Question]
 **Why it matters:** [Why this could be fatal]
 **How to address it:** [Suggested response or additional analysis]
 
-[Repeat for 3-5 objections]
+[Include: fatal flaw as RO1, top over-claims, top alternative explanations, identification weakest link. Target 4-6 objections total.]
+
+## What a Desk Editor Might Say
+
+*Two-paragraph rejection letter from the adversarial-reviewer. Read this before submission.*
+
+[Paste adversarial-reviewer's rejection letter verbatim.]
 
 ## Specific Comments
 
@@ -171,6 +249,8 @@ These are the tough questions a top referee would likely raise:
 | Literature | [N] |
 | Writing | [N] |
 | Presentation | [N] |
+| First-read clarity | [N] |
+| Adversarial robustness | [N] |
 | **Overall** | **[N]** |
 ```
 
@@ -180,7 +260,7 @@ These are the tough questions a top referee would likely raise:
 
 - **Be constructive.** Every criticism should come with a suggestion.
 - **Be specific.** Reference exact sections, equations, tables.
-- **Think like a referee at a top-5 journal.** What would make them reject?
+- **Calibrate to the field's top journals** (from `references/domain-profile.md`). An AER/QJE referee weights identification above all else; an APSR/AJPS referee weights theoretical framing and measurement validity; an ASR/AJS referee weights theoretical contribution. If no domain profile is set, flag the assumption you're making.
 - **Distinguish fatal flaws from minor issues.** Not everything is equally important.
 - **Acknowledge what's done well.** Good research deserves recognition.
 - **Do NOT fabricate details.** If you can't read a section clearly, say so.

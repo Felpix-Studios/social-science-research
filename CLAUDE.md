@@ -118,7 +118,7 @@ Comprehensive manuscript review covering argument structure, econometric specifi
 
 - **Reads:** Target paper (`.tex`, `.pdf`, or `.qmd`) — from argument or searched in `references/papers/`, `rules/`, `Bibliography_base.bib`
 - **Writes:** `quality_reports/paper_review_[name].md`
-- **Agents used:** `domain-reviewer`
+- **Agents used:** `domain-reviewer`, `adversarial-reviewer`, `fresh-eyes-reviewer` (dispatched in parallel)
 - **Depends on:** `references/papers/` and `rules/` for cross-referencing. Paper file required.
 
 ---
@@ -215,6 +215,26 @@ Reviews a paper or analysis for substantive correctness through 5 configurable l
 - **Returns:** Structured review report. Does not write files directly.
 - **Customize:** Lines 9–26 of `agents/domain-reviewer.md` contain instructions for adapting the 5 lenses to a specific field.
 - **Depends on:** `rules/` and `references/papers/` for cross-referencing; both are optional but improve review quality.
+
+---
+
+### `adversarial-reviewer`
+Hostile-referee stress test. Actively tries to kill the paper through 5 attack lenses (fatal flaw hunt, over-claim detection, alternative explanations, identification weakest link, desk-editor rejection letter).
+
+- **Launched by:** `/review-paper` (in parallel with `domain-reviewer` and `fresh-eyes-reviewer`)
+- **Reads:** Target paper, `references/domain-profile.md` (for venue calibration), `quality_reports/specs/` (for claimed contribution)
+- **Returns:** Adversarial report with fatal flaws, over-claims, alt. explanations, and a two-paragraph rejection letter. Does not write files directly.
+- **Depends on:** `references/domain-profile.md` for venue bar calibration; falls back to top-field-journal bar if absent.
+
+---
+
+### `fresh-eyes-reviewer`
+First-time reader perspective. Reads the paper cold — no spec, no lit review, no analysis scripts — and reports what lands and what confuses on a first read. Five passes: abstract-only, intro-only, main display standalone, full read, what stays with the reader.
+
+- **Launched by:** `/review-paper` (in parallel with `domain-reviewer` and `adversarial-reviewer`)
+- **Reads:** Target paper only — explicitly does NOT read spec, lit review, ideation, or scripts.
+- **Returns:** Structured five-pass report covering first-read clarity, undefined terms, re-read zones, and memorability. Does not write files directly.
+- **Depends on:** Nothing beyond the manuscript itself — the lack of context is the feature.
 
 ---
 

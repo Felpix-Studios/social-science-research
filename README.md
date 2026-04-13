@@ -53,13 +53,13 @@ Enjoy using the plugin!
 | 2a. Literature | Parallel journal + working paper + citation search | `/lit-review` then `/validate-bib` | `quality_reports/lit_review_*.md` |
 | 2b. Data | Find and assess datasets for the research question | `/data-finder` | `quality_reports/data_exploration_*.md` |
 | 3. Analysis | Run R or Python analysis, review code quality | `/data-analysis` then `/review-r` | `output/tables/`, `output/figures/`, `scripts/` |
-| 4. Write | Draft, review, and revise the manuscript | `/write-paper` then `/review-paper` then `/revise-paper` | `manuscripts/[name]-draft.tex` |
-| 5. Verify | Check analysis-paper consistency, proofread | `/quality-gate` then `/proofread` | `quality_reports/quality_gate_*.md` |
+| 4. Write | Draft the manuscript, then proofread → review → revise (loop until clean) | `/write-paper` → `/proofread` → `/review-paper` ⇄ `/revise-paper` | `manuscripts/[name]-draft.tex`, `quality_reports/paper_review_*.md` |
+| 5. Verify | Gate analysis-paper consistency and bibliography before submission | `/quality-gate`, `/validate-bib` | `quality_reports/quality_gate_*.md` |
 
 ## What's Included
 
 <details>
-<summary><strong>7 agents, 13 skills, 8 rules, 4 hooks</strong> (click to expand)</summary>
+<summary><strong>9 agents, 13 skills, 8 rules, 4 hooks</strong> (click to expand)</summary>
 
 ### Agents
 
@@ -70,6 +70,8 @@ Enjoy using the plugin!
 | `explorer-critic` | Stress-test dataset candidates on 5 dimensions |
 | `proofreader` | Grammar, typos, layout, and consistency check |
 | `domain-reviewer` | Top-journal referee review through 5 lenses |
+| `adversarial-reviewer` | Hostile-referee attack: fatal flaws, over-claims, alt. explanations, rejection letter |
+| `fresh-eyes-reviewer` | First-time reader perspective — what lands, what confuses on a cold read |
 | `r-reviewer` | R code quality and reproducibility review |
 | `verifier` | Trace paper claims to output files |
 
@@ -84,8 +86,8 @@ Enjoy using the plugin!
 | `/data-finder` | Find and rank datasets for a research question |
 | `/data-analysis` | End-to-end R or Python analysis with publication-ready output |
 | `/review-r` | Launch R code reviewer on scripts |
-| `/write-paper` | Draft manuscript from analysis outputs |
-| `/review-paper` | Manuscript review: structure, econometrics, referee objections |
+| `/write-paper` | Draft manuscript from analysis outputs, then run a structural smoke test (broken refs, placeholders, missing sections) |
+| `/review-paper` | Manuscript review via three agents in parallel: substance (domain), adversarial attack, and first-read clarity |
 | `/revise-paper` | Apply revisions from a review report to a manuscript |
 | `/quality-gate` | Verify every paper claim traces to an output file |
 | `/proofread` | Launch proofreader on a file |
