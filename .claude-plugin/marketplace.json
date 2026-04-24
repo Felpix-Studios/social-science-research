@@ -10,8 +10,8 @@
     {
       "name": "social-science-research",
       "source": "./",
-      "description": "12 skills, 7 agents, 8 rules, and 4 hooks for the complete academic research workflow — from idea to submission.",
-      "version": "1.0.0"
+      "description": "13 skills, 9 agents, 8 rules, and 4 hooks for the complete academic research workflow — from idea to submission.",
+      "version": "1.0.1"
     }
   ]
 }
