@@ -8,7 +8,7 @@ A Claude Code plugin based on [Pedro Sant'Anna's Claude Code workflow](https://g
 
 ### 1. Install
 
-Use Claude Code to install the plugin in your project directory.
+Install the plugin via Claude Code. Project scope or user (global) scope both work — the plugin is inert until you invoke a skill, so installing globally will not scaffold anything in unrelated repos.
 
 ```bash
 /plugin marketplace add Felpix-Studios/social-science-research
@@ -18,20 +18,9 @@ Use Claude Code to install the plugin in your project directory.
 /plugin install social-science-research@felpix-research
 ```
 
-> **Why project scope?** The plugin creates `quality_reports/`, `templates/`, `references/`, and `manuscripts/` directories on every session start. Installing at user (global) scope would scaffold those folders in every project you open — including non-research repos. Project scope keeps everything contained to the repo you're working in.
+### 2. Run `/research-setup`
 
-### 2. Restart Claude Code
-
-In your project directory, on first launch, the plugin will automatically:
-
-- Create project directories: `quality_reports/`, `references/papers/`, `manuscripts/`, `output/`, `scripts/`
-- Copy `references/domain-profile.md` into your project (your field's journals, datasets, and key researchers)
-- Copy starter templates into `templates/` (session log, requirements spec, quality report formats)
-- Create `CLAUDE.md` with project identity placeholders (name, author, institution)
-
-### 3. Run `/research-setup`
-
-Configure your field, institution, journals, datasets, key researchers, and institutional colors. This writes your domain profile and customizes R figure themes to match your institution's visual identity.
+`/research-setup` is the bootstrap entry point. It seeds `references/domain-profile.md` (your field's journals, datasets, and key researchers) and `CLAUDE.md` (project name, author, institution) into the project directory, then walks you through configuring your field, institution, journals, datasets, key researchers, and institutional colors. Other skills create `quality_reports/`, `output/`, `scripts/`, and `manuscripts/` lazily — only the directory a skill needs to write to gets created, at the moment of write.
 
 Enjoy using the plugin!
 
@@ -59,7 +48,7 @@ Enjoy using the plugin!
 ## What's Included
 
 <details>
-<summary><strong>9 agents, 13 skills, 8 rules, 4 hooks</strong> (click to expand)</summary>
+<summary><strong>9 agents, 13 skills, 8 rules, 3 hooks</strong> (click to expand)</summary>
 
 ### Agents
 
@@ -110,7 +99,6 @@ Enjoy using the plugin!
 
 | Hook | What It Does |
 |------|-------------|
-| `setup-project-dirs.sh` | Create project scaffold and copy templates on session start |
 | `protect-files.sh` | Block edits to protected files |
 | `pre-compact.py` | Save plan state and decisions before compaction |
 | `post-compact-restore.py` | Restore context after compaction |

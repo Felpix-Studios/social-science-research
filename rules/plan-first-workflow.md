@@ -34,7 +34,7 @@ paths: ["**/*"]
 
 **Protocol:**
 1. Use AskUserQuestion to clarify ambiguities (max 3-5 questions)
-2. Create `quality_reports/specs/YYYY-MM-DD_description.md` using `templates/requirements-spec.md`
+2. Create `quality_reports/specs/YYYY-MM-DD_description.md` using `${CLAUDE_PLUGIN_ROOT}/templates/requirements-spec.md` (read via `cat "${CLAUDE_PLUGIN_ROOT}/templates/requirements-spec.md"`; the template ships with the plugin and is not copied into the project)
 3. Mark each requirement:
    - **MUST** (non-negotiable)
    - **SHOULD** (preferred)
@@ -42,7 +42,7 @@ paths: ["**/*"]
 4. Get user approval on spec
 5. THEN proceed to Step 4 (draft the plan) with spec as input
 
-**Template:** `templates/requirements-spec.md`
+**Template:** `${CLAUDE_PLUGIN_ROOT}/templates/requirements-spec.md`
 
 **Why this helps:** Catches ambiguity BEFORE planning. Reduces mid-plan pivots by 30-50%.
 

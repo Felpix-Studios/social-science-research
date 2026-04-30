@@ -78,7 +78,7 @@ paths:
 
 ## Quality Reports
 
-Generated **only at merge time**. Use `templates/quality-report.md` for format.
+Generated **only at merge time**. Use `${CLAUDE_PLUGIN_ROOT}/templates/quality-report.md` for format (read via `cat "${CLAUDE_PLUGIN_ROOT}/templates/quality-report.md"`; the template ships with the plugin).
 Save to `quality_reports/merges/YYYY-MM-DD_[branch-name].md`.
 
 ## Tolerance Thresholds (Research)

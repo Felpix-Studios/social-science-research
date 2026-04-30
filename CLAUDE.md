@@ -1,23 +1,24 @@
 # CLAUDE.md — Plugin Development
 
 **This directory is the plugin source** — not a research project using the plugin.
-Files here are plugin assets being authored. When users install the plugin, the folders
-listed below transfer into their environment. The `references/` and `templates/` folders
-are seeded into the user's project directory at session start by `hooks/setup-project-dirs.sh`.
+Files here are plugin assets being authored. When users install the plugin, the
+folders below ship as part of the plugin install. Nothing is scaffolded into the
+user's project directory automatically — `/research-setup` seeds project config
+on demand, and other skills create folders only when they have something to write.
 
 ---
 
-## What Transfers to Users
+## What Ships with the Plugin
 
 ```
 social-science-research/
 ├── .claude-plugin/plugin.json   # Plugin manifest
-├── agents/                      # 7 subagent definitions
-├── hooks/                       # 4 hooks (hooks.json + 4 scripts)
-├── references/                  # domain-profile.md (template, copied into user project)
+├── agents/                      # 9 subagent definitions
+├── hooks/                       # 3 hooks (hooks.json + 3 scripts)
+├── references/                  # domain-profile.md (seeded into project by /research-setup when missing)
 ├── rules/                       # 8 always-loaded rule files
 ├── skills/                      # 13 user-invocable skills
-└── templates/                   # Starter files (copied into user project, no-clobber)
+└── templates/                   # Read by skills/rules from ${CLAUDE_PLUGIN_ROOT}; never copied into the user's project
 ```
 
 **Does NOT transfer:** `CLAUDE.md` (this file), `quality_reports/`, `.git/`
@@ -31,14 +32,13 @@ Each skill lives at `skills/<name>/SKILL.md` and is invoked via `/<name>`.
 ---
 
 ### `/research-setup`
-Interactive wizard to configure a new project. Asks grouped questions about field, institution, journals, datasets, key researchers, and R colors.
+Interactive wizard to configure a new project. Asks grouped questions about field, institution, journals, datasets, key researchers, and R colors. Also the sole bootstrap entry point — seeds project config files when missing.
 
-- **Reads:** `CLAUDE.md`, `references/domain-profile.md`
+- **Reads:** `${CLAUDE_PLUGIN_ROOT}/references/domain-profile.md` (seed source), `./CLAUDE.md`, `./references/domain-profile.md`
 - **Writes:**
-  - `references/domain-profile.md` — field, journals, datasets, researchers
-  - `references/domain-profile.md` — institutional colors (Institutional Colors section)
-  - `CLAUDE.md` — project name and institution
-- **Depends on:** Nothing. Designed to run first on a blank project.
+  - `./references/domain-profile.md` — seeded from plugin via `cp` if missing, then populated with field, journals, datasets, researchers, and an "Institutional Colors" section
+  - `./CLAUDE.md` — 4-line placeholder if missing, then project name, author, and institution
+- **Depends on:** Nothing. Designed to run first on a blank project. Requires Bash for the seed `cp`.
 
 ---
 
@@ -155,7 +155,7 @@ Scans all source files for citation keys and cross-references against the `.bib`
 ### `/session-log`
 Create or update a session log to capture decisions, changes, and progress.
 
-- **Reads:** `quality_reports/plans/*.md`, `quality_reports/session_logs/*.md`, `templates/session-log.md`, git log
+- **Reads:** `quality_reports/plans/*.md`, `quality_reports/session_logs/*.md`, `${CLAUDE_PLUGIN_ROOT}/templates/session-log.md`, git log
 - **Writes:** `quality_reports/session_logs/YYYY-MM-DD_[description].md`
 - **Depends on:** Nothing required. More useful when a plan exists.
 
@@ -308,9 +308,9 @@ Instructs Claude to enter plan mode before any non-trivial task, get approval, t
 
 - **Writes (indirectly):** `quality_reports/plans/YYYY-MM-DD_[description].md` — Claude creates plan files per this rule
 - **Spec storage:** `quality_reports/specs/YYYY-MM-DD_[description].md`
-- **Template reference:** `templates/requirements-spec.md`
+- **Template reference:** `${CLAUDE_PLUGIN_ROOT}/templates/requirements-spec.md`
 - **Session log storage:** `quality_reports/session_logs/YYYY-MM-DD_[description].md`
-- **Session log template:** `templates/session-log.md`
+- **Session log template:** `${CLAUDE_PLUGIN_ROOT}/templates/session-log.md`
 
 ---
 
@@ -344,19 +344,6 @@ Defines the orchestrator loop: after plan approval, Claude runs autonomously —
 ## Hooks
 
 Hooks run shell/Python scripts automatically on Claude Code events.
-
----
-
-### `setup-project-dirs.sh`
-**Trigger:** `SessionStart` (every session, no matcher)
-Creates the project directory scaffold and copies template files into the user's project.
-
-- **Creates (idempotent):** `quality_reports/plans/`, `quality_reports/session_logs/`, `quality_reports/specs/`, `quality_reports/merges/`, `references/papers/`, `manuscripts/`, `output/tables/`, `output/figures/`, `output/diagnostics/`, `output/analysis/`, `scripts/R/`, `scripts/python/`
-- **Copies (no-clobber):** All files from `${CLAUDE_PLUGIN_ROOT}/templates/` → `./templates/`
-- **Copies (no-clobber):** All files from `${CLAUDE_PLUGIN_ROOT}/references/` → `./references/`
-- **Creates (if absent):** `./CLAUDE.md` with project identity placeholders (only if no CLAUDE.md exists)
-- **No-clobber means:** User edits to `references/domain-profile.md`, template files, or `CLAUDE.md` are never overwritten.
-- **Depends on:** `CLAUDE_PLUGIN_ROOT` and `CLAUDE_PROJECT_DIR` env vars set by Claude Code.
 
 ---
 
@@ -424,9 +411,14 @@ rules/r-code-conventions.md ──read by──► /review-r → r-reviewer agen
                                             /proofread
                                             /review-paper
 
-setup-project-dirs.sh ──copies──► references/domain-profile.md (no-clobber)
-                                   templates/*.md (no-clobber)
-                                   quality_reports/ subdirs (mkdir -p)
+/research-setup ──seeds (when missing)──► references/domain-profile.md
+                                          CLAUDE.md
+                                          (read from ${CLAUDE_PLUGIN_ROOT}/references/)
+
+${CLAUDE_PLUGIN_ROOT}/templates/ ──read by──► /session-log
+                                              plan-first-workflow.md
+                                              quality-gates.md
+                                              (templates ship with plugin; never copied into project)
 
 pre-compact.py ──writes──► ~/.claude/sessions/[hash]/pre-compact-state.json
 post-compact-restore.py ──reads──► ~/.claude/sessions/[hash]/pre-compact-state.json

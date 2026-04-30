@@ -24,7 +24,7 @@ Create or update a session log to capture decisions, changes, and progress.
 
 1. Read the most recent plan from `quality_reports/plans/` (if any) to auto-populate Objective
 2. Run `git log --oneline -10` to see recent commits
-3. Use `templates/session-log.md` as the format template
+3. Read the format template via Bash: `cat "${CLAUDE_PLUGIN_ROOT}/templates/session-log.md"` (templates ship inside the plugin and are not copied into the project)
 4. Save to `quality_reports/session_logs/YYYY-MM-DD_short-description.md`
 5. Populate:
    - **Objective:** from plan or `$ARGUMENTS`

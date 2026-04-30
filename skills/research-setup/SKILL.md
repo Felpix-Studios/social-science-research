@@ -2,18 +2,40 @@
 name: research-setup
 description: Interactive setup wizard that configures a new project for the social-science-research plugin. Asks the user questions about their field, institution, journals, datasets, key researchers, and R color palette, then writes the answers into references/domain-profile.md and CLAUDE.md. Make sure to use this skill first whenever a user is starting fresh or wants to configure the plugin. Triggers include: "set up my project", "configure the plugin", "run setup", "initialize this project", "I just installed the plugin", "set my field", "set my institution", "configure my domain profile", or any request to personalize the plugin for a specific research context.
 argument-hint: "(no arguments needed)"
-allowed-tools: ["Read", "Write", "Edit", "Glob", "AskUserQuestion"]
+allowed-tools: ["Read", "Write", "Edit", "Glob", "Bash", "AskUserQuestion"]
 ---
 
 # Research Setup Wizard
 
 Walk the user through setup using AskUserQuestion menus wherever possible. Collect all answers, then write config files in one pass.
 
+This skill is the only entry point that seeds project config (`references/domain-profile.md`, `CLAUDE.md`). The plugin does not scaffold anything on session start.
+
 ---
 
-## Step 0: Check Existing Config
+## Step 0: Bootstrap & Check Existing Config
 
-Read `CLAUDE.md` and `references/domain-profile.md` silently. If either has real content (not placeholders), tell the user what's already configured and offer to confirm or update each section.
+Seed missing config files into the project, then read what's there.
+
+1. **Seed `references/domain-profile.md` if absent.** Run via Bash (idempotent — only copies when missing):
+
+   ```bash
+   if [ ! -f ./references/domain-profile.md ]; then
+     mkdir -p ./references
+     cp "${CLAUDE_PLUGIN_ROOT}/references/domain-profile.md" ./references/domain-profile.md
+   fi
+   ```
+
+2. **Seed `CLAUDE.md` if absent.** Use Glob to check. If missing, Write this placeholder:
+
+   ```
+   # [YOUR PROJECT NAME]
+
+   **Author:** [YOUR NAME]
+   **Institution:** [YOUR INSTITUTION]
+   ```
+
+3. Now Read `CLAUDE.md` and `references/domain-profile.md` silently. If either has real content (not placeholders), tell the user what's already configured and offer to confirm or update each section.
 
 ---
 
