@@ -167,13 +167,50 @@ Save to `quality_reports/data_exploration_[sanitized_topic].md`:
 
 1. **Best dataset:** [Name] — [one sentence why]
 2. **Fallback if [best] unavailable:** [Name] — [why it's second choice]
-3. **Access steps for [best]:** [specific actions needed — download link, application URL, IRB requirements]
+3. **Access path for [best]:** [download URL, application URL, IRB requirements, restricted-data steps]
+
+### Ingest Recipe for [best]
+
+A copy-pasteable load-and-clean block for the recommended dataset. Tailor to whether the source is a flat file, an API/portal, or a non-tabular source (PDF, scraped HTML).
+
+**R:**
+```r
+# Download (or login + download — note in a comment if manual)
+library(tidyverse)
+df <- readr::read_csv("data/raw/[file].csv")  # or haven::read_dta, arrow::read_parquet
+
+df_clean <- df %>%
+  rename(...) %>%
+  mutate(...) %>%
+  filter(...)
+
+arrow::write_parquet(df_clean, "data/processed/[name].parquet")
+```
+
+**Python:**
+```python
+import pandas as pd
+df = pd.read_csv("data/raw/[file].csv")  # or pd.read_stata, pd.read_parquet
+df_clean = (
+    df.rename(columns={...})
+      .assign(...)
+      .query("...")
+)
+df_clean.to_parquet("data/processed/[name].parquet")
+```
+
+If the source is a PDF, scraped HTML page, or government portal API, replace the load step with the appropriate extraction recipe — `tabulizer`/`pdftools`/`rvest`/`tidycensus`/`fredr` in R, or `pdfplumber`/`camelot`/`pandas.read_html`/`census`/`fredapi` in Python. The `/data-analysis` skill's Phase 0.5 documents the full set; cross-reference it if extraction is non-trivial.
+
+### Known traps for [best]
+- [E.g., FIPS codes read as integers — drop leading zeros]
+- [E.g., Survey weights required — `srvyr::as_survey_design()`]
+- [E.g., Top-coding on income — note threshold]
 
 ---
 
 ## Next Steps
 
-- **`/data-analysis [dataset]`** — begin analysis with the recommended dataset
+- **`/data-analysis [dataset]`** — begin analysis with the recommended dataset (Phase 0.5 handles non-tabular sources; Phase 3.5 runs design-specific identification diagnostics)
 - **`/lit-review [topic]`** — check if papers in the literature use these datasets (helps validate choice)
 ```
 

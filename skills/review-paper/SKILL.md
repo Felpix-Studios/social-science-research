@@ -26,7 +26,7 @@ Produce a thorough, constructive review of an academic manuscript — the kind o
 3. **Read `references/domain-profile.md`** for field and top journals — use these to calibrate the referee perspective (see Principles).
 
 4. **Dispatch three reviewer agents in parallel** via Task (one message, three Task calls — see below):
-   - `domain-reviewer` — substantive correctness through 5 lenses
+   - `domain-reviewer` — substantive correctness through 6 lenses (including design-specific diagnostic reporting)
    - `adversarial-reviewer` — hostile-referee attack on the paper
    - `fresh-eyes-reviewer` — first-time reader perspective
 
@@ -54,12 +54,13 @@ Send **one message with three Task calls** so the agents run concurrently. Each 
 Task prompt: "You are the domain-reviewer agent. Review the manuscript at [path].
 Research question: [from spec if available].
 
-Apply all 5 review lenses:
+Apply all 6 review lenses:
 1. Assumption stress test
 2. Derivation verification
 3. Citation fidelity
 4. Code-theory alignment
 5. Backward logic check
+6. Design-specific diagnostics audit — verify that the paper reports the actual numerical results of the diagnostics the claimed design demands (parallel-trends event-study coefficients, McCrary t-stat, Olea-Pflueger first-stage F, AR weak-IV CI, in-space placebo permutation, balance table, etc., depending on design). Treat a missing required diagnostic as CRITICAL.
 
 Also check cross-document consistency.
 Follow the domain-reviewer agent instructions and return your full substance review report."
@@ -109,7 +110,7 @@ Wait for all three to complete. Collect their outputs for the merge step.
 While the agents run, evaluate dimensions 5-6 directly (writing quality, presentation). Once all three agents return:
 
 - **Fresh Eyes Read section** — paste the fresh-eyes summary (Passes 1-5 condensed + top 3 clarity issues).
-- **Major Concerns** — combine `domain-reviewer` MAJOR/CRITICAL findings + `adversarial-reviewer` fatal flaws + your Dim 5-6 major findings.
+- **Major Concerns** — combine `domain-reviewer` MAJOR/CRITICAL findings from all 6 lenses + `adversarial-reviewer` fatal flaws + your Dim 5-6 major findings. Surface Lens 6 CRITICAL items (missing required diagnostics) at the top of Major Concerns — these are the items most likely to draw a referee rejection.
 - **Minor Concerns** — `domain-reviewer` MINOR findings + your Dim 5-6 minor findings.
 - **Referee Objections** — primarily from `adversarial-reviewer`: fatal flaw, top over-claims, top alternative explanations, identification weakest link.
 - **Rejection Letter Preview** — paste the adversarial-reviewer's two-paragraph rejection verbatim under a "What a desk editor might say" subheading.

@@ -28,6 +28,49 @@ Determine language from `$ARGUMENTS` or ask the user:
 
 ---
 
+## Phase 0.5: Ingest Non-Tabular Inputs
+
+If `$ARGUMENTS` points to a PDF, scraped HTML page, government portal URL, or other non-tabular source, extract it into a tidy dataset before Phase 1. Skip this phase when the input is already a flat file (`.csv`, `.parquet`, `.dta`, `.rds`, `.feather`, `.json`).
+
+### Detection cues
+- File extension: `.pdf`, `.html`, `.htm`, `.xml`
+- URL points to a portal: FRED, BLS, Census, Eurostat, World Bank, IMF, IPUMS
+- Description mentions "scrape", "extract from", "table on page X", or "OCR"
+
+### R recipes
+| Source | Package | Pattern |
+|---|---|---|
+| PDF tables | `tabulizer`, `pdftools` | `tabulizer::extract_tables("file.pdf", pages = 3)` |
+| Scanned PDFs (OCR) | `tesseract` | `tesseract::ocr("file.png")` |
+| HTML tables | `rvest` | `read_html(url) %>% html_table()` |
+| Generic scrape | `rvest`, `httr2` | `read_html(url) %>% html_elements(".css-selector")` |
+| FRED | `fredr` | `fredr(series_id = "UNRATE")` |
+| BLS | `blsAPI` | `blsAPI(payload)` |
+| Census / ACS | `tidycensus` | `get_acs(geography, variables, year)` |
+| World Bank | `WDI` | `WDI(indicator = "NY.GDP.MKTP.CD", country = "all")` |
+
+### Python recipes
+| Source | Package | Pattern |
+|---|---|---|
+| PDF text | `pdfplumber` | `pdfplumber.open(path).pages[0].extract_text()` |
+| PDF tables | `camelot` | `camelot.read_pdf(path, pages='3')` |
+| Scanned PDFs | `pytesseract`, `Pillow` | `pytesseract.image_to_string(Image.open(...))` |
+| HTML tables | `pandas` | `pd.read_html(url)[0]` |
+| Generic scrape | `bs4`, `httpx` | `BeautifulSoup(httpx.get(url).text, "html.parser")` |
+| FRED | `fredapi` | `Fred(api_key).get_series("UNRATE")` |
+| Census / ACS | `census` | `Census(api_key).acs5.state(...)` |
+
+### Output requirements
+1. Save the ingest script separately at `scripts/ingest/[name]_ingest.R` (or `.py`) — distinct from the analysis script so the slow extraction step does not rerun every analysis.
+2. Save the cleaned intermediate to `data/processed/[name].csv` or `.parquet`.
+3. Save a short extraction memo to `quality_reports/ingest_[name].md`: source URL/file, date pulled, page range or CSS selectors, row count, dropped rows and reason.
+4. Phase 1 reads from `data/processed/` — not the raw source.
+
+### When to ask
+If the source is ambiguous (which table, which page, which date range), ask once with AskUserQuestion before extracting. Do not guess on legal or government documents — the wrong table is worse than no table.
+
+---
+
 ## R Track
 
 ### Constraints
@@ -56,6 +99,48 @@ Determine language from `$ARGUMENTS` or ask the user:
 - Cluster SEs at the appropriate level (document why)
 - Multiple specifications: start simple, progressively add controls
 - Report standardized effects alongside raw coefficients
+
+### Phase 3.5: Identification Diagnostics
+
+Run the design-specific diagnostics referees expect to see *for the design being claimed*. This phase is mandatory for any analysis with a causal interpretation. Detect the design from the analysis goal and the model call (`feols(... | id + t)` with treatment-timing → DiD; `rdrobust` → RDD; `feols(y ~ ... | 0 | endog ~ instr)` → IV). Ask once with AskUserQuestion only if the design is genuinely ambiguous.
+
+Save every diagnostic figure to `output/diagnostics/` and every numerical result to RDS for `/quality-gate` and `/write-paper` to consume.
+
+**DiD / event study:**
+- Pre-trends event-study coefficients with 95% CI via `fixest::iplot()` (or `ggiplot::ggiplot()`)
+- If staggered timing: re-estimate with `fixest::feols(y ~ sunab(g, t) | id + t)`, `did::att_gt()` (Callaway-Sant'Anna), or `DIDmultiplegt::did_multiplegt_dyn()` (de Chaisemartin); compare to TWFE headline
+- `bacondecomp::bacon()` when TWFE is the headline estimate
+- Placebo outcome and/or placebo period when available
+
+**RDD:**
+- `rddensity::rddensity(X, c = cutoff)` for the McCrary-type density discontinuity test — report t-stat and p-value
+- `rdrobust::rdbwselect(y, x, c)` for optimal bandwidth; re-estimate at 0.5×, 1×, 2× the optimal
+- Donut-hole sensitivity: drop observations within ε of the cutoff and re-estimate
+- Covariate balance at the cutoff using `rdrobust::rdrobust(z, x, c)` for each covariate z
+
+**IV:**
+- `fixest::feols(y ~ controls | fe | endog ~ instr)` — report the effective F via `fitstat(., "ivf1")`; Olea-Pflueger via `ivDiag::ivDiag()`
+- Anderson-Rubin weak-IV-robust CI when F < 100 — `ivDiag::AR_test()` or `ivmodel::AR.test()`
+- Over-identification (Hansen J) via `fixest::wald()` when instruments > 1
+- Report the reduced-form coefficient alongside the 2SLS estimate
+
+**Synthetic control:**
+- `tidysynth::generate_placebos()` for in-space placebo permutation; plot treatment-vs-donor effect paths
+- Pre-period RMSPE for treated unit vs distribution across donors
+- In-time placebo if a clear pre-treatment cutoff exists
+- Donor weights table
+
+**RCT / OLS with exogenous treatment:**
+- Balance table on pre-treatment covariates via `modelsummary::datasummary_balance(~ treat, data = df)`
+- Randomization inference via `ri2::conduct_ri()` for the primary outcome
+- CONSORT-style attrition summary if attrition > 5%
+
+**Matching / propensity score:**
+- Pre/post balance with standardized mean differences via `cobalt::bal.tab()`
+- Common support plot
+- Sensitivity to caliper width
+
+Detected design → run the corresponding block automatically. Multiple designs (e.g., DiD with IV robustness) → run all relevant blocks. The user does not need to ask for these; they are the default for any causal claim.
 
 ### Phase 4: Publication-Ready Output
 **Tables:** `modelsummary` (preferred) or `stargazer` — export `.tex` and `.html`
@@ -126,6 +211,48 @@ dir.create("output/analysis", recursive = TRUE, showWarnings = FALSE)
 - Panel data: `PanelOLS` from `linearmodels` with cluster-robust SEs
 - Multiple specifications: build incrementally
 - Document SE choice with a comment
+
+### Phase 3.5: Identification Diagnostics
+
+Mirror of the R-track diagnostics with Python tooling. Mandatory for any analysis with a causal interpretation. Detect the design from the analysis goal and the model call (`PanelOLS(..., entity_effects=True, time_effects=True)` with treatment timing → DiD; `rdrobust` Python port → RDD; `IV2SLS` → IV). Ask once if ambiguous.
+
+Save diagnostic figures to `output/diagnostics/` and numerical results to `.pkl` or `.parquet`.
+
+**DiD / event study:**
+- Event-study coefficients with 95% CI from `linearmodels.PanelOLS` interaction terms — plot leads and lags
+- Staggered timing: `differences::ATTgt` (Callaway-Sant'Anna port) or `pyfixest` Sun-Abraham; compare to the TWFE headline
+- Manual Goodman-Bacon decomposition when TWFE is headline
+- Placebo outcome / placebo period
+
+**RDD:**
+- `rdrobust` Python port: `rdrobust.rddensity(X, c=cutoff)` — report McCrary-type t and p
+- `rdrobust.rdbwselect(...)` for bandwidth; re-estimate at 0.5×, 1×, 2×
+- Donut-hole sensitivity
+- Covariate balance at cutoff
+
+**IV:**
+- `linearmodels.IV2SLS(...).fit()` — first-stage F via `results.first_stage` / `results.diagnostics`
+- Anderson-Rubin weak-IV-robust CI when F < 100 (manual or via `linearmodels` Wald tools)
+- Over-identification: Sargan/Hansen J from the results object
+- Reduced form alongside 2SLS
+
+**Synthetic control:**
+- `pysyncon` for in-space placebo permutation
+- Pre-period RMSPE comparison
+- In-time placebo
+- Donor weights
+
+**RCT / OLS with exogenous treatment:**
+- Balance table per covariate (t-tests via `scipy.stats.ttest_ind` or `stargazer`)
+- Randomization inference via `numpy.random.permutation` loop
+- Attrition summary if relevant
+
+**Matching:**
+- Standardized mean differences pre/post via `causalinference` or manual computation
+- Common support plot
+- Sensitivity to caliper
+
+Detection rule and "no need to ask the user" rule match the R track.
 
 ### Phase 4: Publication-Ready Output
 **Tables:** Format with `pandas` and export via `.to_latex()` or `stargazer` (Python port)

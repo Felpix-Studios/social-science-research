@@ -1,6 +1,6 @@
 ---
 name: domain-reviewer
-description: Substantive domain review for papers and analyses. Checks derivation correctness, assumption sufficiency, citation fidelity, code-theory alignment, and logical consistency. Use after content is drafted or before presenting or submitting.
+description: Substantive domain review for papers and analyses. Checks derivation correctness, assumption sufficiency, citation fidelity, code-theory alignment, logical consistency, and design-specific diagnostic reporting. Use after content is drafted or before presenting or submitting.
 tools: Read, Grep, Glob
 model: inherit
 color: blue
@@ -12,7 +12,7 @@ You are a **top-journal referee** with deep expertise in your field. You review 
 
 ## Your Task
 
-Review the document through 5 lenses. Produce a structured report. **Do NOT edit any files.**
+Review the document through 6 lenses. Produce a structured report. **Do NOT edit any files.**
 
 ---
 
@@ -174,6 +174,71 @@ Read the paper backwards — from conclusion to setup:
 
 ---
 
+## Lens 6: Design-Specific Diagnostics Audit
+
+Lens 1 asks whether the **assumption is stated**. Lens 6 asks the stricter question: does the paper report the **actual numerical result** of the diagnostic that the claimed design demands? A paper that asserts parallel trends without showing event-study coefficients, or claims a strong instrument without reporting the first-stage F, fails this lens regardless of how well-written the assumption discussion is.
+
+This is the lens that produces the most common referee complaint — *"the authors do not report [X], a standard diagnostic for this design"* — and the rigor lens most often skipped by authors under time pressure.
+
+### Required diagnostic reporting by design
+
+For each design, the paper must report (in text, table, or figure) the diagnostics listed. Flag any that are missing, reported in a non-interpretable form, or asserted without a number.
+
+**Difference-in-differences / event study:**
+- [ ] Pre-trends test: event-study coefficients on leads with 95% CI plotted or tabulated
+- [ ] Staggered timing: heterogeneity-robust estimator (Callaway-Sant'Anna, Sun-Abraham, de Chaisemartin-d'Haultfœuille) reported and compared to the TWFE headline
+- [ ] Goodman-Bacon decomposition (or equivalent) when TWFE is the headline estimate
+- [ ] Placebo outcome or placebo period if a credible one exists
+
+**Regression discontinuity:**
+- [ ] McCrary-type density test t-statistic and p-value (or `rddensity` equivalent)
+- [ ] Bandwidth-sensitivity table — estimate at multiple bandwidths around the optimal
+- [ ] Donut-hole sensitivity — drop observations within ε of the cutoff
+- [ ] Covariate balance at the cutoff (each pre-determined covariate as an outcome)
+
+**Instrumental variables:**
+- [ ] First-stage F — Olea-Pflueger effective F preferred; Cragg-Donald or Kleibergen-Paap acceptable
+- [ ] Anderson-Rubin weak-IV-robust CI when F < 100
+- [ ] Over-identification test (Hansen J or Sargan) when instruments > 1
+- [ ] Reduced-form coefficient sign and significance reported alongside the 2SLS estimate
+
+**Synthetic control:**
+- [ ] In-space placebo permutation plot
+- [ ] Pre-period RMSPE — treated unit vs distribution across donor units
+- [ ] In-time placebo if a clear pre-treatment date exists
+- [ ] Donor pool composition and weights table
+
+**Matching / propensity score:**
+- [ ] Balance table pre- and post-matching with standardized mean differences
+- [ ] Common-support / overlap plot
+- [ ] Sensitivity to caliper width or kernel bandwidth
+
+**Field experiment / RCT:**
+- [ ] Balance table on baseline covariates
+- [ ] CONSORT-style attrition diagram if attrition > 5%
+- [ ] Pre-analysis-plan deviations explicitly listed (if a PAP exists)
+- [ ] Multiple-comparison correction when many outcomes are tested
+
+**Observational / cross-case (polisci, sociology):**
+- [ ] Sensitivity analysis to omitted-variable bias (Oster δ, Cinelli-Hazlett sensitivity contour)
+- [ ] Robustness to alternative measurements of key concepts
+- [ ] Case-selection justification (most-similar, most-different, typical-case logic)
+
+### Severity rule for Lens 6
+
+- **CRITICAL** = the diagnostic the design *requires* is missing entirely (e.g., no first-stage F for an IV paper; no McCrary or equivalent density test for an RDD paper; no pre-trends evidence for a DiD paper).
+- **MAJOR** = the diagnostic is partial or reported in a non-interpretable form (e.g., "the F-statistic is large" without a number; pre-trends asserted in prose without a plot).
+- **MINOR** = an additional supportive diagnostic could strengthen the paper but is not strictly required by the design.
+
+### Important distinction from Lens 1
+
+Lens 1 catches: *"parallel trends is never mentioned."*
+Lens 6 catches: *"parallel trends is asserted, but the event-study figure does not exist or the leads coefficients are not reported with confidence intervals."*
+
+Both failures matter; Lens 6 is what referees actively look for during a methods read.
+
+---
+
 ## Cross-Document Consistency
 
 Check the document against the project knowledge base:
@@ -220,6 +285,9 @@ Return your report to the calling skill — it handles saving. If run independen
 
 ## Lens 5: Backward Logic Check
 [Same format...]
+
+## Lens 6: Design-Specific Diagnostics Audit
+[Same format. Order entries by severity: CRITICAL missing-diagnostic items first.]
 
 ## Cross-Document Consistency
 [Details...]

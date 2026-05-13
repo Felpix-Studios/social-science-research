@@ -63,10 +63,10 @@ Dispatches 3–5 parallel Librarian agents to search journals, NBER/SSRN/IZA, an
 ---
 
 ### `/data-finder`
-Dispatches parallel Explorer agents to find datasets for a research question, then an Explorer-Critic to stress-test each candidate. Produces a ranked list with feasibility grades.
+Dispatches parallel Explorer agents to find datasets for a research question, then an Explorer-Critic to stress-test each candidate. Produces a ranked list with feasibility grades and a copy-pasteable ingest recipe (download + load-and-clean + non-tabular extraction pointer) for the top candidate.
 
 - **Reads:** `quality_reports/project_spec_*.md`, `references/domain-profile.md`
-- **Writes:** `quality_reports/data_exploration_[topic].md`
+- **Writes:** `quality_reports/data_exploration_[topic].md` (includes Ingest Recipe section for the top dataset)
 - **Agents used:** `explorer` (2 instances in parallel), `explorer-critic`
 - **Depends on:** `references/domain-profile.md` for field-specific dataset list (Common Datasets section). More accurate with a project spec present.
 - **External calls:** WebSearch, WebFetch
@@ -83,13 +83,14 @@ Drafts a full academic manuscript from analysis outputs, project spec, and lit r
 ---
 
 ### `/data-analysis`
-End-to-end data analysis workflow in R or Python. Writes analysis scripts and saves all outputs.
+End-to-end data analysis workflow in R or Python. Writes analysis scripts and saves all outputs. Two built-in phases beyond the main analysis: **Phase 0.5 (Ingest)** extracts tidy data from PDFs, scraped HTML, or government portals when the input is non-tabular; **Phase 3.5 (Identification Diagnostics)** runs design-keyed checks (DiD parallel-trends + Goodman-Bacon + Sun-Abraham; RDD McCrary + bandwidth sensitivity + donut hole; IV Olea-Pflueger F + Anderson-Rubin CI; synthetic-control placebo permutation + pre-RMSPE; RCT balance + randomization inference) for any analysis claiming a causal interpretation.
 
-- **Reads:** `rules/r-code-conventions.md` (R track), dataset files provided by user
+- **Reads:** `rules/r-code-conventions.md` (R track), dataset files provided by user, raw non-tabular sources for Phase 0.5
 - **Writes:**
+  - Ingest (Phase 0.5): `scripts/ingest/[name]_ingest.R` (or `.py`), `data/processed/[name].(csv|parquet)`, `quality_reports/ingest_[name].md`
   - R track: `scripts/R/[name].R`, `output/analysis/`, `output/diagnostics/`, `output/figures/`, `output/tables/`
   - Python track: `scripts/python/[name].py`, `output/analysis/`, `output/diagnostics/`, `output/figures/`
-- **Depends on:** `rules/r-code-conventions.md` for R standards. Dataset path or description required as argument.
+- **Depends on:** `rules/r-code-conventions.md` for R standards. Dataset path or description required as argument. Phase 3.5 dispatches design-specific R/Python packages (`fixest`, `did`, `DIDmultiplegt`, `bacondecomp`, `rddensity`, `rdrobust`, `ivDiag`, `tidysynth`, `cobalt`, `ri2` in R; `linearmodels`, `differences`, `pyfixest`, `rdrobust`, `pysyncon`, `causalinference` in Python).
 
 ---
 
@@ -114,7 +115,7 @@ Reviews R scripts against project coding conventions. Produces a quality report 
 ---
 
 ### `/review-paper`
-Comprehensive manuscript review covering argument structure, econometric specification, citation completeness, and likely referee objections.
+Comprehensive manuscript review covering argument structure, econometric specification, citation completeness, design-specific diagnostic reporting, and likely referee objections. The `domain-reviewer` agent's Lens 6 (Design-Specific Diagnostics Audit) actively checks whether the paper reports the actual numerical results of the diagnostics the claimed design demands — this is the lens that anticipates the most common referee complaint.
 
 - **Reads:** Target paper (`.tex`, `.pdf`, or `.qmd`) — from argument or searched in `references/papers/`, `rules/`, `Bibliography_base.bib`
 - **Writes:** `quality_reports/paper_review_[name].md`
@@ -208,12 +209,12 @@ Reviews a single document for grammar, typos, layout, consistency, and academic 
 ---
 
 ### `domain-reviewer`
-Reviews a paper or analysis for substantive correctness through 5 configurable lenses (assumptions, derivations, citations, code-theory alignment, logical consistency).
+Reviews a paper or analysis for substantive correctness through 6 configurable lenses (assumptions, derivations, citations, code-theory alignment, logical consistency, and design-specific diagnostic reporting). Lens 6 is the rigor lens: it verifies that the paper reports the actual numerical results of the diagnostics the claimed design demands — parallel-trends event-study coefficients for DiD, McCrary t-stat for RDD, Olea-Pflueger first-stage F for IV, in-space placebo permutation for synthetic control, etc.
 
 - **Launched by:** `/review-paper`
 - **Reads:** Target document, `references/papers/`, `rules/`
 - **Returns:** Structured review report. Does not write files directly.
-- **Customize:** Lines 9–26 of `agents/domain-reviewer.md` contain instructions for adapting the 5 lenses to a specific field.
+- **Customize:** Field Calibration block at the top of `agents/domain-reviewer.md` contains instructions for adapting the 6 lenses to a specific field. Design-keyed sub-checklists in Lens 1 and Lens 6 are extensible by adding rows to the per-design lists.
 - **Depends on:** `rules/` and `references/papers/` for cross-referencing; both are optional but improve review quality.
 
 ---
@@ -403,8 +404,12 @@ rules/r-code-conventions.md ──read by──► /review-r → r-reviewer agen
                               └──read by──► /write-paper
 
 /data-analysis ──writes──► output/tables/, output/figures/, output/**/*.rds
+                           (Phase 0.5) scripts/ingest/, data/processed/, quality_reports/ingest_*.md
+                           (Phase 3.5) output/diagnostics/ — design-keyed identification tests
                               └──read by──► /write-paper
                                             /quality-gate → verifier agent
+                                            /review-paper → domain-reviewer Lens 6 cross-checks
+                                                            paper claims vs reported diagnostics
 
 /write-paper ──writes──► manuscripts/[name]-draft.tex
                               └──read by──► /quality-gate
