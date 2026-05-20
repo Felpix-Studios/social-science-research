@@ -1,6 +1,6 @@
 ---
 name: revise-paper
-description: Apply revisions from a review report to a manuscript. Reads the review, presents a prioritized revision plan, and applies fixes section-by-section with user approval. Make sure to use this skill whenever the user wants to systematically address issues from a review — not to draft a new paper or run a fresh review. Triggers include: "revise the paper", "apply the review", "fix the issues from the review", "address referee comments", "apply revisions", "work through the review report", "fix what the reviewer found", "address the major concerns", or any request to systematically apply fixes from an existing review report.
+description: "Apply revisions from a review report to a manuscript. Reads the review, presents a prioritized revision plan, and applies fixes section-by-section with user approval. Make sure to use this skill whenever the user wants to systematically address issues from a review — not to draft a new paper or run a fresh review. Triggers include: \"revise the paper\", \"apply the review\", \"fix the issues from the review\", \"address referee comments\", \"apply revisions\", \"work through the review report\", \"fix what the reviewer found\", \"address the major concerns\", or any request to systematically apply fixes from an existing review report."
 argument-hint: "[review report path, or leave blank to auto-detect]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Task", "AskUserQuestion"]
 ---
@@ -11,7 +11,6 @@ Systematically apply revisions from a review report to a manuscript. Follows Pro
 
 **Input:** `$ARGUMENTS` — path to a review report, or leave blank to auto-detect.
 
----
 
 ## Step 1: Locate the Review Report
 
@@ -25,7 +24,6 @@ If multiple reports found, use AskUserQuestion:
 - question: "Multiple review reports found. Which should I use for revisions?"
 - options: list found reports (label: filename, description: date and type). User can select one.
 
----
 
 ## Step 2: Locate the Manuscript
 
@@ -39,7 +37,6 @@ If multiple manuscripts found, use AskUserQuestion to let the user pick.
 
 Read the full manuscript.
 
----
 
 ## Step 3: Parse the Review Report
 
@@ -56,7 +53,6 @@ For each item, extract:
 - The suggested fix (if provided)
 - The location in the manuscript (section, line, table)
 
----
 
 ## Step 4: Present Revision Plan (WAIT FOR APPROVAL)
 
@@ -82,7 +78,6 @@ Total: N revisions across M sections.
 
 **Do NOT start editing until the user approves the plan or selects which items to address.**
 
----
 
 ## Step 5: Apply Approved Revisions
 
@@ -98,7 +93,6 @@ For each revision:
 
 **Prose Track rules apply:** If the user deferred any items, skip them and note them in the summary.
 
----
 
 ## Step 6: Post-Revision Review
 
@@ -112,7 +106,6 @@ Return your report — the calling skill handles saving."
 
 Present any new issues found by the proofreader.
 
----
 
 ## Step 7: Save Revision Summary
 
@@ -148,7 +141,6 @@ Save to `quality_reports/revision_summary_[paper-name].md`:
 - **`/review-paper`** — run a fresh review to confirm issues are resolved
 ```
 
----
 
 ## Key Rules
 

@@ -1,6 +1,6 @@
 ---
 name: session-log
-description: Create or update a session log to capture decisions, changes, and progress. Use at any point during a work session to document what was accomplished. Triggers include: "log this session", "create a session log", "update the session log", "save my progress", "record what we did", "what did we do today", or any request to document session work.
+description: "Create or update a session log to capture decisions, changes, and progress. Use at any point during a work session to document what was accomplished. Triggers include: \"log this session\", \"create a session log\", \"update the session log\", \"save my progress\", \"record what we did\", \"what did we do today\", or any request to document session work."
 argument-hint: "[create | update | 'description of what to log']"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash"]
 ---
@@ -11,14 +11,12 @@ Create or update a session log to capture decisions, changes, and progress.
 
 **Input:** `$ARGUMENTS` — `create` for a new log, `update` to append to the most recent log, or a description of what to log.
 
----
 
 ## Step 1: Determine Mode
 
 - If `$ARGUMENTS` is `create` or no session log exists in `quality_reports/session_logs/` → **Create mode**
 - Otherwise → **Update mode**
 
----
 
 ## Step 2: Create Mode
 
@@ -34,7 +32,6 @@ Create or update a session log to capture decisions, changes, and progress.
 
 Tell the user the log was created and where.
 
----
 
 ## Step 3: Update Mode
 

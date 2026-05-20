@@ -1,6 +1,6 @@
 ---
 name: data-analysis
-description: End-to-end data analysis workflow in R or Python — from exploration through regression to publication-ready tables and figures. Make sure to use this skill whenever the user wants to run any empirical analysis, write analysis code, or produce output from data. Triggers include: "analyze this data", "run a regression", "write R code for this", "write Python code for this", "I have a dataset", "help me with this regression", "run a DiD", "run an RDD", "event study", "IV regression", "fit a model", "produce a table", "make a figure", "explore my data", or any request involving a dataset path or empirical estimation.
+description: "End-to-end data analysis workflow in R or Python — from exploration through regression to publication-ready tables and figures. Make sure to use this skill whenever the user wants to run any empirical analysis, write analysis code, or produce output from data. Triggers include: \"analyze this data\", \"run a regression\", \"write R code for this\", \"write Python code for this\", \"I have a dataset\", \"help me with this regression\", \"run a DiD\", \"run an RDD\", \"event study\", \"IV regression\", \"fit a model\", \"produce a table\", \"make a figure\", \"explore my data\", or any request involving a dataset path or empirical estimation."
 argument-hint: "[dataset path or description of analysis goal]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task", "AskUserQuestion"]
 ---
@@ -11,7 +11,6 @@ Run an end-to-end data analysis in R or Python: load, explore, analyze, and prod
 
 **Input:** `$ARGUMENTS` — a dataset path (e.g., `data/county_panel.csv`) or a description of the analysis goal (e.g., "regress wages on education with state fixed effects using CPS data").
 
----
 
 ## Phase 0: Choose Language
 
@@ -26,7 +25,6 @@ Determine language from `$ARGUMENTS` or ask the user:
     - label: "Python", description: "pandas, statsmodels — supported for analysis scripts and figures"
     - label: "Both", description: "R for figures and tables, Python for data processing"
 
----
 
 ## Phase 0.5: Ingest Non-Tabular Inputs
 
@@ -69,7 +67,6 @@ If `$ARGUMENTS` points to a PDF, scraped HTML page, government portal URL, or ot
 ### When to ask
 If the source is ambiguous (which table, which page, which date range), ask once with AskUserQuestion before extracting. Do not guess on legal or government documents — the wrong table is worse than no table.
 
----
 
 ## R Track
 
@@ -181,7 +178,6 @@ dir.create("output/analysis", recursive = TRUE, showWarnings = FALSE)
 # 5. Export ----
 ```
 
----
 
 ## Python Track
 
@@ -309,7 +305,6 @@ Path("output/figures").mkdir(parents=True, exist_ok=True)
 [ ] Comments explain WHY, not WHAT
 ```
 
----
 
 ## Shared Principles
 

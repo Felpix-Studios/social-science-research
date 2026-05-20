@@ -1,6 +1,6 @@
 ---
 name: data-finder
-description: Find and assess datasets for a research question. Dispatches Explorer agents to search across data source categories, then Explorer-Critic to stress-test each candidate. Produces a ranked list with feasibility grades. Make sure to use this skill whenever the user wants to identify or evaluate data sources — not to search for papers or run analysis. Triggers include: "find data", "what data should I use", "find a dataset for this", "where can I get data on X", "assess datasets", "what datasets exist for", "help me find data", "is there data on this", "what are my data options", "I need data for this project", or any request to locate empirical data sources for a research question.
+description: "Find and assess datasets for a research question. Dispatches Explorer agents to search across data source categories, then Explorer-Critic to stress-test each candidate. Produces a ranked list with feasibility grades. Make sure to use this skill whenever the user wants to identify or evaluate data sources — not to search for papers or run analysis. Triggers include: \"find data\", \"what data should I use\", \"find a dataset for this\", \"where can I get data on X\", \"assess datasets\", \"what datasets exist for\", \"help me find data\", \"is there data on this\", \"what are my data options\", \"I need data for this project\", or any request to locate empirical data sources for a research question."
 argument-hint: "[research topic or 'from spec']"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "WebSearch", "WebFetch", "Task"]
 ---
@@ -11,7 +11,6 @@ Find and assess datasets for your research question. Two Explorer agents search 
 
 **Input:** `$ARGUMENTS` — a topic, or `from spec` to read the research question from `quality_reports/`.
 
----
 
 ## Step 1: Read Research Context
 
@@ -29,7 +28,6 @@ Find and assess datasets for your research question. Two Explorer agents search 
 
 3. If no research spec exists, extract the variables and strategy from `$ARGUMENTS` directly. If the request is vague, ask: *"What are the treatment and outcome variables, and what empirical strategy did you have in mind?"*
 
----
 
 ## Step 2: Dispatch Two Explorer Agents in Parallel
 
@@ -69,7 +67,6 @@ For each dataset found, produce the full Explorer report format.
 Follow the Explorer agent instructions."
 ```
 
----
 
 ## Step 3: Dispatch Explorer-Critic
 
@@ -95,7 +92,6 @@ Produce adjusted feasibility grades and deal-breaker flags.
 Follow the Explorer-Critic agent instructions."
 ```
 
----
 
 ## Step 4: Produce Ranked Output
 
@@ -105,7 +101,6 @@ After the Explorer-Critic completes, compile the final ranked report:
 2. Within each grade, sort by identification compatibility score (highest first).
 3. Separate out deal-breaker datasets into the rejection table.
 
----
 
 ## Step 5: Save Report
 
@@ -119,7 +114,6 @@ Save to `quality_reports/data_exploration_[sanitized_topic].md`:
 **Empirical strategy:** [method]
 **Variables sought:** Treatment = [X], Outcome = [Y], Controls = [list]
 
----
 
 ## Top Candidates (Grade A–B)
 
@@ -143,17 +137,14 @@ Save to `quality_reports/data_exploration_[sanitized_topic].md`:
 
 **Bottom line:** [1-2 sentences — viable and under what conditions]
 
----
 
 [Repeat for all A and B grade datasets]
 
----
 
 ## Accessible With Effort (Grade C)
 
 [Brief summaries — name, access path, main limitation, why C not B]
 
----
 
 ## Rejection Table
 
@@ -161,7 +152,6 @@ Save to `quality_reports/data_exploration_[sanitized_topic].md`:
 |---------|---------------------|---------------|
 | [Name] | [Explorer-Critic finding] | YES/NO |
 
----
 
 ## Recommended Path Forward
 
@@ -206,7 +196,6 @@ If the source is a PDF, scraped HTML page, or government portal API, replace the
 - [E.g., Survey weights required — `srvyr::as_survey_design()`]
 - [E.g., Top-coding on income — note threshold]
 
----
 
 ## Next Steps
 
@@ -214,7 +203,6 @@ If the source is a PDF, scraped HTML page, or government portal API, replace the
 - **`/lit-review [topic]`** — check if papers in the literature use these datasets (helps validate choice)
 ```
 
----
 
 ## Important
 

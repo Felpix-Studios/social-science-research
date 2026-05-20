@@ -1,6 +1,6 @@
 ---
 name: write-paper
-description: Draft a full academic paper manuscript from analysis outputs, project spec, and lit review. Make sure to use this skill whenever the user wants to turn completed analysis into a written paper — not to run analysis or review existing writing. Triggers include: "write the paper", "draft the manuscript", "write up the results", "start the paper", "turn my results into a paper", "write the introduction", "draft the empirics section", "I have my results, now write the paper", "help me write this up", "write the abstract", or any request to produce academic prose from existing research outputs.
+description: "Draft a full academic paper manuscript from analysis outputs, project spec, and lit review. Make sure to use this skill whenever the user wants to turn completed analysis into a written paper — not to run analysis or review existing writing. Triggers include: \"write the paper\", \"draft the manuscript\", \"write up the results\", \"start the paper\", \"turn my results into a paper\", \"write the introduction\", \"draft the empirics section\", \"I have my results, now write the paper\", \"help me write this up\", \"write the abstract\", or any request to produce academic prose from existing research outputs."
 argument-hint: "[paper title, research question, or 'from spec']"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Task"]
 ---
@@ -11,7 +11,6 @@ Draft an academic manuscript from existing analysis outputs. Follows propose-fir
 
 **Input:** `$ARGUMENTS` — a paper title, research question, or `from spec` to read from `quality_reports/specs/`.
 
----
 
 ## Step 1: Orient
 
@@ -24,7 +23,6 @@ Read project context:
 
 If no spec exists, ask the user for the core research question before proceeding.
 
----
 
 ## Step 2: Inventory Analysis Outputs
 
@@ -36,7 +34,6 @@ Glob for available outputs:
 
 List what exists. Note any gaps (e.g., "no summary statistics table found").
 
----
 
 ## Step 3: Propose Outline (WAIT FOR APPROVAL)
 
@@ -59,7 +56,6 @@ References
 
 Present the outline with a one-sentence description of each section's content, linking specific output files to each section (e.g., "Table 2 → Section 5, Results"). **Do NOT start writing until the user approves the outline or requests changes.**
 
----
 
 ## Step 4: Draft Section by Section
 
@@ -73,7 +69,6 @@ Write in this order (minimizes backtracking):
 6. **Introduction** — write after results are known. State the question, preview the findings, and map the paper.
 7. **Abstract** — write last: one sentence each for motivation, question, method, finding, and implication.
 
----
 
 ## Step 5: Save the Draft
 
@@ -83,7 +78,6 @@ Create `manuscripts/` directory if it does not exist.
 
 Use `\input{}` for tables and `\includegraphics{}` for figures — reference the actual files in `output/`, do not embed content directly.
 
----
 
 ## Step 6: Structural Smoke Test
 
@@ -115,7 +109,6 @@ Present the results as a short checklist:
 
 Do **not** run a substance review here. If any structural issues are flagged, offer to fix them before handoff. Bibliography checking is deferred to `/validate-bib`; claim-to-output traceability is deferred to `/quality-gate`; substance review is deferred to `/review-paper`.
 
----
 
 ## Step 7: Recommend Next Steps
 
@@ -124,7 +117,6 @@ Inform the user:
 - **`/validate-bib`** — to check all citations are in the bibliography
 - **`/quality-gate`** — to verify every claim in the paper is backed by an output file
 
----
 
 ## Key Rules
 

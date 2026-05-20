@@ -1,6 +1,6 @@
 ---
 name: lit-review
-description: Structured literature review using a parallel fleet of Librarian agents. Searches top journals, working paper repositories (NBER, SSRN, IZA), and traces citation chains from key papers. Make sure to use this skill whenever the user wants to survey existing research on a topic — not to find datasets or write a paper. Triggers include: "review the literature", "find related papers", "what's been done on X", "search for papers on", "do a lit review", "find papers about", "what papers should I cite", "who has written about this", "survey the literature", "find prior work on", or any request to locate and summarize academic publications on a topic.
+description: "Structured literature review using a parallel fleet of Librarian agents. Searches top journals, working paper repositories (NBER, SSRN, IZA), and traces citation chains from key papers. Make sure to use this skill whenever the user wants to survey existing research on a topic — not to find datasets or write a paper. Triggers include: \"review the literature\", \"find related papers\", \"what's been done on X\", \"search for papers on\", \"do a lit review\", \"find papers about\", \"what papers should I cite\", \"who has written about this\", \"survey the literature\", \"find prior work on\", or any request to locate and summarize academic publications on a topic."
 argument-hint: "[topic, research question, or anchor paper title]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "WebSearch", "WebFetch", "Task", "AskUserQuestion"]
 ---
@@ -11,7 +11,6 @@ Conduct a systematic literature review using a parallel fleet of Librarian agent
 
 **Input:** `$ARGUMENTS` — a topic, research question, or the title of a known key paper.
 
----
 
 ## Step 1: Orient and Gather Context
 
@@ -30,7 +29,6 @@ If `references/domain-profile.md` does not exist, use AskUserQuestion to determi
   - label: "Sociology", description: "ASR, AJS, Social Forces, Demography"
   - label: "Public Health", description: "NEJM, Lancet, JAMA, AJE"
 
----
 
 ## Step 2: Assign Librarians
 
@@ -88,7 +86,6 @@ Follow the Librarian agent instructions for citation chain search."
 
 > **Why citation chains beat keyword search:** The papers that cite your anchor papers are by definition working on the same problem. The papers your anchor papers cite are the foundations your paper must engage with. These vectors find papers that keyword searches miss entirely.
 
----
 
 ## Step 3: Consolidate and Deduplicate
 
@@ -99,7 +96,6 @@ After all Librarians complete:
 3. Flag any papers marked `FLAG` by a Librarian — do not include in final BibTeX without manual verification.
 4. Total target: 20–40 papers (quality over quantity).
 
----
 
 ## Step 4: Organize Thematically
 
@@ -112,7 +108,6 @@ Sort papers into these categories:
 
 For each category, write a 2–3 paragraph synthesis (not just a list).
 
----
 
 ## Step 5: Identify Gaps
 
@@ -125,7 +120,6 @@ List 3–5 specific gaps the reviewed literature leaves open:
 
 For each gap: *"No paper has examined X in context Y using method Z. This matters because..."*
 
----
 
 ## Step 6: Save Report
 
@@ -153,7 +147,6 @@ Save to `quality_reports/lit_review_[sanitized_topic].md`:
 
 [Repeat for all papers, ordered by relevance]
 
----
 
 ## Thematic Organization
 
@@ -169,7 +162,6 @@ Save to `quality_reports/lit_review_[sanitized_topic].md`:
 ### Open Debates
 [Conflicting findings and unresolved questions]
 
----
 
 ## Gaps and Opportunities
 
@@ -177,7 +169,6 @@ Save to `quality_reports/lit_review_[sanitized_topic].md`:
 2. [Gap 2]
 3. [Gap 3]
 
----
 
 ## Suggested Next Steps
 
@@ -185,7 +176,6 @@ Save to `quality_reports/lit_review_[sanitized_topic].md`:
 - `/data-finder [topic]` — identify datasets for the priority research question
 - `/validate-bib` after incorporating new citations into the manuscript
 
----
 
 ## BibTeX Entries
 
@@ -193,14 +183,12 @@ Save to `quality_reports/lit_review_[sanitized_topic].md`:
 [all verified entries]
 ```
 
----
 
 ## Flagged Papers (Unverified — Manual Check Required)
 
 [Papers Librarians marked FLAG — verify before citing]
 ```
 
----
 
 ## Important
 

@@ -1,6 +1,6 @@
 ---
 name: research-setup
-description: Interactive setup wizard that configures a new project for the social-science-research plugin. Asks the user questions about their field, institution, journals, datasets, key researchers, and R color palette, then writes the answers into references/domain-profile.md and CLAUDE.md. Make sure to use this skill first whenever a user is starting fresh or wants to configure the plugin. Triggers include: "set up my project", "configure the plugin", "run setup", "initialize this project", "I just installed the plugin", "set my field", "set my institution", "configure my domain profile", or any request to personalize the plugin for a specific research context.
+description: "Interactive setup wizard that configures a new project for the social-science-research plugin. Asks the user questions about their field, institution, journals, datasets, key researchers, and R color palette, then writes the answers into references/domain-profile.md and CLAUDE.md. Make sure to use this skill first whenever a user is starting fresh or wants to configure the plugin. Triggers include: \"set up my project\", \"configure the plugin\", \"run setup\", \"initialize this project\", \"I just installed the plugin\", \"set my field\", \"set my institution\", \"configure my domain profile\", or any request to personalize the plugin for a specific research context."
 argument-hint: "(no arguments needed)"
 allowed-tools: ["Read", "Write", "Edit", "Glob", "Bash", "AskUserQuestion"]
 ---
@@ -11,7 +11,6 @@ Walk the user through setup using AskUserQuestion menus wherever possible. Colle
 
 This skill is the only entry point that seeds project config (`references/domain-profile.md`, `CLAUDE.md`). The plugin does not scaffold anything on session start.
 
----
 
 ## Step 0: Bootstrap & Check Existing Config
 
@@ -37,7 +36,6 @@ Seed missing config files into the project, then read what's there.
 
 3. Now Read `CLAUDE.md` and `references/domain-profile.md` silently. If either has real content (not placeholders), tell the user what's already configured and offer to confirm or update each section.
 
----
 
 ## Step 1: Field
 
@@ -47,7 +45,6 @@ AskUserQuestion — 1 question:
 
 Store field for customizing later steps.
 
----
 
 ## Step 2: Identity & Project Title
 
@@ -59,7 +56,6 @@ Ask conversationally (not via AskUserQuestion):
 
 Wait for the user's response before moving to Step 3.
 
----
 
 ## Step 3: Journals
 
@@ -71,7 +67,6 @@ AskUserQuestion — 2 multi-select questions based on the user's field:
 
 User can multi-select presets and add custom journals via Other.
 
----
 
 ## Step 4: Datasets
 
@@ -81,7 +76,6 @@ AskUserQuestion — 2 multi-select questions based on the user's field:
 
 2. **Additional sources** (multiSelect, header: "More data"): "Any additional data sources?" — Offer 4 cross-disciplinary sources: World Bank Open Data, IPUMS, Bureau of Labor Statistics, Census Bureau.
 
----
 
 ## Step 5: Researchers & Colors
 
@@ -95,7 +89,6 @@ If the user chose "Add researchers", ask conversationally for names, institution
 
 If the user chose "Custom colors", ask conversationally for primary and secondary hex codes.
 
----
 
 ## Step 6: Write Config Files
 
@@ -112,7 +105,6 @@ Update the project header placeholders:
 - `[YOUR NAME]` → user's name (or leave placeholder if skipped)
 - `[YOUR INSTITUTION]` → user's institution
 
----
 
 ## Step 7: Confirm
 

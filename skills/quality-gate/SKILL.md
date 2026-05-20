@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: Verify that every quantitative claim in the paper is traceable to an analysis output file, and that no important output was omitted. Make sure to use this skill whenever the user wants to check that the paper and analysis are consistent before submission. Triggers include: "run the quality gate", "check the paper matches the analysis", "verify consistency", "does the paper match my results", "check my numbers", "are my tables right", "quality check before submission", "verify my claims", "make sure everything is consistent", "double-check the paper against my output files", or any pre-submission integrity check between paper text and computed results.
+description: "Verify that every quantitative claim in the paper is traceable to an analysis output file, and that no important output was omitted. Make sure to use this skill whenever the user wants to check that the paper and analysis are consistent before submission. Triggers include: \"run the quality gate\", \"check the paper matches the analysis\", \"verify consistency\", \"does the paper match my results\", \"check my numbers\", \"are my tables right\", \"quality check before submission\", \"verify my claims\", \"make sure everything is consistent\", \"double-check the paper against my output files\", or any pre-submission integrity check between paper text and computed results."
 argument-hint: "[paper file path, or leave blank to auto-detect]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task", "AskUserQuestion"]
 ---
@@ -11,7 +11,6 @@ Cross-check every numerical claim in the paper against analysis output files. Re
 
 **Input:** `$ARGUMENTS` — path to the paper draft, or leave blank to auto-detect.
 
----
 
 ## Step 1: Locate the Paper Draft
 
@@ -25,7 +24,6 @@ If multiple drafts found, use AskUserQuestion to let the user pick:
 - question: "Multiple drafts found. Which manuscript should I check?"
 - options: list up to 4 found files (label: filename, description: path and file size). If more than 4, group by directory.
 
----
 
 ## Step 2: Extract Numerical Claims
 
@@ -40,7 +38,6 @@ Read the full manuscript and extract every quantitative claim:
 
 Record location (section, paragraph, line number if available) for each claim.
 
----
 
 ## Step 3: Inventory Output Files
 
@@ -52,7 +49,6 @@ Glob for all output files:
 
 Build an inventory with file paths and sizes.
 
----
 
 ## Step 4: Dispatch Verifier Agent
 
@@ -83,7 +79,6 @@ After the verifier completes, collect its results:
 - Unreferenced output files list
 - Missing citation keys
 
----
 
 ## Step 5: Save Report
 
@@ -100,7 +95,6 @@ PASS = all claims matched, no missing citations, no unexplained unreferenced out
 CONDITIONAL PASS = minor unverified claims or informational unreferenced outputs
 FAIL = unverified critical claims or missing citations
 
----
 
 ## Claim Verification
 
@@ -110,7 +104,6 @@ FAIL = unverified critical claims or missing citations
 | N = 4,521 | Table 2 note | Yes | output/tables/main_regs.tex | MATCHED |
 | 42% of firms | Intro, para 1 | No | — | UNVERIFIED |
 
----
 
 ## Unreferenced Outputs
 
@@ -120,7 +113,6 @@ Files in output/ not referenced in the paper:
 |------|------|-------------------|
 | output/tables/robustness_het.tex | 4.2 KB | Reference in Section 7 or explain exclusion |
 
----
 
 ## Missing Citations
 
@@ -128,7 +120,6 @@ Files in output/ not referenced in the paper:
 |-----|---------|--------|
 | SmithJones2021 | Section 3, para 1 | NOT IN BIBLIOGRAPHY — CRITICAL |
 
----
 
 ## Summary
 
@@ -142,7 +133,6 @@ Files in output/ not referenced in the paper:
 2. [RECOMMENDED] ...
 ```
 
----
 
 ## Key Rules
 

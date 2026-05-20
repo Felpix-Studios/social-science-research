@@ -1,6 +1,6 @@
 ---
 name: new-project
-description: Start a new research project by conducting a structured interview to formalize a research idea, then generates research questions with identification strategies and a project spec. Make sure to use this skill whenever the user wants to develop or document a new research idea — not to search for literature or data. Triggers include: "new project", "start research", "I have an idea", "help me develop this", "I want to study X", "help me formalize this idea", "what's my research question", "what identification strategy should I use", "write up my project idea", or when the user describes a topic they want to turn into a paper.
+description: "Start a new research project by conducting a structured interview to formalize a research idea, then generates research questions with identification strategies and a project spec. Make sure to use this skill whenever the user wants to develop or document a new research idea — not to search for literature or data. Triggers include: \"new project\", \"start research\", \"I have an idea\", \"help me develop this\", \"I want to study X\", \"help me formalize this idea\", \"what's my research question\", \"what identification strategy should I use\", \"write up my project idea\", or when the user describes a topic they want to turn into a paper."
 argument-hint: "[brief topic or 'start fresh']"
 allowed-tools: ["Read", "Grep", "Glob", "Write"]
 ---
@@ -13,7 +13,6 @@ Formalize a research idea into a concrete project specification with testable hy
 
 This skill runs in **three phases**. Phase 1 is conversational — ask one or two questions at a time and wait for responses. Phases 2 and 3 run automatically after the interview.
 
----
 
 ## Phase 1: Research Interview
 
@@ -56,7 +55,6 @@ Move to Phase 2 when you have:
 
 If after 3 exchanges the user keeps giving vague answers, move to Phase 2 anyway and flag the open questions.
 
----
 
 ## Phase 2: Research Ideation
 
@@ -94,7 +92,6 @@ Then generate **3–5 research questions** ordered by type:
 | 2  | High | Medium | ★★ |
 | ... | ... | ... | ... |
 
----
 
 ## Phase 3: Save Project Spec
 
@@ -108,7 +105,6 @@ Produce the unified project spec document and save it.
 **Date:** [YYYY-MM-DD]
 **Researcher:** [from CLAUDE.md if available]
 
----
 
 ## Research Question
 
@@ -144,11 +140,9 @@ Produce the unified project spec document and save it.
 
 **Related Work:** [Author (Year)], [Author (Year)]
 
----
 
 [Repeat for RQ2–RQ5]
 
----
 
 ## Priority Empirical Strategy
 
@@ -158,7 +152,6 @@ Produce the unified project spec document and save it.
 
 [Issues raised in the interview that need further thought before committing to a strategy]
 
----
 
 ## Suggested Next Steps
 
@@ -167,7 +160,6 @@ Produce the unified project spec document and save it.
 3. Once data is secured: **`/data-analysis`** to begin analysis
 ```
 
----
 
 ## After Saving
 

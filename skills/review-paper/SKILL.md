@@ -1,6 +1,6 @@
 ---
 name: review-paper
-description: Comprehensive manuscript review covering argument structure, econometric specification, citation completeness, and potential referee objections. Make sure to use this skill whenever the user wants substantive academic feedback on a paper — not just surface edits. Triggers include: "review my paper", "give me feedback on this draft", "what would a referee say", "anticipate referee objections", "act as a referee", "check my identification strategy", "is my argument convincing", "review this manuscript", "critique my paper", "will this pass review", or any request for deep critique of academic writing beyond typos and grammar.
+description: "Comprehensive manuscript review covering argument structure, econometric specification, citation completeness, and potential referee objections. Make sure to use this skill whenever the user wants substantive academic feedback on a paper — not just surface edits. Triggers include: \"review my paper\", \"give me feedback on this draft\", \"what would a referee say\", \"anticipate referee objections\", \"act as a referee\", \"check my identification strategy\", \"is my argument convincing\", \"review this manuscript\", \"critique my paper\", \"will this pass review\", or any request for deep critique of academic writing beyond typos and grammar."
 argument-hint: "[paper filename in manuscripts/ or path to .tex/.pdf]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ---
@@ -11,7 +11,6 @@ Produce a thorough, constructive review of an academic manuscript — the kind o
 
 **Input:** `$ARGUMENTS` — path to a paper (.tex, .pdf, or .qmd), or a filename in `manuscripts/` or `references/papers/`.
 
----
 
 ## Steps
 
@@ -42,7 +41,6 @@ Produce a thorough, constructive review of an academic manuscript — the kind o
 
 8. **Save to** `quality_reports/paper_review_[sanitized_name].md`
 
----
 
 ## Step 4: Dispatch Three Reviewer Agents in Parallel
 
@@ -103,7 +101,6 @@ Follow the fresh-eyes-reviewer agent instructions and return your full fresh-eye
 
 Wait for all three to complete. Collect their outputs for the merge step.
 
----
 
 ## Steps 5-6: Evaluate Writing/Presentation, Then Merge
 
@@ -115,7 +112,6 @@ While the agents run, evaluate dimensions 5-6 directly (writing quality, present
 - **Referee Objections** — primarily from `adversarial-reviewer`: fatal flaw, top over-claims, top alternative explanations, identification weakest link.
 - **Rejection Letter Preview** — paste the adversarial-reviewer's two-paragraph rejection verbatim under a "What a desk editor might say" subheading.
 
----
 
 ## Review Dimensions
 
@@ -159,7 +155,6 @@ While the agents run, evaluate dimensions 5-6 directly (writing quality, present
 - Are there any typos, grammatical errors, or formatting issues?
 - Is the paper the right length for the contribution?
 
----
 
 ## Output Format
 
@@ -255,7 +250,6 @@ While the agents run, evaluate dimensions 5-6 directly (writing quality, present
 | **Overall** | **[N]** |
 ```
 
----
 
 ## Principles
 
