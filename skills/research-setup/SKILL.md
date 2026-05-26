@@ -1,6 +1,7 @@
 ---
 name: research-setup
-description: "Interactive setup wizard that configures a new project for the social-science-research plugin. Asks the user questions about their field, institution, journals, datasets, key researchers, and R color palette, then writes the answers into references/domain-profile.md and CLAUDE.md. Make sure to use this skill first whenever a user is starting fresh or wants to configure the plugin. Triggers include: \"set up my project\", \"configure the plugin\", \"run setup\", \"initialize this project\", \"I just installed the plugin\", \"set my field\", \"set my institution\", \"configure my domain profile\", or any request to personalize the plugin for a specific research context."
+description: "Interactive wizard that configures the social-science-research plugin for a new project. Asks about field, institution, journals, datasets, key researchers, R palette; writes answers to references/domain-profile.md and CLAUDE.md. Use first when starting fresh or configuring the plugin."
+when_to_use: "set up project, configure plugin, run setup, initialize project, just installed the plugin, set my field, set my institution, configure domain profile, personalize the plugin"
 argument-hint: "(no arguments needed)"
 allowed-tools: ["Read", "Write", "Edit", "Glob", "Bash", "AskUserQuestion"]
 ---

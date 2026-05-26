@@ -1,6 +1,7 @@
 ---
 name: quality-gate
-description: "Verify that every quantitative claim in the paper is traceable to an analysis output file, and that no important output was omitted. Make sure to use this skill whenever the user wants to check that the paper and analysis are consistent before submission. Triggers include: \"run the quality gate\", \"check the paper matches the analysis\", \"verify consistency\", \"does the paper match my results\", \"check my numbers\", \"are my tables right\", \"quality check before submission\", \"verify my claims\", \"make sure everything is consistent\", \"double-check the paper against my output files\", or any pre-submission integrity check between paper text and computed results."
+description: "Verify every quantitative claim in the paper traces to an analysis output file, and no important output was omitted. Use when checking the paper matches the analysis before submission."
+when_to_use: "run quality gate, check paper matches analysis, verify consistency, does paper match results, check my numbers, are my tables right, quality check before submission, verify claims, everything consistent, double-check paper against output, pre-submission integrity check"
 argument-hint: "[paper file path, or leave blank to auto-detect]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task", "AskUserQuestion"]
 ---

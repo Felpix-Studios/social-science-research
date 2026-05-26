@@ -1,6 +1,7 @@
 ---
 name: revise-paper
-description: "Apply revisions from a review report to a manuscript. Reads the review, presents a prioritized revision plan, and applies fixes section-by-section with user approval. Make sure to use this skill whenever the user wants to systematically address issues from a review — not to draft a new paper or run a fresh review. Triggers include: \"revise the paper\", \"apply the review\", \"fix the issues from the review\", \"address referee comments\", \"apply revisions\", \"work through the review report\", \"fix what the reviewer found\", \"address the major concerns\", or any request to systematically apply fixes from an existing review report."
+description: "Apply revisions from a review report to a manuscript. Reads the review, presents prioritized plan, applies fixes section-by-section with user approval. Use when systematically addressing review issues, not drafting a new paper or running a fresh review."
+when_to_use: "revise paper, apply review, fix issues from review, address referee comments, apply revisions, work through review report, fix what reviewer found, address major concerns"
 argument-hint: "[review report path, or leave blank to auto-detect]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Task", "AskUserQuestion"]
 ---

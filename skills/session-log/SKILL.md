@@ -1,6 +1,7 @@
 ---
 name: session-log
-description: "Create or update a session log to capture decisions, changes, and progress. Use at any point during a work session to document what was accomplished. Triggers include: \"log this session\", \"create a session log\", \"update the session log\", \"save my progress\", \"record what we did\", \"what did we do today\", or any request to document session work."
+description: "Create or update a session log capturing decisions, changes, progress. Use to document what was accomplished during a work session."
+when_to_use: "log this session, create session log, update session log, save progress, record what we did, what did we do today, document session work"
 argument-hint: "[create | update | 'description of what to log']"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash"]
 ---

@@ -1,6 +1,7 @@
 ---
 name: proofread
-description: "Run the proofreading protocol on academic writing — papers or manuscripts. Checks grammar, typos, layout issues, consistency, and academic writing quality. Produces a report without editing files. Make sure to use this skill whenever the user wants surface-level writing errors found — not substantive academic critique. Triggers include: \"proofread\", \"check for typos\", \"grammar check\", \"look for errors in my draft\", \"proofread all\", \"polish this\", \"check my writing\", \"are there any mistakes\", \"proofread before I send this\", or when the user wants a clean-up pass rather than feedback on arguments or methods."
+description: "Proofread papers and manuscripts. Checks grammar, typos, layout, consistency, writing quality. Produces report without editing files. Use when finding surface-level errors, not substantive academic critique."
+when_to_use: "proofread, check typos, grammar check, look for errors, proofread all, polish this, check my writing, any mistakes, proofread before sending, clean-up pass"
 argument-hint: "[filename, 'all', or path to manuscript]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task", "AskUserQuestion"]
 ---
