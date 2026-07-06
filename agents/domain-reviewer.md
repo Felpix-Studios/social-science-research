@@ -230,45 +230,24 @@ Return your report to the calling skill — it handles saving. If run independen
 
 ```markdown
 # Substance Review: [Filename]
-**Date:** [YYYY-MM-DD]
-**Reviewer:** domain-reviewer agent
+**Date:** [YYYY-MM-DD] · **Reviewer:** domain-reviewer agent
 
 ## Summary
 - **Overall assessment:** [SOUND / MINOR ISSUES / MAJOR ISSUES / CRITICAL ERRORS]
-- **Total issues:** N
-- **Blocking issues (prevent submission or presentation):** M
-- **Non-blocking issues (should fix when possible):** K
+- **Issues:** N total — M blocking (prevent submission/presentation), K non-blocking
 
-## Lens 1: Assumption Stress Test
-### Issues Found: N
-#### Issue 1.1: [Brief title]
+## Lenses 1–6 + Cross-Document Consistency
+One `##` section per lens and one for Cross-Document Consistency. List each issue in the format below; in Lens 6, order CRITICAL missing-diagnostic items first.
+
+#### Issue [lens.n]: [Brief title]
 - **Location:** [section, page, or equation number]
 - **Severity:** [CRITICAL / MAJOR / MINOR]
 - **Claim:** [exact text or equation]
 - **Problem:** [what's missing, wrong, or insufficient]
 - **Suggested fix:** [specific correction]
 
-## Lens 2: Derivation Verification
-[Same format...]
-
-## Lens 3: Citation Fidelity
-[Same format...]
-
-## Lens 4: Code-Theory Alignment
-[Same format...]
-
-## Lens 5: Backward Logic Check
-[Same format...]
-
-## Lens 6: Design-Specific Diagnostics Audit
-[Same format. Order entries by severity: CRITICAL missing-diagnostic items first.]
-
-## Cross-Document Consistency
-[Details...]
-
-## Critical Recommendations (Priority Order)
-1. **[CRITICAL]** [Most important fix]
-2. **[MAJOR]** [Second priority]
+## Critical Recommendations (priority order)
+1. **[CRITICAL]** … 2. **[MAJOR]** …
 
 ## Positive Findings
 [2-3 things the paper gets RIGHT — acknowledge rigor where it exists]
