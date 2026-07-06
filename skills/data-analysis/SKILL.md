@@ -22,7 +22,7 @@ R is the default. If ambiguous, use AskUserQuestion to pick R (Recommended — t
 
 ## Phase 0.5: Ingest Non-Tabular Inputs
 
-If `$ARGUMENTS` points to a PDF, HTML page, government portal URL, or other non-tabular source, Read `${CLAUDE_SKILL_DIR}/references/ingest-recipes.md` and follow it before Phase 1. Skip this phase for flat files (`.csv`, `.parquet`, `.dta`, `.rds`, `.feather`, `.json`).
+If `$ARGUMENTS` points to a PDF, HTML page, government portal URL, or other non-tabular source, Read `${CLAUDE_PLUGIN_ROOT}/skills/data-analysis/references/ingest-recipes.md` and follow it before Phase 1. Skip this phase for flat files (`.csv`, `.parquet`, `.dta`, `.rds`, `.feather`, `.json`).
 
 
 ## R Track
@@ -35,7 +35,7 @@ If `$ARGUMENTS` points to a PDF, HTML page, government portal URL, or other non-
 - Run `r-reviewer` on the generated script before presenting results
 
 ### Phase 1: Setup and Data Loading
-1. Create R script with proper header (title, author, purpose, inputs, outputs) — Read `${CLAUDE_SKILL_DIR}/templates/analysis-script.R` and adapt
+1. Create R script with proper header (title, author, purpose, inputs, outputs) — Read `${CLAUDE_PLUGIN_ROOT}/skills/data-analysis/assets/analysis-script.R` and adapt
 2. Load required packages at top (`library()`, never `require()`)
 3. Set seed once at top: `set.seed(42)`
 4. Create output directories: `dir.create("output/analysis", recursive = TRUE, showWarnings = FALSE)`
@@ -56,7 +56,7 @@ If `$ARGUMENTS` points to a PDF, HTML page, government portal URL, or other non-
 
 ### Phase 3.5: Identification Diagnostics
 
-Mandatory for any analysis with a causal interpretation. Detect the design from the analysis goal and the model call (`feols(... | id + t)` with treatment-timing → DiD; `rdrobust` → RDD; `feols(y ~ ... | 0 | endog ~ instr)` → IV; `tidysynth` → synthetic control; random assignment → RCT; `MatchIt`/`cobalt` → matching). Read `${CLAUDE_SKILL_DIR}/references/identification-r.md` and run the block matching the detected design. Ask once with AskUserQuestion only if the design is genuinely ambiguous. Skip this phase for purely descriptive analyses.
+Mandatory for any analysis with a causal interpretation. Detect the design from the analysis goal and the model call (`feols(... | id + t)` with treatment-timing → DiD; `rdrobust` → RDD; `feols(y ~ ... | 0 | endog ~ instr)` → IV; `tidysynth` → synthetic control; random assignment → RCT; `MatchIt`/`cobalt` → matching). Read `${CLAUDE_PLUGIN_ROOT}/skills/data-analysis/references/identification-r.md` and run the block matching the detected design. Ask once with AskUserQuestion only if the design is genuinely ambiguous. Skip this phase for purely descriptive analyses.
 
 ### Phase 4: Publication-Ready Output
 **Tables:** `modelsummary` (preferred) or `stargazer` — export `.tex` and `.html`
@@ -83,7 +83,7 @@ Mandatory for any analysis with a causal interpretation. Detect the design from 
 - Set random seeds at the top of the script
 
 ### Phase 1: Setup and Data Loading
-1. Create Python script with header — Read `${CLAUDE_SKILL_DIR}/templates/analysis-script.py` and adapt
+1. Create Python script with header — Read `${CLAUDE_PLUGIN_ROOT}/skills/data-analysis/assets/analysis-script.py` and adapt
 2. Import all packages at the top of the file
 3. Set seeds: `np.random.seed(42)` and `random.seed(42)`
 4. Create output directories: `Path("output/analysis").mkdir(parents=True, exist_ok=True)`
@@ -104,7 +104,7 @@ Mandatory for any analysis with a causal interpretation. Detect the design from 
 
 ### Phase 3.5: Identification Diagnostics
 
-Mandatory for any analysis with a causal interpretation. Detect the design from the analysis goal and the model call (`PanelOLS(..., entity_effects=True, time_effects=True)` with treatment timing → DiD; `rdrobust` port → RDD; `IV2SLS` → IV; `pysyncon` → synthetic control; experiment → RCT; `causalinference` → matching). Read `${CLAUDE_SKILL_DIR}/references/identification-py.md` and run the block matching the detected design. Skip this phase for purely descriptive analyses.
+Mandatory for any analysis with a causal interpretation. Detect the design from the analysis goal and the model call (`PanelOLS(..., entity_effects=True, time_effects=True)` with treatment timing → DiD; `rdrobust` port → RDD; `IV2SLS` → IV; `pysyncon` → synthetic control; experiment → RCT; `causalinference` → matching). Read `${CLAUDE_PLUGIN_ROOT}/skills/data-analysis/references/identification-py.md` and run the block matching the detected design. Skip this phase for purely descriptive analyses.
 
 ### Phase 4: Publication-Ready Output
 **Tables:** Format with `pandas` and export via `.to_latex()` or `stargazer` (Python port)

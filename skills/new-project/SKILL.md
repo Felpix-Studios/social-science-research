@@ -14,7 +14,7 @@ Formalize a research idea into a concrete project specification with testable hy
 
 This skill runs in **three phases**. Phase 1 is conversational — ask one or two questions at a time and wait for responses. Phases 2 and 3 run automatically after the interview.
 
-For complex or ambiguous project-scoping requests, read `${CLAUDE_PLUGIN_ROOT}/rules/plan-first-workflow.md` before Phase 1.
+For complex or ambiguous project-scoping requests, read `${CLAUDE_PLUGIN_ROOT}/skills/new-project/references/plan-first-workflow.md` before Phase 1.
 
 
 ## Phase 1: Research Interview

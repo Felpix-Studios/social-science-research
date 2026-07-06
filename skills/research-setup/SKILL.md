@@ -12,7 +12,7 @@ Walk the user through setup using AskUserQuestion menus wherever possible. Colle
 
 This skill is the only entry point that seeds project config (`references/domain-profile.md`, `CLAUDE.md`). The plugin does not scaffold anything on session start.
 
-Read `${CLAUDE_PLUGIN_ROOT}/rules/workflow-overview.md` before explaining the workflow or next-step sequence.
+Read `${CLAUDE_PLUGIN_ROOT}/skills/research-setup/references/workflow-overview.md` before explaining the workflow or next-step sequence.
 
 
 ## Step 0: Bootstrap & Check Existing Config
