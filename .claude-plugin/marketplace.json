@@ -11,7 +11,7 @@
       "name": "social-science-research",
       "source": "./",
       "description": "Social Science Research gives you the tools and workflows to assist with your research. Ideate on topics, perform literature reviews, analyze data, and have agents peer review your work. Based on Pedro Sant'Anna's workflow.",
-      "version": "1.0.5"
+      "version": "1.1.0"
     }
   ]
 }
