@@ -131,33 +131,16 @@ When analysis scripts exist for the paper:
 - [ ] Are standard errors computed using the method the paper describes?
 - [ ] Do simulations match the paper being replicated?
 
-### Known code-theory alignment pitfalls
+### Recurring theory↔code mismatches
 
-Check these as applicable to the paper's methods:
+Check the ones relevant to the paper's methods:
 
-**Cluster-robust / panel SEs:**
-- Stata's default df-adjustment ≠ R `fixest`/`lfe`/`plm` defaults — verify the paper reports which convention
-- `areg y x, absorb(id)` (Stata) ≠ `feols(y ~ x | id)` (R) on SEs without explicit `cluster = ~id`
+- **SE convention:** cluster-robust/panel SE defaults differ across Stata (`areg`, default df-adjustment) and R (`feols`, `lfe`, `plm`); confirm the code produces the convention the paper claims.
+- **Staggered DiD:** TWFE under heterogeneous timing yields negative weights — the code must justify TWFE or use a heterogeneity-robust estimator.
+- **Survey weights:** `lm(weights=)` gives frequency-weighted estimates; design-based SEs need `svyglm`. Dropping weights on public-use data (ANES, CES, PSID, NLSY) biases means and SEs.
+- **Missing data:** `na.omit()` vs imputation vs FIML change estimates — the code's handling must match the paper's stated approach.
 
-**Staggered DiD:**
-- TWFE with heterogeneous treatment timing produces negative weights; paper should justify use or switch estimator
-
-**Weighted / survey data:**
-- `lm(..., weights = w)` computes frequency-weighted estimates; design-based SEs require `survey::svyglm` or equivalent
-- Ignoring survey weights on public-use data (ANES, CES, PSID, NLSY) silently biases means and SEs
-
-**Multilevel models:**
-- `lme4::lmer` does not return p-values by default; if the paper reports them, check the method (Satterthwaite, Kenward-Roger, bootstrap)
-- Singular fit warnings indicate overfit random effects — shouldn't be ignored
-
-**Missing data:**
-- `na.omit()` vs multiple imputation vs FIML give different estimates; paper's stated approach must match the code's actual handling
-
-**Data-prep silent failures:**
-- `pandas.read_csv` / `readr::read_csv` infer dtypes; leading-zero IDs (FIPS codes, zip codes) can be silently coerced to integers
-- Factor level ordering in R affects reference category in regression; verify the referenced baseline matches the paper's described contrast
-
-Check `${CLAUDE_PLUGIN_ROOT}/rules/r-code-conventions.md` § Common Pitfalls for additional traps.
+For pure code-mechanics traps (dtype coercion of leading-zero IDs, factor reference levels, `lmer` p-value methods, singular fits), see `${CLAUDE_PLUGIN_ROOT}/rules/r-code-conventions.md` § Common Pitfalls.
 
 ---
 
@@ -177,8 +160,6 @@ Read the paper backwards — from conclusion to setup:
 ## Lens 6: Design-Specific Diagnostics Audit
 
 Lens 1 asks whether the **assumption is stated**. Lens 6 asks the stricter question: does the paper report the **actual numerical result** of the diagnostic that the claimed design demands? A paper that asserts parallel trends without showing event-study coefficients, or claims a strong instrument without reporting the first-stage F, fails this lens regardless of how well-written the assumption discussion is.
-
-This is the lens that produces the most common referee complaint — *"the authors do not report [X], a standard diagnostic for this design"* — and the rigor lens most often skipped by authors under time pressure.
 
 ### Required diagnostic reporting by design
 
@@ -229,13 +210,6 @@ For each design, the paper must report (in text, table, or figure) the diagnosti
 - **CRITICAL** = the diagnostic the design *requires* is missing entirely (e.g., no first-stage F for an IV paper; no McCrary or equivalent density test for an RDD paper; no pre-trends evidence for a DiD paper).
 - **MAJOR** = the diagnostic is partial or reported in a non-interpretable form (e.g., "the F-statistic is large" without a number; pre-trends asserted in prose without a plot).
 - **MINOR** = an additional supportive diagnostic could strengthen the paper but is not strictly required by the design.
-
-### Important distinction from Lens 1
-
-Lens 1 catches: *"parallel trends is never mentioned."*
-Lens 6 catches: *"parallel trends is asserted, but the event-study figure does not exist or the leads coefficients are not reported with confidence intervals."*
-
-Both failures matter; Lens 6 is what referees actively look for during a methods read.
 
 ---
 

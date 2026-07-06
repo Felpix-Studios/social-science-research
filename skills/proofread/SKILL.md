@@ -22,13 +22,7 @@ Run the mandatory proofreading protocol on papers or manuscripts. Produces a rep
      - multiSelect: true
      - options: list up to 4 found files (label: filename, description: directory and file type). User can select multiple or choose "Other" to specify a path.
 
-2. **For each file, launch the proofreader agent** that checks for:
-
-   **GRAMMAR:** Subject-verb agreement, articles (a/an/the), prepositions, tense consistency
-   **TYPOS:** Misspellings, search-and-replace artifacts, duplicated words
-   **LAYOUT ISSUES:** Overfull hbox (LaTeX slides/manuscripts), content exceeding slide boundaries (Quarto), table/column overflow in manuscripts
-   **CONSISTENCY:** Citation format, notation, terminology, variable names matching table column names
-   **ACADEMIC QUALITY:** Informal language, missing words, awkward constructions
+2. **For each file, launch the `proofreader` agent** (via Task). It checks grammar, typos, layout issues, consistency, and academic quality — the agent definition owns the full category specifications, so do not restate them here.
 
 3. **Produce a detailed report** for each file listing every finding with:
    - Location (line number or section heading)
@@ -42,7 +36,7 @@ Run the mandatory proofreading protocol on papers or manuscripts. Produces a rep
    - For manuscript files: `quality_reports/FILENAME_proofread.md`
 
 5. **IMPORTANT: Do NOT edit any source files.**
-   Read `${CLAUDE_PLUGIN_ROOT}/rules/proofreading-protocol.md`. Only produce the report. Fixes are applied separately after user review.
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/proofread/references/proofreading-protocol.md`. Only produce the report. Fixes are applied separately after user review.
 
 6. **Present summary** to the user:
    - Total issues found per file

@@ -14,11 +14,7 @@ paths:
 
 ## What the Agent Checks
 
-1. **Grammar** -- subject-verb agreement, missing articles, wrong prepositions
-2. **Typos** -- misspellings, search-and-replace corruption, duplicated words
-3. **Layout issues** -- overfull hbox (LaTeX), content exceeding slide boundaries (Quarto), table/column overflow in manuscripts
-4. **Consistency** -- notation, citation style (`\citet` vs `\citep`, `[@key]`), terminology, variable names in prose matching table column names
-5. **Academic quality** -- informal abbreviations, missing words, awkward phrasing
+The `proofreader` agent definition is the single source of truth for the check categories (grammar, typos, layout, consistency, academic quality). This protocol governs the *workflow* below, not the checklist.
 
 ## Three-Phase Workflow
 

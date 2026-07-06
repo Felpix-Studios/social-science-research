@@ -41,10 +41,7 @@ jupyter nbconvert --to notebook --execute path/to/notebook.ipynb \
 - Check that no cells contain error outputs (`"ename"` key in cell outputs)
 
 ### For bibliography
-1. Grep the manuscript for all `\cite{key}` and `@key` patterns
-2. Grep `Bibliography_base.bib` (or the project's `.bib` file) for each key
-3. Report: all present / N missing keys
-4. Missing keys are CRITICAL — flag immediately
+Run the fast missing-citation check: grep the manuscript for `\cite{key}` / `@key`, grep the project `.bib` for each key, and report any missing keys (CRITICAL — flag immediately). This is deliberately the missing-key subset. For the complete bibliography audit — unused entries, key typos, and entry-quality checks — the `/validate-bib` skill is the canonical tool; recommend running it rather than reproducing that scope here.
 
 ### For output completeness
 1. List all files in `output/tables/` and `output/figures/`

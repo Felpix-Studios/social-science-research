@@ -48,7 +48,7 @@ Enjoy using the plugin!
 ## What's Included
 
 <details>
-<summary><strong>9 agents, 13 skills, 8 rules, 3 hooks</strong> (click to expand)</summary>
+<summary><strong>9 agents, 13 skills, 3 hooks</strong> (click to expand)</summary>
 
 ### Agents
 
@@ -82,20 +82,20 @@ Enjoy using the plugin!
 | `/proofread` | Launch proofreader on a file |
 | `/session-log` | Create or update a session log to capture decisions and progress |
 
-### Rules
+### Shared rules
 
-Rules are plugin support files loaded by skills and agents with `${CLAUDE_PLUGIN_ROOT}/rules/...`; the root `rules/` directory is not auto-loaded as a Claude Code plugin component.
+The root `rules/` directory holds cross-cutting knowledge read by *multiple* skills and by agents via `${CLAUDE_PLUGIN_ROOT}/rules/...`. (It is support material, not an auto-loaded Claude Code plugin component.)
 
 | Rule | What It Does |
 |------|-------------|
-| `workflow-overview.md` | Master orientation: workflow, skills, agents, thresholds |
-| `plan-first-workflow.md` | Plan mode before non-trivial tasks; session logs |
 | `orchestrator-protocol.md` | Autonomous execution loop (Code vs Prose track) |
-| `r-code-conventions.md` | R coding standards and visual identity |
-| `quality-gates.md` | 0-100 scoring rubric with deduction tables |
-| `proofreading-protocol.md` | Three-phase review: propose, approve, apply |
 | `analysis-verification.md` | Run scripts and verify outputs after writing code |
 | `replication-protocol.md` | Replicate original results before extending |
+| `quality-gates.md` | 0-100 scoring rubric with deduction tables |
+| `quality-report.md` | Merge-time quality-report template |
+| `r-code-conventions.md` | R coding standards and visual identity |
+
+Skill-specific support material lives *inside the owning skill* — `skills/<name>/references/` for docs and `skills/<name>/assets/` for templates. For example: the workflow overview (`research-setup`), the plan-first workflow + requirements-spec template (`new-project`), the proofreading protocol (`proofread`), the session-log template (`session-log`), and the analysis-script templates + identification recipes (`data-analysis`).
 
 ### Hooks
 
