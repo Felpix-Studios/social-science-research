@@ -24,7 +24,7 @@ Run the comprehensive R code review protocol.
 
 2. **For each script, launch the `r-reviewer` agent** with instructions to:
    - Follow the full protocol in the agent instructions
-   - Read `rules/r-code-conventions.md` for current standards
+   - Read `${CLAUDE_PLUGIN_ROOT}/rules/r-code-conventions.md` for current standards
    - Save report to `quality_reports/[script_name]_r_review.md`
 
 3. **After all reviews complete**, present a summary:

@@ -35,7 +35,7 @@ Before writing any code:
 
 ## Phase 2: Translate & Execute
 
-- [ ] Follow code conventions in `rules/` for your language (R or Python)
+- [ ] Follow code conventions in `${CLAUDE_PLUGIN_ROOT}/rules/` for your language (R or Python)
 - [ ] Translate line-by-line initially -- don't "improve" during replication
 - [ ] Match original specification exactly (covariates, sample, clustering, SE computation)
 - [ ] Save all intermediate results (RDS for R; `.pkl` or `.parquet` for Python)

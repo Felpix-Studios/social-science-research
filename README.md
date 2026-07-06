@@ -58,7 +58,7 @@ Enjoy using the plugin!
 | `explorer` | Find datasets across one source category |
 | `explorer-critic` | Stress-test dataset candidates on 5 dimensions |
 | `proofreader` | Grammar, typos, layout, and consistency check |
-| `domain-reviewer` | Top-journal referee review through 5 lenses |
+| `domain-reviewer` | Top-journal referee review through 6 lenses |
 | `adversarial-reviewer` | Hostile-referee attack: fatal flaws, over-claims, alt. explanations, rejection letter |
 | `fresh-eyes-reviewer` | First-time reader perspective — what lands, what confuses on a cold read |
 | `r-reviewer` | R code quality and reproducibility review |
@@ -83,6 +83,8 @@ Enjoy using the plugin!
 | `/session-log` | Create or update a session log to capture decisions and progress |
 
 ### Rules
+
+Rules are plugin support files loaded by skills and agents with `${CLAUDE_PLUGIN_ROOT}/rules/...`; the root `rules/` directory is not auto-loaded as a Claude Code plugin component.
 
 | Rule | What It Does |
 |------|-------------|

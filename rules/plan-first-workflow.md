@@ -16,7 +16,7 @@ paths: ["**/*"]
 5. **Save to disk** — write to `quality_reports/plans/YYYY-MM-DD_short-description.md`
 6. **Present to user** — wait for approval
 7. **Exit plan mode** — only after approval
-8. **Implement via orchestrator** — see `orchestrator-protocol.md`
+8. **Implement via orchestrator** — see `${CLAUDE_PLUGIN_ROOT}/rules/orchestrator-protocol.md`
 
 **Tip:** Use `/session-log create` to capture session state at any time.
 
@@ -45,4 +45,3 @@ paths: ["**/*"]
 **Template:** `${CLAUDE_PLUGIN_ROOT}/templates/requirements-spec.md`
 
 **Why this helps:** Catches ambiguity BEFORE planning. Reduces mid-plan pivots by 30-50%.
-

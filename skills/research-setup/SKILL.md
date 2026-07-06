@@ -12,6 +12,8 @@ Walk the user through setup using AskUserQuestion menus wherever possible. Colle
 
 This skill is the only entry point that seeds project config (`references/domain-profile.md`, `CLAUDE.md`). The plugin does not scaffold anything on session start.
 
+Read `${CLAUDE_PLUGIN_ROOT}/rules/workflow-overview.md` before explaining the workflow or next-step sequence.
+
 
 ## Step 0: Bootstrap & Check Existing Config
 
@@ -97,7 +99,7 @@ If the user chose "Custom colors", ask conversationally for primary and secondar
 
 Read the existing file and update each section with the user's answers. Preserve the file's existing structure and comments. Only replace sections the user answered; leave unanswered sections unchanged. Add an "Institutional Colors" section at the end if one doesn't exist, with the user's hex codes (or defaults #012169 / #f2a900 if skipped).
 
-**IMPORTANT:** Do NOT write to `rules/r-code-conventions.md`. Colors live in `references/domain-profile.md` only.
+**IMPORTANT:** Do NOT write to `${CLAUDE_PLUGIN_ROOT}/rules/r-code-conventions.md`. Colors live in `references/domain-profile.md` only.
 
 ### `CLAUDE.md`
 

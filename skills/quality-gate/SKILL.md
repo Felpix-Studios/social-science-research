@@ -12,6 +12,8 @@ Cross-check every numerical claim in the paper against analysis output files. Re
 
 **Input:** `$ARGUMENTS` — path to the paper draft, or leave blank to auto-detect.
 
+Read `${CLAUDE_PLUGIN_ROOT}/rules/quality-gates.md` before assigning the final verdict and severity.
+
 
 ## Step 1: Locate the Paper Draft
 

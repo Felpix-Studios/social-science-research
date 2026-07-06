@@ -12,6 +12,8 @@ Run an end-to-end data analysis in R or Python: load, explore, analyze, and prod
 
 **Input:** `$ARGUMENTS` — a dataset path (e.g., `data/county_panel.csv`) or a description of the analysis goal (e.g., "regress wages on education with state fixed effects using CPS data").
 
+Before making analysis changes, read `${CLAUDE_PLUGIN_ROOT}/rules/orchestrator-protocol.md`, `${CLAUDE_PLUGIN_ROOT}/rules/analysis-verification.md`, and `${CLAUDE_PLUGIN_ROOT}/rules/quality-gates.md`; for replication or extension requests, also read `${CLAUDE_PLUGIN_ROOT}/rules/replication-protocol.md`.
+
 
 ## Phase 0: Choose Language
 
@@ -26,7 +28,7 @@ If `$ARGUMENTS` points to a PDF, HTML page, government portal URL, or other non-
 ## R Track
 
 ### Constraints
-- Follow `rules/r-code-conventions.md` for all standards
+- Follow `${CLAUDE_PLUGIN_ROOT}/rules/r-code-conventions.md` for all standards
 - Save scripts to `scripts/R/` with descriptive names
 - Save all outputs (figures, tables, RDS) to `output/`
 - Use `saveRDS()` for every computed object
@@ -65,7 +67,7 @@ Mandatory for any analysis with a causal interpretation. Detect the design from 
 2. Dispatch the `r-reviewer` agent via Task:
    ```
    Task prompt: "Review the R script at scripts/R/[script_name].R against
-   rules/r-code-conventions.md. Save your report to
+   ${CLAUDE_PLUGIN_ROOT}/rules/r-code-conventions.md. Save your report to
    quality_reports/[script_name]_r_review.md. Follow the r-reviewer agent instructions."
    ```
 3. Address Critical and High issues before presenting results

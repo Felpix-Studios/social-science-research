@@ -1,12 +1,14 @@
 {
   "name": "social-science-research",
   "displayName": "Social Science Research",
-  "version": "1.0.4",
-  "description": "Tools and agents for social science research workflows",
+  "version": "1.0.5",
+  "description": "Social Science Research gives you the tools and workflows to assist with your research. Ideate on topics, perform literature reviews, analyze data, and have agents peer review your work. Based on Pedro Sant'Anna's workflow.",
   "author": {
     "name": "Felpix",
     "email": "felpixcontact@gmail.com"
   },
+  "homepage": "https://github.com/Felpix-Studios/social-science-research",
+  "repository": "https://github.com/Felpix-Studios/social-science-research",
   "keywords": [
     "research",
     "academia",

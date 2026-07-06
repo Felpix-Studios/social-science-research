@@ -1,5 +1,5 @@
 ---
-description: Social science research plugin — the 5-step workflow pipeline from setup through quality gate. Loaded in every session.
+description: Social science research plugin — the workflow pipeline from setup through quality gate. Read by setup and workflow skills.
 paths: ["**/*"]
 ---
 

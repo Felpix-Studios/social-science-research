@@ -117,7 +117,7 @@ For every claim attributed to a specific paper:
 **Cross-reference with:**
 - The project bibliography file
 - Papers in `references/papers/` (if available)
-- The knowledge base in `rules/` (if it has a notation/citation registry)
+- The plugin knowledge base in `${CLAUDE_PLUGIN_ROOT}/rules/` (if it has a notation/citation registry)
 
 ---
 
@@ -157,7 +157,7 @@ Check these as applicable to the paper's methods:
 - `pandas.read_csv` / `readr::read_csv` infer dtypes; leading-zero IDs (FIPS codes, zip codes) can be silently coerced to integers
 - Factor level ordering in R affects reference category in regression; verify the referenced baseline matches the paper's described contrast
 
-Check `rules/r-code-conventions.md` § Common Pitfalls for additional traps.
+Check `${CLAUDE_PLUGIN_ROOT}/rules/r-code-conventions.md` § Common Pitfalls for additional traps.
 
 ---
 

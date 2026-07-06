@@ -42,7 +42,7 @@ Run the mandatory proofreading protocol on papers or manuscripts. Produces a rep
    - For manuscript files: `quality_reports/FILENAME_proofread.md`
 
 5. **IMPORTANT: Do NOT edit any source files.**
-   Only produce the report. Fixes are applied separately after user review (see `rules/proofreading-protocol.md`).
+   Read `${CLAUDE_PLUGIN_ROOT}/rules/proofreading-protocol.md`. Only produce the report. Fixes are applied separately after user review.
 
 6. **Present summary** to the user:
    - Total issues found per file

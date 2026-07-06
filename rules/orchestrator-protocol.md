@@ -26,9 +26,9 @@ Simple 3-step loop: implement → verify → score. If score < 80, fix and re-ve
 
 **Step 1 — IMPLEMENT:** Execute the plan steps.
 
-**Step 2 — VERIFY:** Run the script. Check exit code. Verify output files exist and have size > 0. See `rules/analysis-verification.md` for the full checklist.
+**Step 2 — VERIFY:** Run the script. Check exit code. Verify output files exist and have size > 0. See `${CLAUDE_PLUGIN_ROOT}/rules/analysis-verification.md` for the full checklist.
 
-**Step 3 — SCORE:** Apply the quality-gates rubric for the file type. Score >= 80 → present to user. Score < 80 → fix the blocking issues and re-verify (max 2 retries). After 2 retries, present with remaining issues listed.
+**Step 3 — SCORE:** Apply `${CLAUDE_PLUGIN_ROOT}/rules/quality-gates.md` for the file type. Score >= 80 → present to user. Score < 80 → fix the blocking issues and re-verify (max 2 retries). After 2 retries, present with remaining issues listed.
 
 ---
 
